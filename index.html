@@ -1,0 +1,3322 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <title>Gifts Battle — Cases / Upgrade / Tasks / Inventory</title>
+
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    :root {
+      --bg0: #06080d;
+      --bg1: #0a0f1b;
+
+      --glass: rgba(255, 255, 255, .06);
+      --glass2: rgba(255, 255, 255, .08);
+      --stroke: rgba(255, 255, 255, .10);
+
+      --text: #eef5ff;
+      --muted: #a7b8d9;
+
+      --blue: #4aa3ff;
+      --blue2: #2b7bff;
+      --green: #25e39a;
+      --red: #ff4a6a;
+      --gold: #ffd56a;
+
+      --shadow: 0 18px 50px rgba(0, 0, 0, .55);
+
+      --safeTop: env(safe-area-inset-top, 0px);
+      --safeBottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue";
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 70% -10%, rgba(74, 163, 255, .10), transparent 60%),
+        radial-gradient(800px 520px at 20% 0%, rgba(130, 90, 255, .08), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+      overflow: hidden;
+    }
+
+    .app {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding-top: var(--safeTop);
+    }
+
+    /* ===== STAR ICON (PNG) ===== */
+    .starI {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      vertical-align: -3px;
+      filter: drop-shadow(0 6px 14px rgba(255, 213, 106, .18));
+    }
+
+    .starRow {
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .starRow .val {
+      font-weight: 950
+    }
+
+    /* ===== TOP BAR ===== */
+    .topbar {
+      padding: 14px 16px 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, .25);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .titleWrap {
+      flex: 1;
+      min-width: 0
+    }
+
+    .title {
+      font-weight: 950;
+      letter-spacing: .2px;
+      font-size: 18px;
+      line-height: 1.1;
+      margin: 0;
+    }
+
+    .subTitle {
+      margin: 2px 0 0;
+      font-weight: 850;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .55);
+      letter-spacing: .4px;
+    }
+
+    .wallet {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      padding: 8px 9px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .22);
+    }
+
+    .plus {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(74, 163, 255, .95), rgba(43, 123, 255, .95));
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .22);
+      cursor: pointer;
+    }
+
+    .balance {
+      font-weight: 950;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 86px;
+      justify-content: flex-end;
+    }
+
+    .content {
+      flex: 1;
+      overflow: auto;
+      padding: 8px 14px 110px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .sectionTitle {
+      margin: 10px 4px 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      font-weight: 950;
+      color: rgba(255, 255, 255, .72);
+      font-size: 12.5px;
+      text-align: center;
+    }
+
+    .panel {
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .sep {
+      height: 10px
+    }
+
+    /* ===== BOTTOM NAV ===== */
+    .nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 6px 16px calc(6px + var(--safeBottom));
+      background: rgba(28, 28, 29, 0.85);
+      /* Telegram dark theme nav background */
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 50;
+    }
+
+    .navBar {
+      height: 50px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      position: relative;
+    }
+
+    .navPill {
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      left: 0;
+      width: 0;
+      /* Updated via JS */
+      background: rgba(0, 122, 255, 0.12);
+      /* Subtle Telegram blue highlight */
+      border-radius: 999px;
+      z-index: 0;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tabBtn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: #8e8e93;
+      /* Telegram inactive tab color */
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      z-index: 1;
+      transition: color 0.1s ease;
+    }
+
+    .tabBtn svg {
+      width: 26px;
+      height: 26px;
+      stroke-width: 1.8;
+    }
+
+    .tabBtn.active {
+      color: #007aff;
+      /* Telegram active color (Deep Blue) */
+    }
+
+    /* Pages */
+    .page {
+      display: none
+    }
+
+    .page.active {
+      display: block
+    }
+
+    /* ===== LIVE FEED ===== */
+    .liveFeed {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 18px;
+      overflow: hidden;
+      white-space: nowrap;
+      mask-image: linear-gradient(to right, #000 80%, transparent 100%);
+    }
+
+    .liveLabel {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #25e39a;
+      font-weight: 950;
+      font-size: 13px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .liveDot {
+      width: 6px;
+      height: 6px;
+      background: #25e39a;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #25e39a;
+      animation: pulseLive 2s infinite;
+    }
+
+    @keyframes pulseLive {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .4;
+        transform: scale(0.8);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .liveList {
+      display: flex;
+      gap: 10px;
+      overflow: visible;
+    }
+
+    .liveItem {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 6px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      animation: slideInLive .5s ease-out;
+    }
+
+    .liveItem img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    @keyframes slideInLive {
+      from {
+        transform: translateX(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* ===== CASES GRID (Modified) ===== */
+    .casesGrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .caseCard {
+      background: #111;
+      /* Dark background as in photo */
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 28px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      aspect-ratio: 0.8 / 1;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .caseHero {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 10px;
+      position: relative;
+    }
+
+    .caseAvatar {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+    }
+
+    .caseAvatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transform: scale(1.1);
+    }
+
+    .caseMeta {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 18px 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .priceRow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 950;
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .caseName {
+      display: none;
+    }
+
+    /* Name is hidden in photo, only price is shown on card */
+    .badge {
+      display: none;
+    }
+
+    /* Badge is not visible in provided photo */
+
+    .starI {
+      width: 18px;
+      height: 18px;
+      filter: none;
+    }
+
+
+    /* ===== MODALS (универсальные) ===== */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 120;
+      padding: 12px 12px calc(12px + var(--safeBottom));
+    }
+
+    .overlay.show {
+      display: flex
+    }
+
+    .modal {
+      width: min(520px, 100%);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .12);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .65);
+      overflow: hidden;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modalHead {
+      padding: 14px 14px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      flex: 0 0 auto;
+    }
+
+    .modalHead .h {
+      font-weight: 950;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .84);
+      font-size: 13px;
+    }
+
+    .xbtn {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .10);
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .modalScroll {
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1 1 auto;
+    }
+
+    .btn {
+      width: 100%;
+      height: 40px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: linear-gradient(180deg, rgba(74, 163, 255, .95), rgba(43, 123, 255, .95));
+      color: #fff;
+      font-weight: 950;
+      letter-spacing: .2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 18px 50px rgba(43, 123, 255, .22);
+    }
+
+    .btn:active {
+      transform: translateY(1px)
+    }
+
+    .btn.ghost {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .12);
+      box-shadow: none;
+      color: rgba(255, 255, 255, .90);
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* ===== CASE MODAL (FIXED CENTER) ===== */
+    .casePreview {
+      padding: 12px 14px 0;
+      text-align: center;
+
+      /* ВАЖНО: центрируем дочерние элементы */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .bigImg {
+      width: 85%;
+      height: 85%;
+      margin: 0 auto;
+      /* ← КЛЮЧЕВО */
+
+      border-radius: 22px;
+      background: rgba(0, 0, 0, .20);
+      overflow: hidden;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, .45);
+
+      display: grid;
+      place-items: center;
+    }
+
+    .bigImg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .bigImg .fallback {
+      font-size: 76px;
+      filter: drop-shadow(0 18px 45px rgba(0, 0, 0, .55));
+    }
+
+    .casePreview .name {
+      margin: 12px 0 0;
+      font-weight: 950;
+      font-size: 18px;
+    }
+
+    .casePreview .desc {
+      margin: 6px 0 0;
+      color: rgba(255, 255, 255, .65);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+
+    .chooser {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pillRow {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      color: rgba(255, 255, 255, .85);
+      font-weight: 950;
+      font-size: 13px;
+    }
+
+    .countPills {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .pill {
+      flex: 1;
+      height: 44px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .10);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, .78);
+      font-weight: 950;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .pill.active {
+      background: linear-gradient(180deg, rgba(74, 163, 255, .22), rgba(74, 163, 255, .10));
+      border: 1px solid rgba(74, 163, 255, .22);
+      color: rgba(255, 255, 255, .95);
+      box-shadow: 0 14px 40px rgba(43, 123, 255, .16);
+    }
+
+    .rouletteWrap {
+      margin: 0 14px 14px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(0, 0, 0, .18);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, .40);
+    }
+
+    .rouletteTop {
+      padding: 12px 12px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      color: rgba(255, 255, 255, .78);
+      font-weight: 950;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .track {
+      position: relative;
+      height: 120px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, .10);
+    }
+
+    .centerLine {
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 50%;
+      width: 3px;
+      transform: translateX(-50%);
+      background: rgba(74, 163, 255, .65);
+      box-shadow: 0 0 0 6px rgba(74, 163, 255, .08);
+      border-radius: 99px;
+      z-index: 5;
+    }
+
+    .reel {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      will-change: transform;
+    }
+
+    .itemChip {
+      width: 104px;
+      height: 92px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(255, 255, 255, .06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      flex: 0 0 auto;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, .22);
+      overflow: hidden;
+    }
+
+    .chipImg {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, .18);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    .chipImg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .chipImg .fallback {
+      font-size: 24px
+    }
+
+    .itemChip .n {
+      font-size: 11px;
+      font-weight: 950;
+      color: rgba(255, 255, 255, .85);
+      text-align: center;
+      padding: 0 6px;
+      line-height: 1.05;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .resultToast {
+      margin: 0 14px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(255, 255, 255, .06);
+      padding: 12px 12px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .resultToast.show {
+      display: flex
+    }
+
+    .resultLeft {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .resImg {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, .18);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    .resImg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .resImg .fallback {
+      font-size: 26px
+    }
+
+    .resultLeft .t {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .resultLeft .t b {
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .resultLeft .t span {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .65);
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .tagWin {
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 950;
+      font-size: 12px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(0, 0, 0, .20);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .tagWin.good {
+      border-color: rgba(37, 227, 154, .30);
+      background: rgba(37, 227, 154, .10)
+    }
+
+    .tagWin.bad {
+      border-color: rgba(255, 74, 106, .28);
+      background: rgba(255, 74, 106, .10)
+    }
+
+    /* ===== INVENTORY (REWORK) ===== */
+    .profileCard {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(255, 255, 255, .06);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .22);
+      margin-bottom: 12px;
+    }
+
+    .ava {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(74, 163, 255, .22), rgba(74, 163, 255, .10));
+      border: 1px solid rgba(74, 163, 255, .22);
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+      letter-spacing: .6px;
+      box-shadow: 0 16px 40px rgba(43, 123, 255, .14);
+      flex: 0 0 auto;
+    }
+
+    .pmeta {
+      min-width: 0;
+      flex: 1
+    }
+
+    .pname {
+      font-weight: 950;
+      font-size: 14px;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .puser {
+      margin: 2px 0 0;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .58);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .energyPill {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(0, 0, 0, .18);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 950;
+      color: rgba(255, 255, 255, .88);
+      flex: 0 0 auto;
+    }
+
+    .energyPill .bolt {
+      filter: drop-shadow(0 10px 18px rgba(74, 163, 255, .18))
+    }
+
+    .invGrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    /* ===== INVENTORY CARD (REWORK) ===== */
+
+    .giftCard {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(255, 255, 255, .06);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .28);
+      overflow: hidden;
+
+      display: flex;
+      flex-direction: column;
+      height: 240px;
+      /* 🔥 фиксированная высота */
+      position: relative;
+    }
+
+    /* ─── TOP ROW ─── */
+    .giftTop {
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .giftQty {
+      font-weight: 950;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, .18);
+      border: 1px solid rgba(255, 255, 255, .10);
+      color: rgba(255, 255, 255, .9);
+      min-width: 52px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    /* ─── IMAGE ─── */
+    .giftImg {
+      margin: 0 14px 8px;
+      height: 96px;
+      border-radius: 18px;
+      background: rgba(0, 0, 0, .20);
+      overflow: hidden;
+
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .giftImg img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      /* 🔥 НЕ cover */
+      display: block;
+    }
+
+    .giftImg .fallback {
+      font-size: 44px;
+    }
+
+    /* ─── META ─── */
+    .giftMeta {
+      padding: 0 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .giftName {
+      font-weight: 950;
+      font-size: 12.5px;
+      line-height: 1.2;
+      color: rgba(255, 255, 255, .92);
+      text-align: center;
+
+      /* --- CLAMP (modern + fallback) --- */
+      display: -webkit-box;
+      display: box;
+      /* legacy fallback */
+
+      -webkit-box-orient: vertical;
+      box-orient: vertical;
+      /* legacy */
+
+      -webkit-line-clamp: 2;
+      /* Chrome / Safari */
+      line-clamp: 2;
+      /* 🔥 стандарт */
+
+      overflow: hidden;
+    }
+
+
+    /* ─── ACTIONS ─── */
+    .giftActions {
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    /* ─── BUTTONS ─── */
+    .btnSmall {
+      flex: 1;
+      height: 38px;
+      border-radius: 14px;
+      font-weight: 950;
+      font-size: 12px;
+
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(0, 0, 0, .16);
+      color: rgba(255, 255, 255, .92);
+
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      user-select: none;
+      transition: transform .12s ease, background .12s ease;
+    }
+
+    .btnSmall.primary {
+      background: linear-gradient(180deg,
+          rgba(74, 163, 255, .22),
+          rgba(74, 163, 255, .12));
+      border-color: rgba(74, 163, 255, .28);
+    }
+
+    .btnSmall:active {
+      transform: translateY(1px) scale(.985);
+    }
+
+
+    /* ===== UPGRADE (REWORK, ровно) ===== */
+    .upWrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .upRow2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .slot {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(255, 255, 255, .06);
+      padding: 12px;
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slot .label {
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .65);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .miniBtn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(0, 0, 0, .16);
+      color: rgba(255, 255, 255, .85);
+      font-weight: 950;
+      font-size: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .pick {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .pick .pImg {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, .18);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .pick .pImg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .pick .pImg .fallback {
+      font-size: 24px
+    }
+
+    .pick .info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .pick .info b {
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pick .info span {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .65);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .upCenter {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0 2px;
+    }
+
+    .ringWrap {
+      width: 168px;
+      height: 168px;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .ring {
+      width: 168px;
+      height: 168px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, .16);
+      border: 1px solid rgba(255, 255, 255, .10);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ring::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border-radius: 999px;
+      border: 10px solid rgba(255, 255, 255, .08);
+    }
+
+    .winArc {
+      position: absolute;
+      inset: 12px;
+      border-radius: 999px;
+      border: 10px solid rgba(74, 163, 255, .65);
+      -webkit-mask: conic-gradient(#000 0deg, #000 10deg, transparent 10deg);
+      mask: conic-gradient(#000 0deg, #000 10deg, transparent 10deg);
+      filter: drop-shadow(0 10px 22px rgba(74, 163, 255, .18));
+    }
+
+    .centerBadge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      width: 78px;
+      height: 78px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .10);
+
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 8px;
+      z-index: 3;
+    }
+
+    .centerBadge b {
+      font-size: 16px
+    }
+
+    .centerBadge span {
+      margin-top: 2px;
+      font-size: 10.5px;
+      color: rgba(255, 255, 255, .62);
+      font-weight: 950;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+
+    .spinner {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .spinnerArm {
+      width: 0;
+      height: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0 0;
+      transform: rotate(0deg);
+    }
+
+    .needle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .92);
+      box-shadow: 0 10px 18px rgba(0, 0, 0, .35);
+      transform: translate(-50%, -50%);
+    }
+
+    .needleTip {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 10px solid rgba(255, 255, 255, .95);
+      filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .35));
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    .upHint {
+      width: 100%;
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, .78);
+      line-height: 1.35;
+      background: rgba(0, 0, 0, .14);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 16px;
+      padding: 10px 10px;
+      text-align: center;
+    }
+
+    .upBtns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .note {
+      width: 100%;
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, .80);
+      line-height: 1.35;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .10);
+      border-radius: 16px;
+      padding: 10px 10px;
+      display: none;
+    }
+
+    /* ===== TASKS (как на фото 2 — аккуратный лист заданий) ===== */
+    .tasksList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .taskCard {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(0, 0, 0, .14);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, .20);
+    }
+
+    .taskLeft {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .taskIcon {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: rgba(74, 163, 255, .14);
+      border: 1px solid rgba(74, 163, 255, .18);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      flex: 0 0 auto;
+    }
+
+    .taskMeta {
+      min-width: 0
+    }
+
+    .taskTitle {
+      margin: 0;
+      font-weight: 950;
+      font-size: 13.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .taskSub {
+      margin: 3px 0 0;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .58);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .taskBtn {
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(74, 163, 255, .18);
+      color: rgba(255, 255, 255, .95);
+      font-weight: 950;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .taskBtn.done {
+      background: rgba(37, 227, 154, .12);
+      border-color: rgba(37, 227, 154, .18);
+      color: rgba(255, 255, 255, .92);
+      cursor: default;
+    }
+
+    /* Picker sheet */
+    .sheetBody {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .pickCard {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(0, 0, 0, .18);
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 120px;
+    }
+
+    .pickCard .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px
+    }
+
+    .pickCard .pImg {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, .18);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    .pickCard .pImg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .pickCard .pImg .fallback {
+      font-size: 22px
+    }
+
+    .pickCard .nm {
+      font-weight: 950;
+      font-size: 12px;
+      line-height: 1.1;
+      color: rgba(255, 255, 255, .92)
+    }
+
+    .pickCard .pr {
+      font-weight: 950;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .80);
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .pickCard .sub {
+      font-size: 11px;
+      color: rgba(255, 255, 255, .60)
+    }
+
+    .pickCard:active {
+      transform: translateY(1px)
+    }
+
+    /* Contents modal list */
+    .list {
+      padding: 12px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .rowItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(0, 0, 0, .14);
+    }
+
+    .rowLeft {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .thumb {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, .18);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .rowLeft b {
+      font-size: 12.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rowLeft span {
+      display: block;
+      font-size: 11px;
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .wBadge {
+      font-weight: 950;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .86);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    /* Add stars modal */
+    .presetRow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      padding: 12px 14px 0;
+    }
+
+    .preset {
+      height: 42px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .10);
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+      cursor: pointer;
+      user-select: none;
+      color: rgba(255, 255, 255, .86);
+    }
+
+    .preset.active {
+      background: linear-gradient(180deg, rgba(74, 163, 255, .22), rgba(74, 163, 255, .10));
+      border-color: rgba(74, 163, 255, .22);
+      color: rgba(255, 255, 255, .95);
+    }
+
+    .inputWrap {
+      padding: 12px 14px 14px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .input {
+      flex: 1;
+      height: 46px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(0, 0, 0, .18);
+      color: rgba(255, 255, 255, .92);
+      font-weight: 950;
+      padding: 0 12px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    /* Withdraw modal */
+    .codeBox {
+      margin: 12px 14px 0;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(0, 0, 0, .18);
+      padding: 12px;
+      font-weight: 950;
+      letter-spacing: .6px;
+      word-break: break-all;
+      color: rgba(255, 255, 255, .92);
+    }
+
+    .smallHint {
+      margin: 10px 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(255, 255, 255, .06);
+      padding: 10px;
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, .78);
+      line-height: 1.35;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(92px + var(--safeBottom));
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, .55);
+      border: 1px solid rgba(255, 255, 255, .12);
+      backdrop-filter: blur(12px);
+      color: rgba(255, 255, 255, .92);
+      padding: 10px 12px;
+      border-radius: 14px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, .55);
+      display: none;
+      z-index: 200;
+      font-weight: 900;
+      font-size: 13px;
+      max-width: min(520px, calc(100% - 24px));
+      text-align: center;
+    }
+
+    .toast.show {
+      display: block
+    }
+
+    @media (min-width: 560px) {
+      .content {
+        padding-left: 18px;
+        padding-right: 18px
+      }
+
+      .casesGrid {
+        gap: 14px
+      }
+
+      .invGrid {
+        gap: 14px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="back" id="btnBack" title="Назад">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M14.5 6L8.5 12l6 6" stroke="rgba(255,255,255,.9)" stroke-width="2.3" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </div>
+
+      <div class="titleWrap">
+        <p class="title">Mr Gifts</p>
+        <p class="subTitle" id="topSub">Cases</p>
+      </div>
+
+      <div class="wallet">
+        <div class="plus" id="btnAddStars" title="Пополнить">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="balance">
+          <img class="starI" id="starIconTop" alt="★">
+          <span id="starsValue">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content" id="scrollArea">
+
+      <!-- HOME / CASES -->
+      <div class="page active" id="pageHome">
+        <div class="liveFeed" id="liveFeed">
+          <div class="liveLabel">
+            <span class="liveDot"></span>
+            Live
+          </div>
+          <div class="liveList" id="liveList"></div>
+        </div>
+        <div class="casesGrid" id="casesGrid"></div>
+      </div>
+
+      <!-- UPGRADE -->
+      <div class="page" id="pageUpgrade">
+        <div class="sectionTitle">UPGRADE</div>
+        <div class="panel">
+          <div class="upWrap">
+            <div class="upRow2">
+              <div class="slot" id="slotFrom">
+                <div class="label">
+                  <span>FROM</span>
+                  <span class="miniBtn" id="pickFromBtn">Выбрать</span>
+                </div>
+                <div class="pick" id="fromPick"></div>
+              </div>
+
+              <div class="slot" id="slotTo">
+                <div class="label">
+                  <span>TO</span>
+                  <span class="miniBtn" id="pickToBtn">Выбрать</span>
+                </div>
+                <div class="pick" id="toPick"></div>
+              </div>
+            </div>
+
+            <div class="upCenter">
+              <div class="ringWrap" aria-label="Шанс + стрелка по кольцу">
+                <div class="ring" id="ring">
+                  <div class="winArc" id="winArc"></div>
+
+                  <div class="spinner">
+                    <div class="spinnerArm" id="spinnerArm">
+                      <div class="needle" id="needleDot"></div>
+                      <div class="needleTip" id="needleTip"></div>
+                    </div>
+                  </div>
+
+                  <div class="centerBadge">
+                    <b id="chanceText">0%</b>
+                    <span>chance</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="upHint" id="upgradeHint">
+                Выбери <b>исходный</b> подарок и <b>цель</b>.
+              </div>
+
+              <div class="upBtns">
+                <button class="btn" id="btnUpgrade" disabled>Апгрейд</button>
+                <button class="btn ghost" id="btnResetUpgrade">Сбросить</button>
+              </div>
+
+              <div class="note" id="upgradeResultNote"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TASKS (вместо TOP) -->
+      <div class="page" id="pageTasks">
+        <div class="sectionTitle">TASKS</div>
+        <div class="panel">
+          <div class="tasksList" id="tasksList"></div>
+          <div class="sep"></div>
+          <div class="upHint" style="text-align:left">
+            💡 За выполненное задание даётся <b>⚡ энергия</b>.<br>
+            Каждая ⚡ добавляет <b>+5%</b> к шансу.
+          </div>
+        </div>
+      </div>
+
+      <!-- INVENTORY -->
+      <div class="page" id="pageInv">
+        <div class="sectionTitle">INVENTORY</div>
+
+        <div class="profileCard">
+          <div class="ava" id="ava">U</div>
+          <div class="pmeta">
+            <p class="pname" id="pname">User</p>
+            <p class="puser" id="puser">@username</p>
+          </div>
+          <div class="energyPill" title="Энергия">
+            <span class="bolt">⚡</span>
+            <span id="energyValue">0</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="invGrid" id="invGrid"></div>
+
+          <div class="sep"></div>
+          <button class="btn ghost" id="btnSellAll">Продать все</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="nav">
+      <div class="navBar" id="navBar">
+        <div class="navPill" id="navPill"></div>
+
+        <div class="tabBtn active" data-tab="home" data-index="0">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 11.2 12 4l8 7.2V20a1.8 1.8 0 0 1-1.8 1.8H5.8A1.8 1.8 0 0 1 4 20v-8.8Z" stroke="currentColor"
+              stroke-width="2" stroke-linejoin="round" />
+            <path d="M9.5 21v-7.2h5V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          CASES
+        </div>
+
+        <div class="tabBtn" data-tab="upgrade" data-index="1">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2.8l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3.1-5.8 3.1 1.1-6.4-4.7-4.6 6.5-.9L12 2.8Z"
+              stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          </svg>
+          UPGRADE
+        </div>
+
+        <div class="tabBtn" data-tab="tasks" data-index="2">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 7h10M7 12h10M7 17h7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M4.5 7.5l1 1 2-2M4.5 12.5l1 1 2-2M4.5 17.5l1 1 2-2" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          TASKS
+        </div>
+
+        <div class="tabBtn" data-tab="inv" data-index="3">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6 7.5h12l-1 13.2a1.7 1.7 0 0 1-1.7 1.6H8.7A1.7 1.7 0 0 1 7 20.7L6 7.5Z" stroke="currentColor"
+              stroke-width="2" stroke-linejoin="round" />
+            <path d="M9 7.5V6a3 3 0 0 1 6 0v1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          INVENTORY
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case Modal -->
+  <div class="overlay" id="caseModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <div class="h" id="modalHeader">CASE</div>
+        <div class="xbtn" id="closeCaseModal">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="modalScroll">
+        <div class="casePreview">
+          <div class="bigImg" id="modalBigImg"></div>
+          <div class="name" id="modalName">CASE</div>
+          <div class="desc" id="modalDesc">Открой кейс — получи подарок в инвентарь.</div>
+        </div>
+
+        <div class="chooser">
+          <div class="pillRow">
+            <div>How many cases?</div>
+            <div class="starRow">
+              <img class="starI" id="starIconModal" alt="★">
+              <span class="val" id="modalPrice">0</span>
+            </div>
+          </div>
+
+          <div class="countPills" id="countPills">
+            <div class="pill active" data-n="1">1</div>
+            <div class="pill" data-n="2">2</div>
+            <div class="pill" data-n="3">3</div>
+            <div class="pill" data-n="4">4</div>
+            <div class="pill" data-n="5">5</div>
+          </div>
+        </div>
+
+        <div class="rouletteWrap">
+          <div class="rouletteTop">
+            <span>roulette</span>
+            <span style="color:rgba(255,255,255,.65)" id="rouletteHint">Нажми “Open case”</span>
+          </div>
+          <div class="track">
+            <div class="centerLine"></div>
+            <div class="reel" id="reel"></div>
+          </div>
+        </div>
+
+        <div class="resultToast" id="resultToast">
+          <div class="resultLeft">
+            <div class="resImg" id="resImg"></div>
+            <div class="t">
+              <b id="resName">Gift</b>
+              <span>
+                <img class="starI" id="starIconRes" alt="★"><span id="resValue">0</span>
+                • добавлено в инвентарь
+              </span>
+            </div>
+          </div>
+          <div class="tagWin good" id="resTag"><span>✔</span><span>WIN</span></div>
+        </div>
+
+        <div style="padding: 0 14px 14px;">
+          <button class="btn" id="btnOpenCase">
+            <span>Open case</span>
+            <img class="starI" id="starIconBtn" alt="★"><span id="btnCost">0</span>
+          </button>
+          <div class="sep"></div>
+          <button class="btn ghost" id="btnShowContents">Показать содержимое</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contents Modal -->
+  <div class="overlay" id="contentsModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <div class="h" id="contentsTitle">CONTENTS</div>
+        <div class="xbtn" id="closeContents">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+      <div class="modalScroll">
+        <div class="list" id="contentsList"></div>
+        <div style="padding:0 14px 14px;">
+          <button class="btn ghost" id="closeContentsBtn">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Stars Modal (REAL openInvoice by links) -->
+  <div class="overlay" id="addStarsModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <div class="h">ADD STARS</div>
+        <div class="xbtn" id="closeAddStars">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="modalScroll">
+        <div class="presetRow" id="presetRow">
+          <div class="preset" data-v="10">10</div>
+          <div class="preset" data-v="50">50</div>
+          <div class="preset active" data-v="100">100</div>
+          <div class="preset" data-v="500">500</div>
+          <div class="preset" data-v="5000">5000</div>
+        </div>
+
+        <div class="smallHint" style="margin-top:10px">
+          Выбери сумму — откроется <b>Telegram invoice</b>. После оплаты баланс обновится автоматически.
+        </div>
+
+        <div style="padding:0 14px 14px;">
+          <button class="btn ghost" id="btnCancelStars">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Picker Sheet -->
+  <div class="overlay" id="pickerOverlay">
+    <div class="modal">
+      <div class="modalHead">
+        <div class="h" id="pickerTitle">Выбери подарок</div>
+        <div class="xbtn" id="pickerClose">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+      <div class="modalScroll">
+        <div class="sheetBody" id="pickerBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Withdraw Modal -->
+  <div class="overlay" id="withdrawModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <div class="h" id="withdrawTitle">WITHDRAW</div>
+        <div class="xbtn" id="closeWithdraw">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+      <div class="modalScroll">
+        <div class="smallHint" id="withdrawDesc" style="margin-top:12px">
+          Скопируй код и отправь боту в чат.
+        </div>
+        <div class="codeBox" id="withdrawCode">CODE</div>
+        <div style="padding: 12px 14px 14px;">
+          <button class="btn" id="btnCopyCode">Скопировать код</button>
+          <div class="sep"></div>
+          <button class="btn ghost" id="btnCloseWithdraw2">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Сообщение</div>
+
+  <script>
+    /********************
+     * Telegram init
+     ********************/
+    const tg = window.Telegram?.WebApp;
+    try { tg?.ready(); tg?.expand(); } catch (e) { }
+
+    /********************
+     * CONFIG: put your PNG here
+     ********************/
+    const STAR_PNG = "stars-DBKMczxe.png"; // <-- вставь свой PNG (путь/имя)
+    document.getElementById("starIconTop").src = STAR_PNG;
+    document.getElementById("starIconModal").src = STAR_PNG;
+    document.getElementById("starIconBtn").src = STAR_PNG;
+    document.getElementById("starIconRes").src = STAR_PNG;
+
+    /********************
+     * Economy / Edge tuning
+     ********************/
+    const CASE_EDGE_LOW_BOOST = 1.22;  // кейсы: чаще дешёвые
+    const UPGRADE_EDGE = 0.88;         // апгрейд: шанс ниже базового
+    const SELL_PAYOUT = 0.80;          // продажа: 80%
+
+    /********************
+     * Tasks / Energy (visual only)
+     ********************/
+    const ENERGY_PER_TASK = 1;           // 1⚡ за задание
+    const ENERGY_VISUAL_BONUS = 0.05;    // +5% (визуально) к шансу за 1⚡
+
+    /********************
+     * Storage
+     ********************/
+    const STORAGE = {
+      stars: "gb_final_stars",
+      inv: "gb_final_inventory",
+      energy: "gb_final_energy",
+      tasksDone: "gb_final_tasks_done",      // {taskId:true}
+      taskPending: "gb_final_task_pending"   // taskId
+    };
+
+    /********************
+     * REAL payment links for openInvoice (you will paste links)
+     ********************/
+    const INVOICE_LINKS = {
+      10: "https://t.me/$Ol3kBOxLIEpmEAAAYesLELx7-kM",
+      50: "https://t.me/$m_ILruxLIEpoEAAAi9Je61mgtE8",
+      100: "https://t.me/$4TA6uexLIEpnEAAAtBUE82747qU",
+      500: "https://t.me/$3Xpql-xLIEpqEAAAo44_jH5yu9M",
+      5000: "https://t.me/$GLyaoexLIEppEAAAd27Iy-8ha0Q"
+    };
+
+    /********************
+     * Gifts (REPLACED)
+     * IMPORTANT: replace img paths with yours
+     ********************/
+    const GIFTS = [
+      { id: "toy_bear", name: "Toy Bear", emoji: "🧸", value: 15, img: "Bear.png" },
+      { id: "heart", name: "Heart", emoji: "❤️", value: 15, img: "Heart.png" },
+      { id: "gift", name: "Gift", emoji: "🎁", value: 25, img: "Gift.png" },
+      { id: "rocket", name: "Rocket", emoji: "🚀", value: 50, img: "Rocket (2).png" },
+      { id: "bouquet", name: "Bouquet", emoji: "💐", value: 50, img: "Buquet.png" },
+      { id: "diamond", name: "Diamond", emoji: "💎", value: 100, img: "Gem.png" },
+      { id: "lol_pop", name: "Lol pop", emoji: "🍭", value: 235, img: "Frozen.png" },
+      { id: "instant_ramen", name: "Instant Ramen", emoji: "🍜", value: 250, img: "Diamonds.png" },
+      { id: "ice_cream", name: "Ice Cream", emoji: "🍦", value: 265, img: "Crystal.png" },
+      { id: "lunar_snake", name: "Lunar Snake", emoji: "🐍", value: 265, img: "Arctic Viper.png" },
+      { id: "easter_egg", name: "Easter Egg", emoji: "🥚", value: 385, img: "Frosted.png" },
+      { id: "input_key", name: "Input Key", emoji: "🔑", value: 465, img: "Chill Key.png" },
+      { id: "love_candle", name: "Love Candle", emoji: "🕯️", value: 935, img: "Vivid Foam.png" },
+      { id: "top_hat", name: "Top Hat", emoji: "🎩", value: 925, img: "Elegance.png" }
+    ];
+
+    /********************
+     * Cases (you can change prices/images if needed)
+     ********************/
+    const CASES = [
+      {
+        id: "quick", title: "Quick Start", price: 45, badge: "HOT", emoji: "⚡", img: "Quick Start.PNG",
+        desc: "Быстрый кейс для старта.",
+        pool: [{ gift: "toy_bear", w: 24 }, { gift: "heart", w: 24 }, { gift: "gift", w: 20 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 8 }]
+      },
+      {
+        id: "blue", title: "Blue Drop", price: 69, badge: "🔥", emoji: "💧", img: "Blue Drop.PNG",
+        desc: "Уклон в средние призы.",
+        pool: [{ gift: "toy_bear", w: 18 }, { gift: "heart", w: 18 }, { gift: "gift", w: 16 }, { gift: "rocket", w: 13 }, { gift: "bouquet", w: 13 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 1 }]
+      },
+      {
+        id: "sweet", title: "Sweet Box", price: 99, badge: "NEW", emoji: "🍭", img: "Sweet Box.PNG",
+        desc: "Сладкая темка.",
+        pool: [{ gift: "toy_bear", w: 16 }, { gift: "heart", w: 16 }, { gift: "gift", w: 14 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 3 }, { gift: "instant_ramen", w: 3 }]
+      },
+      {
+        id: "classic", title: "Magnat", price: 160, badge: "NEW", emoji: "🎁", img: "Magnat.PNG",
+        desc: "Балансированный кейс.",
+        pool: [{ gift: "toy_bear", w: 14 }, { gift: "heart", w: 14 }, { gift: "gift", w: 12 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 10 }, { gift: "lol_pop", w: 6 }, { gift: "instant_ramen", w: 6 }, { gift: "ice_cream", w: 6 }]
+      },
+      {
+        id: "boost", title: "Booster", price: 235, badge: "LIMITED", emoji: "🚀", img: "Booster.PNG",
+        desc: "Шанс на дорогие выше.",
+        pool: [{ gift: "gift", w: 14 }, { gift: "rocket", w: 10 }, { gift: "bouquet", w: 10 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 4 }, { gift: "instant_ramen", w: 4 }, { gift: "ice_cream", w: 4 }, { gift: "lunar_snake", w: 5 }, { gift: "easter_egg", w: 2 }, { gift: "input_key", w: 1 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
+      },
+      {
+        id: "rare", title: "Rare Night", price: 399, badge: "HOT", emoji: "🌙", img: "Rare Night.PNG",
+        desc: "Фарм Nft подарков",
+        pool: [{ gift: "diamond", w: 16 }, { gift: "lol_pop", w: 7 }, { gift: "instant_ramen", w: 7 }, { gift: "ice_cream", w: 7 }, { gift: "lunar_snake", w: 7 }, { gift: "easter_egg", w: 5 }, { gift: "input_key", w: 4 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
+      },
+      {
+        id: "key", title: "Key Hunter", price: 452, badge: "🔥", emoji: "🔑", img: "Key Hunter.PNG",
+        desc: "Уклон в Love Candle.",
+        pool: [{ gift: "gift", w: 14 }, { gift: "rocket", w: 10 }, { gift: "bouquet", w: 10 }, { gift: "diamond", w: 10 }, { gift: "ice_cream", w: 8 }, { gift: "lunar_snake", w: 8 }, { gift: "easter_egg", w: 7 }, { gift: "input_key", w: 6 }, { gift: "top_hat", w: 2 }, { gift: "love_candle", w: 1 }]
+      },
+      {
+        id: "big", title: "Nft Vibe", price: 549, badge: "LIMITED", emoji: "👑", img: "Nft Vibe.PNG", big: true,
+        desc: "Только нфт",
+        pool: [{ gift: "lol_pop", w: 12 }, { gift: "instant_ramen", w: 12 }, { gift: "ice_cream", w: 11 }, { gift: "lunar_snake", w: 11 }, { gift: "easter_egg", w: 8 }, { gift: "input_key", w: 6 }, { gift: "top_hat", w: 3 }, { gift: "love_candle", w: 3 }]
+      },
+      {
+        id: "hat", title: "Hat & Candle", price: 419, badge: "🔥", emoji: "🎩", img: "Hat & Candle.PNG",
+        desc: "Уклон в Top Hat и Love Candle.",
+        pool: [{ gift: "diamond", w: 16 }, { gift: "easter_egg", w: 8 }, { gift: "input_key", w: 6 }, { gift: "top_hat", w: 4 }, { gift: "love_candle", w: 4 }, { gift: "lol_pop", w: 8 }, { gift: "instant_ramen", w: 8 }, { gift: "ice_cream", w: 8 }]
+      }
+    ];
+
+    /********************
+     * Tasks (edit links)
+     ********************/
+    const TASKS = [
+      { id: "join_channel", title: "Join our channel", icon: "📢", reward: "⚡ +1", url: "https://t.me/voco_in" },
+      { id: "open_site", title: "Join our channel", icon: "📢", reward: "⚡ +1", url: "https://t.me/vo2co" },
+      { id: "invite_friend", title: "Open market", icon: "✔", reward: "⚡ +1", url: "https://t.me/portals/market?startapp=wfu2s0" }
+    ];
+
+    /********************
+     * Withdraw code prefixes (mapping instruction)
+     * You asked: “потом дашь инструкцыю какие фрагменты кодов пренадлежет тем или иным подаркам”
+     * Вот префиксы: по ним бот сможет понимать подарок.
+     ********************/
+    const WITHDRAW_PREFIX = {
+      toy_bear: "TB", heart: "HT", gift: "GF", rocket: "RC", bouquet: "BQ", diamond: "DM",
+      lol_pop: "LP", instant_ramen: "IR", ice_cream: "IC", lunar_snake: "LS", easter_egg: "EE",
+      input_key: "IK", love_candle: "LC", top_hat: "TH"
+    };
+
+    /********************
+     * State
+     ********************/
+    let stars = loadNumber(STORAGE.stars, 0);
+    let inventory = loadJSON(STORAGE.inv, {}); // {giftId: qty}
+    let energy = loadNumber(STORAGE.energy, 0);
+    let tasksDone = loadJSON(STORAGE.tasksDone, {}); // {taskId:true}
+
+    let currentCase = CASES[0];
+    let openCount = 1;
+
+    let upgradeFrom = null;
+    let upgradeTo = null;
+
+    // spinner angle
+    let spinnerAngle = 0;
+
+    function resetUpgradeSpinner() {
+      spinnerAngle = 0;
+      gsap.set(spinnerArm, { rotation: 0 });
+    }
+
+    /********************
+     * DOM
+     ********************/
+    const topSub = document.getElementById("topSub");
+    const starsValue = document.getElementById("starsValue");
+    const casesGrid = document.getElementById("casesGrid");
+    const invGrid = document.getElementById("invGrid");
+
+    const pages = {
+      home: document.getElementById("pageHome"),
+      upgrade: document.getElementById("pageUpgrade"),
+      tasks: document.getElementById("pageTasks"),
+      inv: document.getElementById("pageInv")
+    };
+
+    const navPill = document.getElementById("navPill");
+
+
+    // Case modal
+    const caseModal = document.getElementById("caseModal");
+    const closeCaseModal = document.getElementById("closeCaseModal");
+    const modalHeader = document.getElementById("modalHeader");
+    const modalBigImg = document.getElementById("modalBigImg");
+    const modalName = document.getElementById("modalName");
+    const modalDesc = document.getElementById("modalDesc");
+    const modalPrice = document.getElementById("modalPrice");
+    const btnCost = document.getElementById("btnCost");
+    const btnOpenCase = document.getElementById("btnOpenCase");
+    const btnShowContents = document.getElementById("btnShowContents");
+    const countPills = document.getElementById("countPills");
+    const reel = document.getElementById("reel");
+    const rouletteHint = document.getElementById("rouletteHint");
+    const resultToast = document.getElementById("resultToast");
+    const resImg = document.getElementById("resImg");
+    const resName = document.getElementById("resName");
+    const resValue = document.getElementById("resValue");
+    const resTag = document.getElementById("resTag");
+
+    // Contents modal
+    const contentsModal = document.getElementById("contentsModal");
+    const contentsTitle = document.getElementById("contentsTitle");
+    const contentsList = document.getElementById("contentsList");
+    const closeContents = document.getElementById("closeContents");
+    const closeContentsBtn = document.getElementById("closeContentsBtn");
+
+    // Add stars modal
+    const addStarsModal = document.getElementById("addStarsModal");
+    const closeAddStars = document.getElementById("closeAddStars");
+    const btnCancelStars = document.getElementById("btnCancelStars");
+    const presetRow = document.getElementById("presetRow");
+
+    // Upgrade
+    const pickFromBtn = document.getElementById("pickFromBtn");
+    const pickToBtn = document.getElementById("pickToBtn");
+    const fromPick = document.getElementById("fromPick");
+    const toPick = document.getElementById("toPick");
+    const btnUpgrade = document.getElementById("btnUpgrade");
+    const btnResetUpgrade = document.getElementById("btnResetUpgrade");
+    const upgradeHint = document.getElementById("upgradeHint");
+    const upgradeResultNote = document.getElementById("upgradeResultNote");
+    const chanceText = document.getElementById("chanceText");
+    const winArc = document.getElementById("winArc");
+    const spinnerArm = document.getElementById("spinnerArm");
+    const needleDot = document.getElementById("needleDot");
+    const needleTip = document.getElementById("needleTip");
+
+    // Picker
+    const pickerOverlay = document.getElementById("pickerOverlay");
+    const pickerTitle = document.getElementById("pickerTitle");
+    const pickerBody = document.getElementById("pickerBody");
+    const pickerClose = document.getElementById("pickerClose");
+
+    // Inventory / profile
+    const ava = document.getElementById("ava");
+    const pname = document.getElementById("pname");
+    const puser = document.getElementById("puser");
+    const energyValue = document.getElementById("energyValue");
+    const btnSellAll = document.getElementById("btnSellAll");
+
+    // Tasks
+    const tasksList = document.getElementById("tasksList");
+
+    // Withdraw
+    const withdrawModal = document.getElementById("withdrawModal");
+    const closeWithdraw = document.getElementById("closeWithdraw");
+    const btnCloseWithdraw2 = document.getElementById("btnCloseWithdraw2");
+    const withdrawTitle = document.getElementById("withdrawTitle");
+    const withdrawDesc = document.getElementById("withdrawDesc");
+    const withdrawCode = document.getElementById("withdrawCode");
+    const btnCopyCode = document.getElementById("btnCopyCode");
+    let withdrawGiftId = null;
+
+    // Toast
+    const toast = document.getElementById("toast");
+
+    /********************
+     * Init
+     ********************/
+    applyTelegramProfile();
+    renderStars();
+    renderEnergy();
+    renderCases();
+    renderInventory();
+    renderTasks();
+    renderUpgrade();
+    buildReel(currentCase);
+
+    gsap.fromTo(".topbar", { y: -10, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: "power2.out" });
+    gsap.fromTo(".navBar", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: .5, ease: "power2.out", delay: .05 });
+    updateNavPill(0, false);
+
+    positionNeedle();
+
+    function applyTelegramProfile() {
+      // Telegram does not provide photo URL directly here, so we do initials.
+      const u = tg?.initDataUnsafe?.user || null;
+      const fn = u?.first_name || "User";
+      const ln = u?.last_name || "";
+      const uname = u?.username ? "@" + u.username : "Telegram user";
+      const full = (fn + " " + ln).trim();
+
+      pname.textContent = full;
+      puser.textContent = uname;
+
+      const initials = (fn?.[0] || "U") + (ln?.[0] || "");
+      ava.textContent = initials.toUpperCase();
+    }
+
+    function positionNeedle() {
+      const R = 84;
+      const ringInset = 12 + 10;
+      const radius = R - ringInset + 2;
+      needleDot.style.left = "0px";
+      needleDot.style.top = `-${radius}px`;
+      needleTip.style.left = "0px";
+      needleTip.style.top = `-${radius - 14}px`;
+    }
+
+    /********************
+     * Top actions
+     ********************/
+    document.getElementById("btnBack").addEventListener("click", () => {
+      try { tg?.close?.(); } catch (e) { showToast("Назад"); }
+    });
+
+    document.getElementById("btnAddStars").addEventListener("click", () => openAddStarsModal());
+
+    /********************
+     * Tabs + pill slide
+     ********************/
+    document.querySelectorAll(".tabBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+        const idx = Number(btn.dataset.index || "0");
+        setTab(tab, idx);
+      });
+    });
+
+    function setTab(tab, idx) {
+      document.querySelectorAll(".tabBtn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+      Object.values(pages).forEach(p => p.classList.remove("active"));
+
+      const pageEl = pages[tab] || pages.home;
+      pageEl.classList.add("active");
+
+      topSub.textContent =
+        tab === "home" ? "Cases" :
+          tab === "upgrade" ? "Upgrade" :
+            tab === "tasks" ? "Tasks" :
+              tab === "inv" ? "Inventory" : "";
+
+      gsap.fromTo(pageEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .22, ease: "power2.out" });
+      document.getElementById("scrollArea").scrollTop = 0;
+
+      updateNavPill(idx);
+
+      renderInventory();
+      renderUpgrade();
+      renderTasks();
+    }
+
+    function updateNavPill(index, animate = true) {
+      const tabs = document.querySelectorAll(".tabBtn");
+      const target = tabs[index];
+      if (!target || !navPill) return;
+
+      const barRect = document.getElementById("navBar").getBoundingClientRect();
+      const rect = target.getBoundingClientRect();
+
+      const width = rect.width * 0.8;
+      const x = rect.left - barRect.left + (rect.width - width) / 2;
+
+      if (!animate) navPill.style.transition = "none";
+      navPill.style.width = `${width}px`;
+      navPill.style.transform = `translateX(${x}px)`;
+      if (!animate) {
+        // Force reflow
+        navPill.offsetHeight;
+        navPill.style.transition = "";
+      }
+    }
+
+    window.addEventListener("resize", () => {
+      const active = document.querySelector(".tabBtn.active");
+      if (active) {
+        const idx = Number(active.dataset.index || "0");
+        updateNavPill(idx, false);
+      }
+      positionNeedle();
+    });
+
+    /********************
+     * Cases grid
+     ********************/
+    function renderCases() {
+      casesGrid.innerHTML = "";
+      // No special "big" logic anymore, all cases are 2 per row
+      CASES.forEach(c => {
+        const el = document.createElement("div");
+        el.className = "caseCard";
+        el.innerHTML = `
+          <div class="caseHero">
+            <div class="caseAvatar">
+              ${c.img ? `<img src="${escapeAttr(c.img)}" alt="">` : `<div class="fallback">${escapeHtml(c.emoji || "🎁")}</div>`}
+            </div>
+          </div>
+          <div class="caseMeta">
+            <div class="priceRow">
+              <span class="val">${formatStars(c.price)}</span>
+              <img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">
+            </div>
+          </div>
+        `;
+        el.addEventListener("click", () => openCaseModal(c));
+        casesGrid.appendChild(el);
+      });
+    }
+
+    /********************
+     * Live Feed Drop
+     ********************/
+    function initLiveFeed() {
+      const liveList = document.getElementById("liveList");
+      const expensiveGifts = GIFTS.filter(g => g.value >= 50);
+
+      function addDrop() {
+        const gift = expensiveGifts[Math.floor(Math.random() * expensiveGifts.length)];
+        const item = document.createElement("div");
+        item.className = "liveItem";
+        item.innerHTML = gift.img
+          ? `<img src="${escapeAttr(gift.img)}" alt="">`
+          : `<div style="font-size:20px">${gift.emoji}</div>`;
+
+        liveList.prepend(item);
+
+        if (liveList.children.length > 20) {
+          liveList.removeChild(liveList.lastChild);
+        }
+
+        const nextTime = Math.floor(Math.random() * 30000) + 10000; // 10-40s
+        setTimeout(addDrop, nextTime);
+      }
+
+      // Populate some initial drops
+      for (let i = 0; i < 6; i++) {
+        const gift = expensiveGifts[Math.floor(Math.random() * expensiveGifts.length)];
+        const item = document.createElement("div");
+        item.className = "liveItem";
+        item.innerHTML = gift.img
+          ? `<img src="${escapeAttr(gift.img)}" alt="">`
+          : `<div style="font-size:20px">${gift.emoji}</div>`;
+        liveList.appendChild(item);
+      }
+
+      addDrop();
+    }
+    initLiveFeed();
+
+
+    /********************
+     * Case Modal + roulette
+     ********************/
+    closeCaseModal.addEventListener("click", () => hideOverlay(caseModal));
+    caseModal.addEventListener("click", (e) => { if (e.target === caseModal) hideOverlay(caseModal); });
+
+    countPills.addEventListener("click", (e) => {
+      const pill = e.target.closest(".pill");
+      if (!pill) return;
+      openCount = Number(pill.dataset.n || "1");
+      [...countPills.querySelectorAll(".pill")].forEach(p => p.classList.toggle("active", p === pill));
+      updateModalPrice();
+      pulse("#countPills");
+    });
+
+    btnShowContents.addEventListener("click", () => openContentsModal(currentCase));
+
+    btnOpenCase.addEventListener("click", async () => {
+      const totalCost = currentCase.price * openCount;
+      if (stars + 1e-9 < totalCost) {
+        showToast("Не хватает ★");
+        wiggle(".wallet");
+        return;
+      }
+
+      stars = round1(stars - totalCost);
+      saveNumber(STORAGE.stars, stars);
+      renderStars();
+
+      btnOpenCase.disabled = true;
+      rouletteHint.textContent = "Крутим…";
+      resultToast.classList.remove("show");
+
+      for (let i = 0; i < openCount; i++) {
+        const wonGiftId = weightedPickWithEdge(currentCase.pool);
+        const won = getGift(wonGiftId);
+
+        await spinTo(wonGiftId, currentCase);
+
+        addToInv(wonGiftId, 1);
+        renderInventory();
+
+        resImg.innerHTML = giftThumbHTML(won, 44);
+        resName.textContent = won.name;
+        resValue.textContent = formatStars(won.value);
+        resTag.className = "tagWin good";
+        resTag.innerHTML = `<span>✔</span><span>WIN</span>`;
+        resultToast.classList.add("show");
+        gsap.fromTo(resultToast, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+
+        if (i < openCount - 1) {
+          await sleep(450);
+          resultToast.classList.remove("show");
+          rouletteHint.textContent = `Ещё ${openCount - 1 - i}…`;
+          await sleep(220);
+        }
+      }
+
+      rouletteHint.textContent = "Готово";
+      btnOpenCase.disabled = false;
+      pulse(".resultToast");
+    });
+
+    function openCaseModal(c) {
+      currentCase = c;
+      openCount = 1;
+      [...countPills.querySelectorAll(".pill")].forEach((p, idx) => p.classList.toggle("active", idx === 0));
+
+      modalHeader.textContent = c.title.toUpperCase();
+      modalName.textContent = c.title;
+      modalDesc.textContent = c.desc;
+
+      modalBigImg.innerHTML = c.img
+        ? `<img src="${escapeAttr(c.img)}" alt="">`
+        : `<div class="fallback">${escapeHtml(c.emoji || "🎁")}</div>`;
+
+      buildReel(c);
+      updateModalPrice();
+      rouletteHint.textContent = "Нажми “Open case”";
+      resultToast.classList.remove("show");
+
+      showOverlay(caseModal);
+      gsap.fromTo(caseModal.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .22, ease: "power2.out" });
+      pulse(caseModal.querySelector(".modal"));
+    }
+
+    function updateModalPrice() {
+      const total = currentCase.price * openCount;
+      modalPrice.textContent = formatStars(total);
+      btnCost.textContent = formatStars(total);
+    }
+
+    function buildReel(caseObj) {
+      reel.innerHTML = "";
+      const base = [];
+      caseObj.pool.forEach(p => {
+        const g = getGift(p.gift);
+        for (let k = 0; k < Math.max(1, Math.round(p.w / 8)); k++) base.push(g);
+      });
+
+      const strip = [];
+      for (let i = 0; i < 64; i++) {
+        strip.push(base[randInt(0, base.length - 1)]);
+      }
+
+      strip.forEach(g => {
+        const chip = document.createElement("div");
+        chip.className = "itemChip";
+        chip.dataset.gift = g.id;
+        chip.innerHTML = `
+          <div class="chipImg">${giftThumbHTML(g, 42)}</div>
+          <div class="n">${escapeHtml(g.name)}</div>
+        `;
+        reel.appendChild(chip);
+      });
+
+      gsap.set(reel, { x: 0 });
+    }
+
+    async function spinTo(giftId, caseObj) {
+      buildReel(caseObj);
+
+      const chips = [...reel.querySelectorAll(".itemChip")];
+      const targetIndex = randInt(40, 56);
+
+      const g = getGift(giftId);
+      chips[targetIndex].dataset.gift = giftId;
+      chips[targetIndex].innerHTML = `
+        <div class="chipImg">${giftThumbHTML(g, 42)}</div>
+        <div class="n">${escapeHtml(g.name)}</div>
+      `;
+
+      const chipW = 114;
+      const containerW = document.querySelector(".track").clientWidth;
+      const centerX = containerW / 2;
+      const leftPadding = 14;
+      const targetX = leftPadding + targetIndex * chipW + 52;
+      const finalX = centerX - targetX;
+
+      const dur = 2.0 + Math.random() * 0.6;
+      const overshoot = finalX - (45 + Math.random() * 45);
+
+      gsap.set(reel, { x: 20 });
+      await sleep(50);
+
+      await gsapToPromise(reel, { x: overshoot, duration: dur, ease: "power3.out" });
+      await gsapToPromise(reel, { x: finalX, duration: 0.5, ease: "elastic.out(1, 0.35)" });
+
+      const winChip = chips[targetIndex];
+      gsap.fromTo(winChip, { scale: 1 }, { scale: 1.07, duration: .16, yoyo: true, repeat: 1, ease: "power2.out" });
+      pulse(".centerLine");
+    }
+
+    /********************
+     * Inventory
+     ********************/
+    function renderInventory() {
+      saveJSON(STORAGE.inv, inventory);
+
+      const entries = Object.entries(inventory)
+        .filter(([_, qty]) => qty > 0)
+        .map(([id, qty]) => ({ ...getGift(id), qty }))
+        .sort((a, b) => b.value - a.value);
+
+      if (entries.length === 0) {
+        invGrid.innerHTML = `<div class="upHint" style="grid-column: span 2;">Инвентарь пуст</div>`;
+      } else {
+        invGrid.innerHTML = "";
+        entries.forEach(it => {
+          const el = document.createElement("div");
+          el.className = "giftCard";
+          el.innerHTML = `
+            <div class="giftTop">
+              <div class="giftQty">x${it.qty}</div>
+              <div class="starRow">
+                <img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">
+                <span class="val">${formatStars(it.value)}</span>
+              </div>
+            </div>
+
+            <div class="giftImg">
+              ${it.img ? `<img src="${escapeAttr(it.img)}" alt="">` : `<div class="fallback">${escapeHtml(it.emoji || "🎁")}</div>`}
+            </div>
+
+            <div class="giftMeta">
+              <div class="giftName">${escapeHtml(it.name)}</div>
+            </div>
+
+            <div class="giftActions">
+              <button class="btnSmall" data-act="sell" data-id="${escapeAttr(it.id)}">Продать</button>
+              <button class="btnSmall primary" data-act="withdraw" data-id="${escapeAttr(it.id)}">Вывести</button>
+            </div>
+          `;
+          invGrid.appendChild(el);
+        });
+      }
+
+      invGrid.querySelectorAll("button.btnSmall").forEach(b => {
+        b.addEventListener("click", () => {
+          const act = b.dataset.act;
+          const id = b.dataset.id;
+          if (!id) return;
+          if (act === "sell") sellGift(id);
+          if (act === "withdraw") openWithdrawModal(id);
+        });
+      });
+
+      renderEnergy();
+    }
+
+    function sellGift(giftId) {
+      const qty = inventory[giftId] || 0;
+      if (qty <= 0) return;
+
+      const g = getGift(giftId);
+      removeFromInv(giftId, 1);
+
+      const payout = round1(g.value * SELL_PAYOUT);
+      stars = round1(stars + payout);
+
+      saveNumber(STORAGE.stars, stars);
+      renderStars();
+      renderInventory();
+      renderUpgrade();
+
+      showToast(`+${formatStars(payout)}★`);
+      pulse(".wallet");
+    }
+
+    btnSellAll.addEventListener("click", () => {
+      const entries = Object.entries(inventory).filter(([_, q]) => q > 0);
+      if (entries.length === 0) {
+        showToast("Нечего продавать");
+        return;
+      }
+
+      let total = 0;
+      for (const [id, qty] of entries) {
+        const g = getGift(id);
+        total += g.value * qty * SELL_PAYOUT;
+      }
+      total = round1(total);
+
+      inventory = {};
+      saveJSON(STORAGE.inv, inventory);
+
+      stars = round1(stars + total);
+      saveNumber(STORAGE.stars, stars);
+
+      upgradeFrom = null;
+      upgradeTo = null;
+
+      renderStars();
+      renderInventory();
+      renderUpgrade();
+
+      showToast(`Продано всё: +${formatStars(total)}★`);
+      pulse(".wallet");
+    });
+
+    function addToInv(giftId, qty) {
+      inventory[giftId] = (inventory[giftId] || 0) + qty;
+      saveJSON(STORAGE.inv, inventory);
+    }
+    function removeFromInv(giftId, qty) {
+      const cur = inventory[giftId] || 0;
+      const next = Math.max(0, cur - qty);
+      inventory[giftId] = next;
+      saveJSON(STORAGE.inv, inventory);
+    }
+
+    /********************
+     * Withdraw modal (generate code)
+     ********************/
+    function openWithdrawModal(giftId) {
+      const qty = inventory[giftId] || 0;
+      if (qty <= 0) return;
+
+      withdrawGiftId = giftId;
+      const g = getGift(giftId);
+
+      const prefix = WITHDRAW_PREFIX[giftId] || "XX";
+      const code = `${prefix}-${randCode(26)}-${randCode(10)}`;
+
+      withdrawTitle.textContent = `WITHDRAW • ${g.name}`.toUpperCase();
+      withdrawDesc.innerHTML = `Скопируй код и отправь боту в чат.<br>Подарок: <b>${escapeHtml(g.name)}</b>`;
+      withdrawCode.textContent = code;
+
+      showOverlay(withdrawModal);
+      gsap.fromTo(withdrawModal.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+    }
+
+    closeWithdraw.addEventListener("click", () => hideOverlay(withdrawModal));
+    btnCloseWithdraw2.addEventListener("click", () => hideOverlay(withdrawModal));
+    withdrawModal.addEventListener("click", (e) => { if (e.target === withdrawModal) hideOverlay(withdrawModal); });
+
+    btnCopyCode.addEventListener("click", async () => {
+      const txt = withdrawCode.textContent || "";
+      if (!withdrawGiftId) return;
+
+      try {
+        await navigator.clipboard.writeText(txt);
+      } catch (e) {
+        showToast("Не удалось скопировать");
+        return;
+      }
+
+      // 1️⃣ УДАЛЯЕМ 1 ПОДАРОК ИЗ ИНВЕНТАРЯ
+      removeFromInv(withdrawGiftId, 1);
+
+      // если подарков 0 — очищаем выбор апгрейда
+      if (inventory[withdrawGiftId] <= 0) {
+        if (upgradeFrom === withdrawGiftId) upgradeFrom = null;
+        if (upgradeTo === withdrawGiftId) upgradeTo = null;
+      }
+
+      // 2️⃣ ПЕРЕРИСОВКА
+      renderInventory();
+      renderUpgrade();
+
+      // 3️⃣ ЗАКРЫВАЕМ МОДАЛКУ
+      hideOverlay(withdrawModal);
+
+      // 4️⃣ UX
+      showToast("Код скопирован");
+      pulse(".wallet");
+
+      withdrawGiftId = null;
+    });
+
+
+    function randCode(n) {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789abcdefghjkmnpqrstuvwxyz";
+      let out = "";
+      for (let i = 0; i < n; i++) out += chars[Math.floor(Math.random() * chars.length)];
+      return out;
+    }
+
+    /********************
+     * Upgrade
+     ********************/
+    pickFromBtn.addEventListener("click", () => {
+      openPickerFromInventory();
+    });
+    pickToBtn.addEventListener("click", () => {
+      openPickerFromCatalog();
+    });
+
+    btnResetUpgrade.addEventListener("click", () => {
+      upgradeFrom = null;
+      upgradeTo = null;
+      upgradeResultNote.style.display = "none";
+      renderUpgrade();
+      showToast("Сброшено");
+    });
+
+    btnUpgrade.addEventListener("click", async () => {
+      const baseChance = calcChanceBase();  // real chance (without energy)
+      if (!upgradeFrom || !upgradeTo || baseChance <= 0) {
+        wiggle("#upgradeHint");
+        showToast("Выбери исходный и цель");
+        return;
+      }
+      if ((inventory[upgradeFrom] || 0) <= 0) {
+        showToast("Нет исходного подарка");
+        renderUpgrade();
+        return;
+      }
+
+      btnUpgrade.disabled = true;
+      upgradeResultNote.style.display = "none";
+
+      // Визуальный шанс (с энергией)
+      const visualChance = calcChanceVisual(baseChance);
+      const winDeg = clamp(visualChance, 1.2, 95) * 3.6;
+
+      // IMPORTANT: outcome uses BASE chance only (as you asked: “только визуально”)
+      const roll = Math.random() * 100;
+      const success = roll < baseChance;
+
+      const targetAngle = success
+        ? randFloat(6, Math.max(8, winDeg - 6))
+        : randFloat(Math.min(360 - 6, winDeg + 6), 360 - 6);
+
+      const spins = 4 + randInt(0, 2);
+      const final = (spinnerAngle % 360) + spins * 360 + targetAngle;
+      spinnerAngle = final;
+
+      await gsapToPromise(spinnerArm, { rotation: final, duration: 1.35, ease: "power3.out" });
+
+      removeFromInv(upgradeFrom, 1);
+
+      if (success) {
+        addToInv(upgradeTo, 1);
+        upgradeResultNote.style.display = "block";
+        upgradeResultNote.innerHTML = `✅ Успех! <b>${escapeHtml(getGift(upgradeTo).name)}</b> добавлен в инвентарь.`;
+        upgradeResultNote.style.borderColor = "rgba(37,227,154,.22)";
+        pulse("#slotTo");
+        showToast("WIN");
+      } else {
+        upgradeResultNote.style.display = "block";
+        upgradeResultNote.innerHTML = `❌ Неудача. Подарок сгорел.`;
+        upgradeResultNote.style.borderColor = "rgba(255,74,106,.20)";
+        wiggle("#slotFrom");
+        showToast("LOSE");
+      }
+
+      await sleep(350);
+      resetUpgradeSpinner();
+
+
+      renderInventory();
+
+      if (upgradeFrom && (inventory[upgradeFrom] || 0) <= 0) upgradeFrom = null;
+
+      btnUpgrade.disabled = false;
+      renderUpgrade();
+    });
+
+    function renderUpgrade() {
+      if (upgradeFrom) {
+        const g = getGift(upgradeFrom);
+        const qty = inventory[upgradeFrom] || 0;
+        fromPick.innerHTML = `
+          <div class="pImg">${giftThumbHTML(g, 44)}</div>
+          <div class="info">
+            <b>${escapeHtml(g.name)}</b>
+            <span><img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">${formatStars(g.value)} • <span style="opacity:.75">x${qty}</span></span>
+          </div>
+        `;
+      } else {
+        fromPick.innerHTML = `
+          <div class="pImg"><div class="fallback">❔</div></div>
+          <div class="info">
+            <b>Не выбран</b>
+            <span style="opacity:.75">Выбери из инвентаря</span>
+          </div>
+        `;
+      }
+
+      if (upgradeTo) {
+        const g = getGift(upgradeTo);
+        toPick.innerHTML = `
+          <div class="pImg">${giftThumbHTML(g, 44)}</div>
+          <div class="info">
+            <b>${escapeHtml(g.name)}</b>
+            <span><img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">${formatStars(g.value)} • <span style="opacity:.75">цель</span></span>
+          </div>
+        `;
+      } else {
+        toPick.innerHTML = `
+          <div class="pImg"><div class="fallback">🎯</div></div>
+          <div class="info">
+            <b>Не выбран</b>
+            <span style="opacity:.75">Выбери цель</span>
+          </div>
+        `;
+      }
+
+      const baseChance = calcChanceBase();
+      const visualChance = calcChanceVisual(baseChance);
+      setRingChance(visualChance);
+
+      if (upgradeFrom && upgradeTo) {
+        upgradeHint.innerHTML =
+          `Base шанс: <b>${baseChance.toFixed(2)}%</b> · Визуально: <b>${visualChance.toFixed(2)}%</b> (⚡ x${energy})`;
+        btnUpgrade.disabled = false;
+      } else {
+        upgradeHint.innerHTML = `Выбери <b>исходный</b> подарок и <b>цель</b>.`;
+        btnUpgrade.disabled = true;
+      }
+    }
+
+    function calcChanceBase() {
+      if (!upgradeFrom || !upgradeTo) return 0;
+      const a = getGift(upgradeFrom).value;
+      const b = getGift(upgradeTo).value;
+      if (b <= 0) return 0;
+
+      let raw = (a / b) * 100;
+      raw *= UPGRADE_EDGE;
+      raw = clamp(raw, 1.2, 95);
+
+      if (a >= b) {
+        raw = clamp(88 + (a - b) / b * 8, 88, 97);
+      }
+      return raw;
+    }
+
+    function calcChanceVisual(base) {
+      // visual only: +5% per energy (multiplicative)
+      const mult = 1 + (energy * ENERGY_VISUAL_BONUS);
+      return clamp(base * mult, 1.2, 95);
+    }
+
+    function setRingChance(percent) {
+      chanceText.textContent = `${percent.toFixed(2)}%`;
+      const winDeg = clamp(percent, 1.2, 95) * 3.6;
+
+      winArc.style.webkitMask = `conic-gradient(#000 0deg, #000 ${winDeg}deg, transparent ${winDeg}deg 360deg)`;
+      winArc.style.mask = `conic-gradient(#000 0deg, #000 ${winDeg}deg, transparent ${winDeg}deg 360deg)`;
+
+      const o = clamp(0.25 + percent / 100 * 0.55, 0.25, 0.85);
+      winArc.style.opacity = o;
+    }
+
+    /********************
+     * Picker
+     ********************/
+    function openPickerFromInventory() {
+      const list = Object.entries(inventory).filter(([id, qty]) => qty > 0);
+      if (list.length === 0) {
+        showToast("Инвентарь пуст");
+        setTab("home", 0);
+        return;
+      }
+
+      pickerTitle.textContent = "Выбери FROM";
+      pickerBody.innerHTML = "";
+      list
+        .map(([id, qty]) => ({ ...getGift(id), qty }))
+        .sort((a, b) => b.value - a.value)
+        .forEach(g => {
+          const el = document.createElement("div");
+          el.className = "pickCard";
+          el.innerHTML = `
+            <div class="row">
+              <div class="pImg">${giftThumbHTML(g, 40)}</div>
+              <div class="pr">x${g.qty}</div>
+            </div>
+            <div class="nm">${escapeHtml(g.name)}</div>
+            <div class="sub"><img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">${formatStars(g.value)}</div>
+          `;
+          el.addEventListener("click", () => {
+            upgradeFrom = g.id;
+            closePicker();
+            renderUpgrade();
+            pulse("#slotFrom");
+          });
+          pickerBody.appendChild(el);
+        });
+
+      showOverlay(pickerOverlay);
+      gsap.fromTo(pickerOverlay.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+    }
+
+    function openPickerFromCatalog() {
+      pickerTitle.textContent = "Выбери TO";
+      pickerBody.innerHTML = "";
+      GIFTS
+        .slice()
+        .sort((a, b) => b.value - a.value)
+        .forEach(g => {
+          const el = document.createElement("div");
+          el.className = "pickCard";
+          el.innerHTML = `
+            <div class="row">
+              <div class="pImg">${giftThumbHTML(g, 40)}</div>
+              <div class="pr"><img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">${formatStars(g.value)}</div>
+            </div>
+            <div class="nm">${escapeHtml(g.name)}</div>
+            <div class="sub">id: ${escapeHtml(g.id)}</div>
+          `;
+          el.addEventListener("click", () => {
+            upgradeTo = g.id;
+            closePicker();
+            renderUpgrade();
+            pulse("#slotTo");
+          });
+          pickerBody.appendChild(el);
+        });
+
+      showOverlay(pickerOverlay);
+      gsap.fromTo(pickerOverlay.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+    }
+
+    function closePicker() { hideOverlay(pickerOverlay); }
+    pickerClose.addEventListener("click", closePicker);
+    pickerOverlay.addEventListener("click", (e) => { if (e.target === pickerOverlay) closePicker(); });
+
+    /********************
+     * Tasks
+     ********************/
+    function renderTasks() {
+      tasksList.innerHTML = "";
+      TASKS.forEach(t => {
+        const done = !!tasksDone[t.id];
+        const el = document.createElement("div");
+        el.className = "taskCard";
+        el.innerHTML = `
+          <div class="taskLeft">
+            <div class="taskIcon">${escapeHtml(t.icon)}</div>
+            <div class="taskMeta">
+              <p class="taskTitle">${escapeHtml(t.title)}</p>
+              <p class="taskSub"><span>${escapeHtml(t.reward)}</span><span style="opacity:.6">•</span><span>${done ? "Completed" : "Not completed"}</span></p>
+            </div>
+          </div>
+          <button class="taskBtn ${done ? "done" : ""}" data-id="${escapeAttr(t.id)}">
+            ${done ? "Done" : "Start"}
+          </button>
+        `;
+        const btn = el.querySelector(".taskBtn");
+        btn.addEventListener("click", () => {
+          if (tasksDone[t.id]) return;
+          startTask(t.id, t.url);
+        });
+        tasksList.appendChild(el);
+      });
+    }
+
+    function startTask(taskId, url) {
+      // mark pending, open link
+      localStorage.setItem(STORAGE.taskPending, taskId);
+      showToast("Открываю задание…");
+      try {
+        // best UX inside Telegram
+        if (tg?.openLink) tg.openLink(url, { try_instant_view: false });
+        else window.open(url, "_blank");
+      } catch (e) {
+        window.open(url, "_blank");
+      }
+    }
+
+    // When user comes back to app -> give reward once
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState !== "visible") return;
+      tryCompletePendingTask();
+    });
+
+    function tryCompletePendingTask() {
+      const pending = localStorage.getItem(STORAGE.taskPending);
+      if (!pending) return;
+      if (tasksDone[pending]) { localStorage.removeItem(STORAGE.taskPending); return; }
+
+      tasksDone[pending] = true;
+      saveJSON(STORAGE.tasksDone, tasksDone);
+      localStorage.removeItem(STORAGE.taskPending);
+
+      energy = Number(energy || 0) + ENERGY_PER_TASK;
+      saveNumber(STORAGE.energy, energy);
+
+      renderEnergy();
+      renderTasks();
+      renderUpgrade();
+
+      showToast(`+${ENERGY_PER_TASK}⚡ (visual +5%)`);
+      pulse(".energyPill");
+    }
+
+    function renderEnergy() {
+      energyValue.textContent = String(Math.max(0, Math.floor(Number(energy || 0))));
+    }
+
+    /********************
+     * Contents modal
+     ********************/
+    function openContentsModal(caseObj) {
+      contentsTitle.textContent = `${caseObj.title}`.toUpperCase();
+      contentsList.innerHTML = "";
+
+      const items = caseObj.pool
+        .map(p => ({ p, g: getGift(p.gift) }))
+        .sort((a, b) => b.g.value - a.g.value);
+
+      items.forEach(({ p, g }) => {
+        const row = document.createElement("div");
+        row.className = "rowItem";
+        row.innerHTML = `
+          <div class="rowLeft">
+            <div class="thumb">${giftThumbHTML(g, 38)}</div>
+            <div style="min-width:0">
+              <b>${escapeHtml(g.name)}</b>
+              <span><img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">${formatStars(g.value)}</span>
+            </div>
+          </div>
+          <div class="wBadge">w: ${Math.round(p.w)}</div>
+        `;
+        contentsList.appendChild(row);
+      });
+
+      showOverlay(contentsModal);
+      gsap.fromTo(contentsModal.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+    }
+
+    closeContents.addEventListener("click", () => hideOverlay(contentsModal));
+    closeContentsBtn.addEventListener("click", () => hideOverlay(contentsModal));
+    contentsModal.addEventListener("click", (e) => { if (e.target === contentsModal) hideOverlay(contentsModal); });
+
+    /********************
+     * Add stars modal (openInvoice)
+     ********************/
+    function openAddStarsModal() {
+      setPresetActive(100);
+      showOverlay(addStarsModal);
+      gsap.fromTo(addStarsModal.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+    }
+
+    function setPresetActive(v) {
+      [...presetRow.querySelectorAll(".preset")].forEach(p => {
+        p.classList.toggle("active", Number(p.dataset.v) === Number(v));
+      });
+    }
+
+    presetRow.addEventListener("click", (e) => {
+      const btn = e.target.closest(".preset");
+      if (!btn) return;
+      const v = Number(btn.dataset.v || "0");
+      if (!v) return;
+
+      setPresetActive(v);
+      pulse("#presetRow");
+
+      const link = INVOICE_LINKS[v];
+      if (!link || link.startsWith("PASTE_")) {
+        showToast("Вставь ссылку openInvoice в INVOICE_LINKS");
+        return;
+      }
+
+      showToast("Открываю invoice…");
+      try {
+        if (tg?.openInvoice) tg.openInvoice(link);
+        else window.open(link, "_blank");
+      } catch (e) {
+        window.open(link, "_blank");
+      }
+    });
+
+    // Listen invoice result (Telegram)
+    try {
+      tg?.onEvent?.("invoiceClosed", (data) => {
+        // data: {url, status: "paid"|"cancelled"|"failed"...}
+        // we add stars only if paid AND amount is known by chosen preset:
+        const status = data?.status;
+        if (status !== "paid") return;
+
+        // We can't read exact amount from invoiceClosed reliably without backend,
+        // so we add the currently "active preset".
+        const active = presetRow.querySelector(".preset.active");
+        const v = Number(active?.dataset.v || "0");
+        if (!v) return;
+
+        stars = round1(stars + v);
+        saveNumber(STORAGE.stars, stars);
+        renderStars();
+
+        hideOverlay(addStarsModal);
+        showToast(`+${formatStars(v)}★`);
+        pulse(".wallet");
+      });
+    } catch (e) { }
+
+    closeAddStars.addEventListener("click", () => hideOverlay(addStarsModal));
+    btnCancelStars.addEventListener("click", () => hideOverlay(addStarsModal));
+    addStarsModal.addEventListener("click", (e) => { if (e.target === addStarsModal) hideOverlay(addStarsModal); });
+
+    /********************
+     * Helpers
+     ********************/
+    function getGift(id) {
+      return GIFTS.find(g => g.id === id) || { id, name: "Unknown", emoji: "❓", value: 0, img: "" };
+    }
+
+    function weightedPickWithEdge(pool) {
+      const gifts = pool.map(p => getGift(p.gift));
+      const minV = Math.min(...gifts.map(g => g.value));
+      const maxV = Math.max(...gifts.map(g => g.value));
+
+      const adjusted = pool.map(p => {
+        const g = getGift(p.gift);
+        const t = (g.value - minV) / Math.max(1, (maxV - minV));
+        const mult = lerp(CASE_EDGE_LOW_BOOST, 1 / CASE_EDGE_LOW_BOOST, t);
+        return { gift: p.gift, w: p.w * mult };
+      });
+
+      const sum = adjusted.reduce((s, p) => s + p.w, 0);
+      let r = Math.random() * sum;
+      for (const p of adjusted) {
+        r -= p.w;
+        if (r <= 0) return p.gift;
+      }
+      return adjusted[adjusted.length - 1].gift;
+    }
+
+    function renderStars() { starsValue.textContent = formatStars(stars); }
+
+    function formatStars(n) {
+      const x = Number(n);
+      if (Number.isNaN(x)) return String(n);
+      if (Math.abs(x - Math.round(x)) < 1e-9) return String(Math.round(x));
+      return x.toFixed(1);
+    }
+    function round1(x) { return Math.round(x * 10) / 10; }
+
+    function loadNumber(key, fallback) {
+      const v = localStorage.getItem(key);
+      if (v === null || v === undefined) return fallback;
+      const n = Number(v);
+      return Number.isFinite(n) ? n : fallback;
+    }
+    function saveNumber(key, val) { localStorage.setItem(key, String(val)); }
+
+    function loadJSON(key, fallback) {
+      try {
+        const v = localStorage.getItem(key);
+        if (!v) return fallback;
+        return JSON.parse(v);
+      } catch (e) { return fallback; }
+    }
+    function saveJSON(key, obj) { localStorage.setItem(key, JSON.stringify(obj)); }
+
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function randInt(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+    function randFloat(a, b) { return a + Math.random() * (b - a); }
+    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+    function gsapToPromise(target, vars) { return new Promise(res => gsap.to(target, { ...vars, onComplete: res })); }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    function escapeAttr(s) { return escapeHtml(s).replaceAll("`", "&#096;"); }
+
+    function pulse(selOrEl) {
+      const el = typeof selOrEl === "string" ? document.querySelector(selOrEl) : selOrEl;
+      if (!el) return;
+      gsap.fromTo(el, { scale: 1 }, { scale: 1.015, duration: .14, yoyo: true, repeat: 1, ease: "power2.out" });
+    }
+    function wiggle(sel) {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      gsap.fromTo(el, { x: 0 }, { x: 7, duration: .06, yoyo: true, repeat: 5, ease: "power1.inOut" });
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      gsap.fromTo(toast, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: .18, ease: "power2.out" });
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => {
+        gsap.to(toast, { y: 10, opacity: 0, duration: .16, ease: "power2.in", onComplete: () => toast.classList.remove("show") });
+      }, 1600);
+    }
+
+    function giftThumbHTML(gift, size = 42) {
+      const g = gift || {};
+      if (g.img) {
+        return `<img src="${escapeAttr(g.img)}" alt="" style="width:${size}px;height:${size}px;object-fit:cover;display:block;">`;
+      }
+      return `<div class="fallback">${escapeHtml(g.emoji || "🎁")}</div>`;
+    }
+
+    function showOverlay(overlay) {
+      overlay.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+    function hideOverlay(overlay) {
+      const modal = overlay.querySelector(".modal");
+      if (modal) {
+        gsap.to(modal, {
+          y: 20, opacity: 0, duration: .14, ease: "power2.in", onComplete: () => {
+            overlay.classList.remove("show");
+            gsap.set(modal, { clearProps: "all" });
+            document.body.style.overflow = "";
+          }
+        });
+      } else {
+        overlay.classList.remove("show");
+        document.body.style.overflow = "";
+      }
+    }
+
+    /********************
+     * STARTUP: try complete pending task if user returned quickly
+     ********************/
+    tryCompletePendingTask();
+  </script>
+
+  <!--
+    ========= INSTRUCTION (Withdraw code fragments) =========
+
+    В каждом выводе код начинается с префикса (2 буквы) — это “фрагмент”, который
+    определяет подарок. Твой бот может парсить код до первого “-”.
+
+    TB = Toy Bear
+    HT = Heart
+    GF = Gift
+    RC = Rocket
+    BQ = Bouquet
+    DM = Diamond
+    LP = Lol pop
+    IR = Instant Ramen
+    IC = Ice Cream
+    LS = Lunar Snake
+    EE = Easter Egg
+    IK = Input Key
+    LC = Love Candle
+    TH = Top Hat
+
+    Пример кода: "DM-<рандом>-<рандом>" -> Diamond
+  -->
+</body>
+
+</html>
