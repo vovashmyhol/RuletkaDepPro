@@ -1664,7 +1664,7 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
     }
 
-    .spinner {
+    .app-spinner {
       width: 28px;
       height: 28px;
       border: 3.5px solid rgba(0, 149, 255, 0.15);
@@ -1674,10 +1674,10 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      animation: spinCenter 0.8s linear infinite;
+      animation: appSpinCenter 0.8s linear infinite;
     }
 
-    @keyframes spinCenter {
+    @keyframes appSpinCenter {
       from {
         transform: translate(-50%, -50%) rotate(0deg);
       }
@@ -1707,7 +1707,7 @@
 <body>
   <div class="preloader" id="appPreloader">
     <div class="loaderSquare">
-      <div class="spinner"></div>
+      <div class="app-spinner"></div>
     </div>
   </div>
 
@@ -2135,17 +2135,17 @@
      ********************/
     const CASES = [
       {
-        id: "quick", title: "Quick Start", price: 45, badge: "HOT", emoji: "⚡", img: "Quick Start.PNG", color: "#ffcc00",
+        id: "quick", title: "Quick Start", price: 45, badge: "HOT", emoji: "⚡", img: "Love potion case.PNG", color: "#ffcc00",
         desc: "Быстрый кейс для старта.",
         pool: [{ gift: "toy_bear", w: 24 }, { gift: "heart", w: 24 }, { gift: "gift", w: 20 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 8 }]
       },
       {
-        id: "blue", title: "Blue Drop", price: 69, badge: "🔥", emoji: "💧", img: "Blue Drop.PNG", color: "#0095ff",
+        id: "blue", title: "Blue Drop", price: 69, badge: "🔥", emoji: "💧", img: "Signet ring case.PNG", color: "#0095ff",
         desc: "Уклон в средние призы.",
         pool: [{ gift: "toy_bear", w: 18 }, { gift: "heart", w: 18 }, { gift: "gift", w: 16 }, { gift: "rocket", w: 13 }, { gift: "bouquet", w: 13 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 1 }]
       },
       {
-        id: "sweet", title: "Sweet Box", price: 99, badge: "NEW", emoji: "🍭", img: "Sweet Box.PNG", color: "#ff2d55",
+        id: "sweet", title: "Sweet Box", price: 99, badge: "NEW", emoji: "🍭", img: "Swiss watch case.PNG", color: "#ff2d55",
         desc: "Сладкая темка.",
         pool: [{ gift: "toy_bear", w: 16 }, { gift: "heart", w: 16 }, { gift: "gift", w: 14 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 3 }, { gift: "instant_ramen", w: 3 }]
       },
