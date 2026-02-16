@@ -86,10 +86,21 @@
 
     /* ===== TOP BAR ===== */
     .topbar {
-      padding: 14px 16px 10px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 16px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
+      background: rgb(6 24 51 / 70%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      /* Smoothing only the very edge */
+      -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
     }
 
     .back {
@@ -168,7 +179,7 @@
     .content {
       flex: 1;
       overflow: auto;
-      padding: 8px 14px 110px;
+      padding: 76px 14px 110px;
       -webkit-overflow-scrolling: touch;
     }
 
