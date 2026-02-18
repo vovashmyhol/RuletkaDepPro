@@ -65,13 +65,21 @@
       padding-top: var(--safeTop);
     }
 
-    /* ===== STAR ICON (PNG) ===== */
-    .starI {
+    /* ===== STAR ICON (PNG) / EMOJI ICONS ===== */
+    .starI,
+    .emojiI {
       width: 16px;
       height: 16px;
       display: inline-block;
       vertical-align: -3px;
       filter: drop-shadow(0 6px 14px rgba(255, 213, 106, .18));
+    }
+
+    .emojiI {
+      width: 18px;
+      height: 18px;
+      vertical-align: -4px;
+      filter: none;
     }
 
     .starRow {
@@ -1491,21 +1499,21 @@
     }
 
     .taskSub {
-      margin: 3px 0 0;
-      font-weight: 900;
-      font-size: 12px;
-      color: rgba(255, 255, 255, .58);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    margin: 3px 0 0;
+    font-weight: 900;
+    font-size: 12px;
+    color: rgb(255 255 255);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
     .taskBtn {
-      height: 40px;
-      padding: 0 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, .12);
-      background: rgba(74, 163, 255, .18);
+      height: 33px;
+      padding: 0 18px;
+      border-radius: 20px;
+      border: 1px solid rgb(255 255 255 / 12%);
+      background: rgb(238 243 249 / 14%);
       color: rgba(255, 255, 255, .95);
       font-weight: 950;
       cursor: pointer;
@@ -1518,9 +1526,9 @@
     }
 
     .taskBtn.done {
-      background: rgba(37, 227, 154, .12);
+      background: rgb(18 127 72 / 36%);
       border-color: rgba(37, 227, 154, .18);
-      color: rgba(255, 255, 255, .92);
+      color: rgb(96 255 168);
       cursor: default;
     }
 
@@ -1958,8 +1966,9 @@
           <div class="tasksList" id="tasksList"></div>
           <div class="sep"></div>
           <div class="upHint" style="text-align:left">
-            💡 За выполненное задание даётся <b>⚡ энергия</b>.<br>
-            Каждая ⚡ добавляет <b>+5%</b> к шансу.
+            <img src="Лампочка емодзи.webp" class="emojiI" alt="💡"> За выполненное задание вы получаете <b>5<img
+                src="Звезда емодзи.webp" class="emojiI" style="width:16px;height:16px;vertical-align:-2px" alt="★"></b>
+            на баланс.
           </div>
         </div>
       </div>
@@ -2330,9 +2339,9 @@
      * Tasks (edit links)
      ********************/
     const TASKS = [
-      { id: "join_channel", title: "Join our channel", icon: "Канал.webp", reward: "⚡ +1", url: "https://t.me/voco_in" },
-      { id: "open_site", title: "Join our channel", icon: "Канал.webp", reward: "⚡ +1", url: "https://t.me/vo2co" },
-      { id: "invite_friend", title: "Open market", icon: "Маркет.webp", reward: "⚡ +1", url: "https://t.me/portals/market?startapp=wfu2s0" }
+      { id: "join_channel", title: "Join our channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/voco_in" },
+      { id: "open_site", title: "Join our channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/vo2co" },
+      { id: "invite_friend", title: "Open market", icon: "Маркет.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/portals/market?startapp=wfu2s0" }
     ];
 
     /********************
@@ -3323,7 +3332,7 @@
             </div>
             <div class="taskMeta">
               <p class="taskTitle">${escapeHtml(t.title)}</p>
-              <p class="taskSub"><span>${escapeHtml(t.reward)}</span><span style="opacity:.6">•</span><span>${done ? "Completed" : "Not completed"}</span></p>
+              <p class="taskSub"><span>${t.reward}</span><span style="opacity:.6">
             </div>
           </div>
           <button class="taskBtn ${done ? "done" : ""}" data-id="${escapeAttr(t.id)}">
@@ -3367,15 +3376,16 @@
       saveJSON(STORAGE.tasksDone, tasksDone);
       localStorage.removeItem(STORAGE.taskPending);
 
-      energy = Number(energy || 0) + ENERGY_PER_TASK;
-      saveNumber(STORAGE.energy, energy);
+      // Reward stars instead of energy
+      stars = round1(stars + 5);
+      saveNumber(STORAGE.stars, stars);
+      renderStars();
 
-      renderEnergy();
       renderTasks();
       renderUpgrade();
 
-      showToast(`+${ENERGY_PER_TASK}⚡ (visual +5%)`);
-      pulse(".energyPill");
+      showToast(`+5 reward`);
+      pulse(".wallet");
     }
 
     function renderEnergy() {
