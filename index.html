@@ -1410,23 +1410,45 @@
       display: none;
     }
 
-    /* ===== TASKS (как на фото 2 — аккуратный лист заданий) ===== */
+    /* ===== TASKS (Premium Redesign) ===== */
+    .tasksHeader {
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .tasksHeader img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     .tasksList {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .taskCard {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8));
+      border: 2px solid rgba(255, 255, 255, 0.08);
       border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, .10);
-      background: rgba(0, 0, 0, .14);
-      padding: 12px;
+      padding: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, .20);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .taskCard:active {
+      transform: scale(0.98);
+      background: linear-gradient(180deg, rgba(40, 55, 80, 0.7), rgba(20, 30, 50, 0.9));
     }
 
     .taskLeft {
@@ -1437,15 +1459,22 @@
     }
 
     .taskIcon {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 16px;
-      background: rgba(74, 163, 255, .14);
-      border: 1px solid rgba(74, 163, 255, .18);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       display: grid;
       place-items: center;
-      font-size: 22px;
+      font-size: 24px;
       flex: 0 0 auto;
+      overflow: hidden;
+    }
+
+    .taskIcon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .taskMeta {
@@ -1919,8 +1948,11 @@
         </div>
       </div>
 
-      <!-- TASKS (вместо TOP) -->
+      <!-- TASKS (Premium Redesign) -->
       <div class="page" id="pageTasks">
+        <div class="tasksHeader">
+          <img src="Tasks.JPEG" alt="Tasks Header">
+        </div>
         <div class="sectionTitle">TASKS</div>
         <div class="panel">
           <div class="tasksList" id="tasksList"></div>
@@ -2298,9 +2330,9 @@
      * Tasks (edit links)
      ********************/
     const TASKS = [
-      { id: "join_channel", title: "Join our channel", icon: "📢", reward: "⚡ +1", url: "https://t.me/voco_in" },
-      { id: "open_site", title: "Join our channel", icon: "📢", reward: "⚡ +1", url: "https://t.me/vo2co" },
-      { id: "invite_friend", title: "Open market", icon: "✔", reward: "⚡ +1", url: "https://t.me/portals/market?startapp=wfu2s0" }
+      { id: "join_channel", title: "Join our channel", icon: "Канал.webp", reward: "⚡ +1", url: "https://t.me/voco_in" },
+      { id: "open_site", title: "Join our channel", icon: "Канал.webp", reward: "⚡ +1", url: "https://t.me/vo2co" },
+      { id: "invite_friend", title: "Open market", icon: "Маркет.webp", reward: "⚡ +1", url: "https://t.me/portals/market?startapp=wfu2s0" }
     ];
 
     /********************
@@ -3280,11 +3312,15 @@
       tasksList.innerHTML = "";
       TASKS.forEach(t => {
         const done = !!tasksDone[t.id];
+        const isIconImage = t.icon.endsWith(".webp") || t.icon.endsWith(".png") || t.icon.endsWith(".jpg") || t.icon.endsWith(".JPEG") || t.icon.endsWith(".PNG");
+
         const el = document.createElement("div");
         el.className = "taskCard";
         el.innerHTML = `
           <div class="taskLeft">
-            <div class="taskIcon">${escapeHtml(t.icon)}</div>
+            <div class="taskIcon">
+              ${isIconImage ? `<img src="${escapeAttr(t.icon)}" alt="icon">` : escapeHtml(t.icon)}
+            </div>
             <div class="taskMeta">
               <p class="taskTitle">${escapeHtml(t.title)}</p>
               <p class="taskSub"><span>${escapeHtml(t.reward)}</span><span style="opacity:.6">•</span><span>${done ? "Completed" : "Not completed"}</span></p>
