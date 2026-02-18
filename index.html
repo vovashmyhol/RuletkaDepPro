@@ -858,73 +858,75 @@
       background: rgba(255, 74, 106, .10)
     }
 
+    .tasksHeader img,
+    .invHeader img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .invHeader {
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
     /* ===== INVENTORY (REWORK) ===== */
+    /* ===== INVENTORY (PREMIUM) ===== */
     .profileCard {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px;
-      border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, .10);
-      background: rgba(255, 255, 255, .06);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, .22);
-      margin-bottom: 12px;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
     }
 
     .ava {
-      width: 54px;
-      height: 54px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(74, 163, 255, .22), rgba(74, 163, 255, .10));
-      border: 1px solid rgba(74, 163, 255, .22);
-      display: grid;
-      place-items: center;
-      font-weight: 950;
-      letter-spacing: .6px;
-      box-shadow: 0 16px 40px rgba(43, 123, 255, .14);
-      flex: 0 0 auto;
+      width: 60px;
+      height: 60px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(74, 163, 255, 0.2), rgba(74, 163, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
-    .pmeta {
-      min-width: 0;
-      flex: 1
+    .ava img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .pname {
-      font-weight: 950;
-      font-size: 14px;
+      font-weight: 800;
+      font-size: 16px;
       margin: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: #fff;
     }
 
     .puser {
-      margin: 2px 0 0;
-      font-weight: 900;
-      font-size: 12px;
-      color: rgba(255, 255, 255, .58);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin: 4px 0 0;
+      font-weight: 600;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
     }
 
-    .energyPill {
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, .10);
-      background: rgba(0, 0, 0, .18);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 950;
-      color: rgba(255, 255, 255, .88);
-      flex: 0 0 auto;
-    }
 
-    .energyPill .bolt {
-      filter: drop-shadow(0 10px 18px rgba(74, 163, 255, .18))
-    }
 
     .invGrid {
       display: grid;
@@ -935,139 +937,110 @@
     /* ===== INVENTORY CARD (REWORK) ===== */
 
     .giftCard {
-      border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, .10);
-      background: rgba(255, 255, 255, .06);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, .28);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       overflow: hidden;
-
       display: flex;
       flex-direction: column;
-      height: 240px;
-      /* 🔥 фиксированная высота */
       position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    /* ─── TOP ROW ─── */
+    .giftCard:active {
+      transform: scale(0.98);
+    }
+
     .giftTop {
-      padding: 12px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      flex: 0 0 auto;
     }
 
     .giftQty {
-      font-weight: 950;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, .18);
-      border: 1px solid rgba(255, 255, 255, .10);
-      color: rgba(255, 255, 255, .9);
-      min-width: 52px;
-      text-align: center;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: #fff;
       font-size: 12px;
     }
 
-    /* ─── IMAGE ─── */
     .giftImg {
-      margin: 0 14px 8px;
-      height: 96px;
-      border-radius: 18px;
-      background: rgba(0, 0, 0, .20);
+      margin: 0 14px 12px;
+      height: 100px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
-
-      display: grid;
-      place-items: center;
-      flex: 0 0 auto;
     }
 
     .giftImg img {
-      width: 100%;
-      height: 100%;
+      width: 80%;
+      height: 80%;
       object-fit: contain;
-      /* 🔥 НЕ cover */
-      display: block;
     }
 
-    .giftImg .fallback {
-      font-size: 44px;
-    }
-
-    /* ─── META ─── */
     .giftMeta {
       padding: 0 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex: 1 1 auto;
-      min-height: 0;
+      text-align: center;
+      margin-bottom: 12px;
     }
 
     .giftName {
-      font-weight: 950;
-      font-size: 12.5px;
-      line-height: 1.2;
-      color: rgba(255, 255, 255, .92);
-      text-align: center;
-
-      /* --- CLAMP (modern + fallback) --- */
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+      margin-bottom: 4px;
       display: -webkit-box;
-      display: box;
-      /* legacy fallback */
-
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
       -webkit-box-orient: vertical;
-      box-orient: vertical;
-      /* legacy */
-
-      -webkit-line-clamp: 2;
-      /* Chrome / Safari */
-      line-clamp: 2;
-      /* 🔥 стандарт */
-
       overflow: hidden;
     }
 
-
-    /* ─── ACTIONS ─── */
-    .giftActions {
-      padding: 12px;
+    .giftValue {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
       display: flex;
-      gap: 10px;
-      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
-    /* ─── BUTTONS ─── */
+    .giftActions {
+      padding: 0 12px 12px;
+      display: flex;
+      gap: 8px;
+    }
+
     .btnSmall {
       flex: 1;
-      height: 38px;
-      border-radius: 14px;
-      font-weight: 950;
+      height: 36px;
+      border-radius: 12px;
+      font-weight: 700;
       font-size: 12px;
-
-      border: 1px solid rgba(255, 255, 255, .12);
-      background: rgba(0, 0, 0, .16);
-      color: rgba(255, 255, 255, .92);
-
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      user-select: none;
-      transition: transform .12s ease, background .12s ease;
+      transition: background 0.2s ease;
     }
 
     .btnSmall.primary {
-      background: linear-gradient(180deg,
-          rgba(74, 163, 255, .22),
-          rgba(74, 163, 255, .12));
-      border-color: rgba(74, 163, 255, .28);
-    }
-
-    .btnSmall:active {
-      transform: translateY(1px) scale(.985);
+      background: linear-gradient(180deg, #3b82f6, #2563eb);
+      border: none;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
     }
 
 
@@ -1499,14 +1472,14 @@
     }
 
     .taskSub {
-    margin: 3px 0 0;
-    font-weight: 900;
-    font-size: 12px;
-    color: rgb(255 255 255);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+      margin: 3px 0 0;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgb(255 255 255);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
     .taskBtn {
       height: 33px;
@@ -1975,17 +1948,16 @@
 
       <!-- INVENTORY -->
       <div class="page" id="pageInv">
+        <div class="invHeader">
+          <img src="Tasks.JPEG" alt="Inventory Header">
+        </div>
         <div class="sectionTitle">INVENTORY</div>
 
         <div class="profileCard">
-          <div class="ava" id="ava">U</div>
+          <div class="ava" id="ava"></div>
           <div class="pmeta">
             <p class="pname" id="pname">User</p>
             <p class="puser" id="puser">@username</p>
-          </div>
-          <div class="energyPill" title="Энергия">
-            <span class="bolt">⚡</span>
-            <span id="energyValue">0</span>
           </div>
         </div>
 
@@ -2236,18 +2208,11 @@
     const SELL_PAYOUT = 0.80;          // продажа: 80%
 
     /********************
-     * Tasks / Energy (visual only)
-     ********************/
-    const ENERGY_PER_TASK = 1;           // 1⚡ за задание
-    const ENERGY_VISUAL_BONUS = 0.05;    // +5% (визуально) к шансу за 1⚡
-
-    /********************
      * Storage
      ********************/
     const STORAGE = {
       stars: "gb_final_stars",
       inv: "gb_final_inventory",
-      energy: "gb_final_energy",
       tasksDone: "gb_final_tasks_done",      // {taskId:true}
       taskPending: "gb_final_task_pending"   // taskId
     };
@@ -2360,7 +2325,6 @@
      ********************/
     let stars = loadNumber(STORAGE.stars, 0);
     let inventory = loadJSON(STORAGE.inv, {}); // {giftId: qty}
-    let energy = loadNumber(STORAGE.energy, 0);
     let tasksDone = loadJSON(STORAGE.tasksDone, {}); // {taskId:true}
 
     let currentCase = CASES[0];
@@ -2454,7 +2418,6 @@
     const ava = document.getElementById("ava");
     const pname = document.getElementById("pname");
     const puser = document.getElementById("puser");
-    const energyValue = document.getElementById("energyValue");
     const btnSellAll = document.getElementById("btnSellAll");
 
     // Tasks
@@ -2478,7 +2441,6 @@
      ********************/
     applyTelegramProfile();
     renderStars();
-    renderEnergy();
     renderCases();
     renderInventory();
     renderTasks();
@@ -2502,7 +2464,6 @@
 
 
     function applyTelegramProfile() {
-      // Telegram does not provide photo URL directly here, so we do initials.
       const u = tg?.initDataUnsafe?.user || null;
       const fn = u?.first_name || "User";
       const ln = u?.last_name || "";
@@ -2512,8 +2473,12 @@
       pname.textContent = full;
       puser.textContent = uname;
 
-      const initials = (fn?.[0] || "U") + (ln?.[0] || "");
-      ava.textContent = initials.toUpperCase();
+      if (u?.photo_url) {
+        ava.innerHTML = `<img src="${u.photo_url}" alt="Avatar">`;
+      } else {
+        const initials = (fn?.[0] || "U") + (ln?.[0] || "");
+        ava.textContent = initials.toUpperCase();
+      }
     }
 
 
@@ -2875,7 +2840,7 @@
         .sort((a, b) => b.value - a.value);
 
       if (entries.length === 0) {
-        invGrid.innerHTML = `<div class="upHint" style="grid-column: span 2;">Инвентарь пуст</div>`;
+        invGrid.innerHTML = `<div class="upHint" style="grid-column: span 2; opacity: 0.5;">Ваш инвентарь пуст</div>`;
       } else {
         invGrid.innerHTML = "";
         entries.forEach(it => {
@@ -2884,10 +2849,6 @@
           el.innerHTML = `
             <div class="giftTop">
               <div class="giftQty">x${it.qty}</div>
-              <div class="starRow">
-                <img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">
-                <span class="val">${formatStars(it.value)}</span>
-              </div>
             </div>
 
             <div class="giftImg">
@@ -2896,6 +2857,10 @@
 
             <div class="giftMeta">
               <div class="giftName">${escapeHtml(it.name)}</div>
+              <div class="giftValue">
+                <img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">
+                <span>${formatStars(it.value)}</span>
+              </div>
             </div>
 
             <div class="giftActions">
@@ -2916,8 +2881,6 @@
           if (act === "withdraw") openWithdrawModal(id);
         });
       });
-
-      renderEnergy();
     }
 
     function sellGift(giftId) {
@@ -3084,14 +3047,13 @@
       resetUpgradeSpinner(); // Ensure clean state
 
       // Calculate result
-      const visualChance = calcChanceVisual(baseChance);
-      const winDeg = clamp(visualChance, 1.2, 95) * 3.6;
       const roll = Math.random() * 100;
       const success = roll < baseChance;
 
       // Determine target angle
       // Win: inside [0, winDeg]
       // Lose: inside [winDeg, 360]
+      const winDeg = clamp(baseChance, 1.2, 95) * 3.6;
       const targetAngle = success
         ? randFloat(6, Math.max(8, winDeg - 6))
         : randFloat(Math.min(360 - 6, winDeg + 6), 360 - 6);
@@ -3187,12 +3149,11 @@
       }
 
       const baseChance = calcChanceBase();
-      const visualChance = calcChanceVisual(baseChance);
-      setRingChance(visualChance);
+      setRingChance(baseChance);
 
       if (upgradeFrom && upgradeTo) {
         upgradeHint.innerHTML =
-          `Base шанс: <b>${baseChance.toFixed(2)}%</b> · Визуально: <b>${visualChance.toFixed(2)}%</b> (⚡ x${energy})`;
+          `Шанс успеха: <b>${baseChance.toFixed(2)}%</b>`;
         btnUpgrade.disabled = false;
       } else {
         upgradeHint.innerHTML = `Выберите <b>подарок</b> и <b>цель</b>`;
@@ -3214,13 +3175,6 @@
         raw = clamp(88 + (a - b) / b * 8, 88, 97);
       }
       return raw;
-    }
-
-    function calcChanceVisual(base) {
-      if (base <= 0) return 0;
-      // visual only: +5% per energy (multiplicative)
-      const mult = 1 + (energy * ENERGY_VISUAL_BONUS);
-      return clamp(base * mult, 1.2, 95);
     }
 
     function setRingChance(percent) {
@@ -3386,10 +3340,6 @@
 
       showToast(`+5 reward`);
       pulse(".wallet");
-    }
-
-    function renderEnergy() {
-      energyValue.textContent = String(Math.max(0, Math.floor(Number(energy || 0))));
     }
 
     /********************
