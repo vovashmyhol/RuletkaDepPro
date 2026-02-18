@@ -1408,6 +1408,202 @@
       display: block;
     }
 
+    /* ===== STARS MODAL REDESIGN ===== */
+    .balanceCard {
+      background: linear-gradient(135deg, #ffb347, #ff9f1c);
+      padding: 24px 20px;
+      border-radius: 28px;
+      margin: 10px 12px 20px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(255, 159, 28, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Top-left large star */
+    .balanceCard::before {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      top: -35px;
+      left: -45px;
+      background: url('stars-DBKMczxe.png') center/contain no-repeat;
+      opacity: 0.16;
+      transform: rotate(-15deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Bottom-right large star */
+    .balanceCard::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      bottom: -45px;
+      right: -35px;
+      background: url('stars-DBKMczxe.png') center/contain no-repeat;
+      opacity: 0.14;
+      transform: rotate(25deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .balanceLabel,
+    .balanceValue,
+    .balanceActions {
+      position: relative;
+      z-index: 1;
+    }
+
+    .balanceLabel {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .balanceValue {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 38px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+
+    .balanceValue .starI {
+      width: 38px;
+      height: 38px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .balanceActions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .balBtn {
+      flex: 1;
+      height: 44px;
+      border-radius: 22px;
+      border: none;
+      font-weight: 800;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .balBtn:active {
+      transform: scale(0.97);
+    }
+
+    .balBtn.white {
+      background: #fff;
+      color: #000;
+    }
+
+    .balBtn.orange {
+      background: rgba(0, 0, 0, 0.15);
+      color: #fff;
+    }
+
+    .starsOptionsList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 16px 100px;
+    }
+
+    .starOption {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.05);
+      padding: 14px 18px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .starOption.active {
+      background: rgba(59, 130, 246, 0.08);
+      border-color: #3b82f6;
+    }
+
+    .radioCircle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .starOption.active .radioCircle {
+      border-color: #3b82f6;
+      background: #3b82f6;
+    }
+
+    .starOption.active .radioCircle::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .optionVal {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .optionVal .starI {
+      width: 20px;
+      height: 20px;
+    }
+
+    .starsFooter {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 16px;
+      background: linear-gradient(180deg, transparent, #0f172a 30%);
+      pointer-events: none;
+    }
+
+    .btnStarBuy {
+      pointer-events: auto;
+      background: #3b82f6;
+      border: none;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+      width: 100%;
+      height: 52px;
+      border-radius: 26px;
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
     .tasksList {
       display: flex;
       flex-direction: column;
@@ -1964,7 +2160,7 @@
       <!-- INVENTORY -->
       <div class="page" id="pageInv">
         <div class="invHeader">
-          <img src="Tasks.JPEG" alt="Inventory Header">
+          <img src="Инвентарь.JPEG" alt="Inventory Header">
         </div>
         <div class="sectionTitle">INVENTORY</div>
 
@@ -2125,9 +2321,9 @@
 
   <!-- Add Stars Modal (REAL openInvoice by links) -->
   <div class="overlay" id="addStarsModal">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modalHead">
-        <div class="h">ADD STARS</div>
+    <div class="modal" role="dialog" aria-modal="true" style="padding: 0; display: flex; flex-direction: column;">
+      <div class="modalHead" style="padding: 12px 14px 10px; flex: 0 0 auto;">
+        <div class="h">ПОПОЛНЕНИЕ</div>
         <div class="xbtn" id="closeAddStars">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
@@ -2135,22 +2331,29 @@
         </div>
       </div>
 
-      <div class="modalScroll">
-        <div class="presetRow" id="presetRow">
-          <div class="preset" data-v="10">10</div>
-          <div class="preset" data-v="50">50</div>
-          <div class="preset active" data-v="100">100</div>
-          <div class="preset" data-v="500">500</div>
-          <div class="preset" data-v="5000">5000</div>
+      <div class="modalScroll" style="flex: 1 1 auto; overflow-y: auto;">
+        <div class="balanceCard">
+          <div class="balanceLabel">Баланс кошелька</div>
+          <div class="balanceValue">
+            <img src="stars-DBKMczxe.png" class="starI" alt="★">
+            <span id="modalBalanceVal">0</span>
+          </div>
+          <div class="balanceActions">
+            <button class="balBtn white" id="btnModalAdd">Пополнить +</button>
+            <button class="balBtn orange" id="btnModalCases">Кейсы ↑</button>
+          </div>
         </div>
 
-        <div class="smallHint" style="margin-top:10px">
-          Выбери сумму — откроется <b>Telegram invoice</b>. После оплаты баланс обновится автоматически.
+        <div class="starsOptionsList" id="starsOptionsList">
+          <!-- Options will be rendered by JS -->
         </div>
+      </div>
 
-        <div style="padding:0 14px 14px;">
-          <button class="btn ghost" id="btnCancelStars">Закрыть</button>
-        </div>
+      <div class="starsFooter">
+        <button class="btnStarBuy" id="btnFinalBuy">
+          Пополнить <img src="Звезда емодзи.webp" class="emojiI" style="width:20px;height:20px;vertical-align:middle"
+            alt="★"> <span id="buyBtnVal">25</span>
+        </button>
       </div>
     </div>
   </div>
@@ -2246,11 +2449,16 @@
      * REAL payment links for openInvoice (you will paste links)
      ********************/
     const INVOICE_LINKS = {
-      10: "https://t.me/$Ol3kBOxLIEpmEAAAYesLELx7-kM",
-      50: "https://t.me/$m_ILruxLIEpoEAAAi9Je61mgtE8",
-      100: "https://t.me/$4TA6uexLIEpnEAAAtBUE82747qU",
-      500: "https://t.me/$3Xpql-xLIEpqEAAAo44_jH5yu9M",
-      5000: "https://t.me/$GLyaoexLIEppEAAAd27Iy-8ha0Q"
+      25: "https://t.me/$473w7h_LsUgwFwAA9juWJlkX3S0", // updated from 100
+      50: "https://t.me/$ZCwKdR_LsUgyFwAAZ71OV24x9RE",
+      100: "https://t.me/$PM0Cbx_LsUg0FwAALwGtpYRxVqs",
+      200: "https://t.me/$ufw5mR_LsUg1FwAAa-4-FTDbOEQ",
+      350: "https://t.me/$RND-DB_LsUg9FwAAtBVuRDTcCdw",
+      500: "https://t.me/$kg5Wmh_LsUhAFwAAtbbdpv_uRio",
+      1000: "https://t.me/$jLJsoB_LsUhBFwAAJYnrQbjVf_o",
+      2500: "https://t.me/$gVE6QB_LsUhDFwAA5Ia0exXzN6Y",
+      5000: "https://t.me/$KYKVSB_LsUhEFwAAHJuqnqcjSjM",
+      10000: "https://t.me/$5Dm8yB_LsUhGFwAAK5GZFQnDQVI"
     };
 
     /********************
@@ -3445,30 +3653,49 @@
     /********************
      * Add stars modal (openInvoice)
      ********************/
+    let selectedStarsAmount = 25;
+
     function openAddStarsModal() {
-      setPresetActive(100);
+      document.getElementById("modalBalanceVal").textContent = formatStars(stars);
+      renderStarsOptions();
       showOverlay(addStarsModal);
       gsap.fromTo(addStarsModal.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
     }
 
-    function setPresetActive(v) {
-      [...presetRow.querySelectorAll(".preset")].forEach(p => {
-        p.classList.toggle("active", Number(p.dataset.v) === Number(v));
+    function renderStarsOptions() {
+      const list = document.getElementById("starsOptionsList");
+      list.innerHTML = "";
+      const amounts = [25, 50, 100, 200, 350, 500, 1000, 2500, 5000, 10000];
+
+      amounts.forEach(amt => {
+        const opt = document.createElement("div");
+        opt.className = `starOption ${amt === selectedStarsAmount ? "active" : ""}`;
+        opt.innerHTML = `
+          <div class="radioCircle"></div>
+          <div class="optionVal">
+            <img src="stars-DBKMczxe.png" class="starI" alt="★">
+            <span>${amt}</span>
+          </div>
+        `;
+        opt.onclick = () => {
+          selectedStarsAmount = amt;
+          document.getElementById("buyBtnVal").textContent = amt;
+          try { tg?.HapticFeedback?.selectionChanged(); } catch (e) { }
+          renderStarsOptions();
+        };
+        list.appendChild(opt);
       });
     }
 
-    presetRow.addEventListener("click", (e) => {
-      const btn = e.target.closest(".preset");
-      if (!btn) return;
-      const v = Number(btn.dataset.v || "0");
-      if (!v) return;
+    document.getElementById("btnModalCases").addEventListener("click", () => {
+      hideOverlay(addStarsModal);
+      setTab("home", 0);
+    });
 
-      setPresetActive(v);
-      pulse("#presetRow");
-
-      const link = INVOICE_LINKS[v];
+    const startPayment = () => {
+      const link = INVOICE_LINKS[selectedStarsAmount];
       if (!link || link.startsWith("PASTE_")) {
-        showToast("Вставь ссылку openInvoice в INVOICE_LINKS");
+        showToast("Для этой суммы еще не добавлена ссылка");
         return;
       }
 
@@ -3479,7 +3706,11 @@
       } catch (e) {
         window.open(link, "_blank");
       }
-    });
+    };
+
+    document.getElementById("btnModalAdd").addEventListener("click", startPayment);
+    document.getElementById("btnFinalBuy").addEventListener("click", startPayment);
+
 
     // Listen invoice result (Telegram)
     try {
@@ -3490,9 +3721,8 @@
         if (status !== "paid") return;
 
         // We can't read exact amount from invoiceClosed reliably without backend,
-        // so we add the currently "active preset".
-        const active = presetRow.querySelector(".preset.active");
-        const v = Number(active?.dataset.v || "0");
+        // so we add the currently selected amount.
+        const v = selectedStarsAmount;
         if (!v) return;
 
         stars = round1(stars + v);
