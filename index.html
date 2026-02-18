@@ -1715,29 +1715,44 @@
       line-height: 1.35;
     }
 
-    /* Toast */
+    /* Toast (Premium Redesign) */
     .toast {
       position: fixed;
-      left: 50%;
-      bottom: calc(92px + var(--safeBottom));
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, .55);
-      border: 1px solid rgba(255, 255, 255, .12);
-      backdrop-filter: blur(12px);
-      color: rgba(255, 255, 255, .92);
-      padding: 10px 12px;
-      border-radius: 14px;
-      box-shadow: 0 18px 55px rgba(0, 0, 0, .55);
+      left: 16px;
+      right: 16px;
+      bottom: calc(96px + var(--safeBottom));
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 18px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
       display: none;
-      z-index: 200;
-      font-weight: 900;
-      font-size: 13px;
-      max-width: min(520px, calc(100% - 24px));
-      text-align: center;
+      z-index: 2000;
+      font-weight: 600;
+      font-size: 14px;
+      align-items: center;
+      gap: 12px;
     }
 
     .toast.show {
-      display: block
+      display: flex;
+    }
+
+    .toast-icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      color: #3b82f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .toast-text {
+      flex: 1;
+      line-height: 1.4;
     }
 
     /* ===== PRELOADER ===== */
@@ -2182,7 +2197,17 @@
     </div>
   </div>
 
-  <div class="toast" id="toast">Сообщение</div>
+  <div class="toast" id="toast">
+    <div class="toast-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+        stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+    </div>
+    <div class="toast-text" id="toastText">Сообщение</div>
+  </div>
 
   <script>
     /********************
@@ -2435,6 +2460,56 @@
 
     // Toast
     const toast = document.getElementById("toast");
+    const toastText = document.getElementById("toastText");
+
+    // Swipe-to-dismiss logic
+    let toastStartX = 0;
+    let toastCurrentX = 0;
+    let isToastSwiping = false;
+
+    toast.addEventListener("touchstart", (e) => {
+      toastStartX = e.touches[0].clientX;
+      isToastSwiping = true;
+      gsap.killTweensOf(toast); // Stop auto-hide if user interacts
+    });
+
+    toast.addEventListener("touchmove", (e) => {
+      if (!isToastSwiping) return;
+      toastCurrentX = e.touches[0].clientX - toastStartX;
+
+      // Visual feedback: move toast and fade slightly
+      const opacity = Math.max(0, 1 - Math.abs(toastCurrentX) / 200);
+      gsap.set(toast, { x: toastCurrentX, opacity: opacity });
+    });
+
+    toast.addEventListener("touchend", () => {
+      if (!isToastSwiping) return;
+      isToastSwiping = false;
+
+      if (Math.abs(toastCurrentX) > 80) {
+        // Dismiss
+        const targetX = toastCurrentX > 0 ? 300 : -300;
+        gsap.to(toast, {
+          x: targetX,
+          opacity: 0,
+          duration: 0.2,
+          ease: "power2.in",
+          onComplete: () => {
+            toast.classList.remove("show");
+            gsap.set(toast, { x: 0, opacity: 1 });
+          }
+        });
+        clearTimeout(showToast._t);
+      } else {
+        // Snap back
+        gsap.to(toast, { x: 0, opacity: 1, duration: 0.2, ease: "back.out(1.7)" });
+        // Resume auto-hide
+        showToast._t = setTimeout(() => {
+          gsap.to(toast, { y: 20, opacity: 0, duration: 0.2, ease: "power2.in", onComplete: () => toast.classList.remove("show") });
+        }, 1500);
+      }
+      toastCurrentX = 0;
+    });
 
     /********************
      * Init
@@ -3051,20 +3126,15 @@
       const success = roll < baseChance;
 
       // Determine target angle
-      // Win: inside [0, winDeg]
-      // Lose: inside [winDeg, 360]
       const winDeg = clamp(baseChance, 1.2, 95) * 3.6;
       const targetAngle = success
         ? randFloat(6, Math.max(8, winDeg - 6))
         : randFloat(Math.min(360 - 6, winDeg + 6), 360 - 6);
 
-      // Animation: Fast start, slow smooth stop (high energy feel)
-      // We spin a few full rotations + target
+      // Animation
       const spins = 5 + randInt(0, 2);
       const finalRot = spins * 360 + targetAngle;
 
-      // Custom ease: "power4.out" starts fast and decelerates significantly at the end
-      // Duration 4s for that "heavy" feel
       await gsapToPromise(spinnerArm, {
         rotation: finalRot,
         duration: 4.5,
@@ -3076,25 +3146,18 @@
 
       if (success) {
         addToInv(upgradeTo, 1);
-
-        // Visuals
         if (circleBox) circleBox.classList.add("win");
         upgradeResultNote.innerHTML = `✅ Успех! <b>${escapeHtml(getGift(upgradeTo).name)}</b> получен!`;
         upgradeResultNote.style.borderColor = "#4ade80";
         upgradeResultNote.style.display = "block";
-
-        // Haptic + Sound
         try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
         pulse("#slotTo");
         showToast("WIN");
       } else {
-        // Visuals
         if (circleBox) circleBox.classList.add("lose");
         upgradeResultNote.innerHTML = `❌ Неудача. Подарок сгорел.`;
         upgradeResultNote.style.borderColor = "#f87171";
         upgradeResultNote.style.display = "block";
-
-        // Haptic + Sound
         try { tg?.HapticFeedback?.notificationOccurred("error"); } catch (e) { }
         wiggle("#slotFrom");
         showToast("LOSE");
@@ -3105,13 +3168,11 @@
 
       await sleep(2000); // Let them see the result
 
-      // Reset visuals
       if (circleBox) {
         circleBox.classList.remove("win", "lose");
       }
       resetUpgradeSpinner();
       upgradeResultNote.style.display = "none";
-
       btnUpgrade.disabled = false;
       renderUpgrade();
     });
@@ -3528,13 +3589,21 @@
     }
 
     function showToast(msg) {
-      toast.textContent = msg;
+      toastText.textContent = msg;
       toast.classList.add("show");
-      gsap.fromTo(toast, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: .18, ease: "power2.out" });
+
+      // Haptic feedback
+      try { tg?.HapticFeedback?.impactOccurred("light"); } catch (e) { }
+
+      // Reset position in case of previous swipe
+      gsap.set(toast, { x: 0, opacity: 1 });
+
+      gsap.fromTo(toast, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .25, ease: "power2.out" });
+
       clearTimeout(showToast._t);
       showToast._t = setTimeout(() => {
-        gsap.to(toast, { y: 10, opacity: 0, duration: .16, ease: "power2.in", onComplete: () => toast.classList.remove("show") });
-      }, 1600);
+        gsap.to(toast, { y: 20, opacity: 0, duration: .2, ease: "power2.in", onComplete: () => toast.classList.remove("show") });
+      }, 2000);
     }
 
     function giftThumbHTML(gift, size = 42) {
