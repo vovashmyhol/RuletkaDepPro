@@ -3121,6 +3121,11 @@
       upgradeResultNote.style.display = "none";
       resetUpgradeSpinner(); // Ensure clean state
 
+      // 1️⃣ CONSUME IMMEDIATELY TO PREVENT EXPLOIT
+      removeFromInv(upgradeFrom, 1);
+      renderInventory();
+      renderUpgrade();
+
       // Calculate result
       const roll = Math.random() * 100;
       const success = roll < baseChance;
@@ -3141,7 +3146,6 @@
         ease: "power4.out"
       });
 
-      removeFromInv(upgradeFrom, 1);
       const circleBox = document.querySelector(".circleBox");
 
       if (success) {
