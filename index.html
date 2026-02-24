@@ -392,6 +392,7 @@
     }
 
     .caseCard {
+      position: relative;
       background: #11141a;
       border: 1px solid rgba(255, 255, 255, 0.04);
       border-radius: 36px;
@@ -404,6 +405,38 @@
       padding: 1px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
+    .caseCard.free {
+      background: linear-gradient(180deg, #1e90ff, #007aff);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .caseCard.free .caseHero {
+      background: transparent;
+      box-shadow: none;
+      z-index: 1;
+    }
+
+    .caseCard.free .caseMeta {
+      z-index: 1;
+    }
+
+    .caseStars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .caseStar {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: url('Звезда емодзи.webp') center/contain no-repeat;
+      pointer-events: none;
+    }
+
 
     .caseCard:active {
       transform: scale(0.97);
@@ -469,6 +502,81 @@
       width: 18px;
       height: 18px;
       filter: none;
+    }
+
+    /* Promo Section Styling */
+    .promoInputWrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .promoInfoRow {
+      display: flex;
+      margin: 10px;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .infoIcon {
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      color: #000;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 950;
+    }
+
+    .promoInput {
+      width: 100%;
+      height: 54px;
+      background: #11141a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 0 16px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .promoInput::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .spinBtn {
+      height: 54px !important;
+      justify-content: space-between !important;
+      padding: 0 20px !important;
+      background: linear-gradient(90deg, #1e90ff, #007aff) !important;
+      border: none !important;
+      border-radius: 14px !important;
+    }
+
+    .priceBox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 950;
+    }
+
+    .promoHint {
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+    }
+
+    .promoHint a {
+      color: #1e90ff;
+      text-decoration: none;
     }
 
 
@@ -2250,7 +2358,23 @@
           <div class="desc" id="modalDesc">Открой кейс — получи подарок в инвентарь.</div>
         </div>
 
-        <div class="chooser">
+        <div id="promoSection" style="display:none; padding: 0 14px 14px;">
+          <div class="promoInputWrap">
+            <div class="promoInfoRow">
+              <div class="infoIcon">i</div>
+              <span>To open this case, enter the secret code</span>
+            </div>
+            <input type="text" class="promoInput" id="promoInput" placeholder="Secret Code" autocomplete="off">
+            <button class="btn spinBtn" id="btnPromoSpin">
+              <span>Spin</span>
+              <div class="priceBox">0 <img src="stars-DBKMczxe.png" class="starI" alt="★"></div>
+            </button>
+            <div class="promoHint">Search secret codes in <a href="https://t.me/voco_in" target="_blank">@voco_in</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="chooser" id="modalChooser">
           <div class="pillRow">
             <div>How many cases?</div>
             <div class="starRow">
@@ -2294,11 +2418,13 @@
         </div>
 
         <div style="padding: 0 14px 14px;">
-          <button class="btn" id="btnOpenCase">
-            <span>Open case</span>
-            <img class="starI" id="starIconBtn" alt="★"><span id="btnCost">0</span>
-          </button>
-          <div class="sep"></div>
+          <div id="modalOpenAction">
+            <button class="btn" id="btnOpenCase">
+              <span>Open case</span>
+              <img class="starI" id="starIconBtn" alt="★"><span id="btnCost">0</span>
+            </button>
+            <div class="sep"></div>
+          </div>
           <button class="btn ghost" id="btnShowContents">Показать содержимое</button>
         </div>
       </div>
@@ -2448,7 +2574,8 @@
       stars: "gb_final_stars",
       inv: "gb_final_inventory",
       tasksDone: "gb_final_tasks_done",      // {taskId:true}
-      taskPending: "gb_final_task_pending"   // taskId
+      taskPending: "gb_final_task_pending",   // taskId
+      promos: "gb_final_used_promos"          // {code:true}
     };
 
     /********************
@@ -2493,49 +2620,54 @@
      ********************/
     const CASES = [
       {
-        id: "quick", title: "Quick Start", price: 45, badge: "HOT", emoji: "⚡", img: "Love potion case.webp", color: "#ffcc00",
+        id: "free", title: "Free case", price: 0, promo: ["VOCO26", "MARCH", "SPRING", "8MARCH", "BDAY"], emoji: "🎁", img: "Free case.PNG", color: "#007aff",
+        desc: "Enter the secret code to open this case for free.",
+        pool: [{ gift: "toy_bear", w: 30 }, { gift: "heart", w: 30 }, { gift: "gift", w: 15 }, { gift: "rocket", w: 5 }, { gift: "bouquet", w: 5 }, { gift: "diamond", w: 2 }]
+      },
+      {
+        id: "quick", title: "Love potion case", price: 45, badge: "HOT", emoji: "⚡", img: "Love potion case.webp", color: "#ffcc00",
         desc: "Быстрый кейс для старта.",
-        pool: [{ gift: "toy_bear", w: 24 }, { gift: "heart", w: 24 }, { gift: "gift", w: 20 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 8 }]
+        pool: [{ gift: "toy_bear", w: 24 }, { gift: "heart", w: 24 }, { gift: "gift", w: 20 }, { gift: "rocket", w: 8 }, { gift: "bouquet", w: 8 }, { gift: "diamond", w: 4 }]
       },
       {
-        id: "blue", title: "Blue Drop", price: 69, badge: "🔥", emoji: "💧", img: "Signet ring case.webp", color: "#0095ff",
+        id: "blue", title: "Signet ring case", price: 69, badge: "🔥", emoji: "💧", img: "Signet ring case.webp", color: "#0095ff",
         desc: "Уклон в средние призы.",
-        pool: [{ gift: "toy_bear", w: 18 }, { gift: "heart", w: 18 }, { gift: "gift", w: 16 }, { gift: "rocket", w: 13 }, { gift: "bouquet", w: 13 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 1 }]
+        pool: [{ gift: "toy_bear", w: 18 }, { gift: "heart", w: 18 }, { gift: "gift", w: 14 }, { gift: "rocket", w: 7 }, { gift: "bouquet", w: 7 }, { gift: "diamond", w: 4 }, { gift: "lol_pop", w: 1 }]
       },
       {
-        id: "sweet", title: "Sweet Box", price: 99, badge: "NEW", emoji: "🍭", img: "Swiss watch case.webp", color: "#ff2d55",
+        id: "sweet", title: "Swiss watch case", price: 99, badge: "NEW", emoji: "🍭", img: "Swiss watch case.webp", color: "#ff2d55",
         desc: "Сладкая темка.",
-        pool: [{ gift: "toy_bear", w: 16 }, { gift: "heart", w: 16 }, { gift: "gift", w: 14 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 3 }, { gift: "instant_ramen", w: 3 }]
+        pool: [{ gift: "toy_bear", w: 16 }, { gift: "heart", w: 16 }, { gift: "gift", w: 14 }, { gift: "rocket", w: 10 }, { gift: "bouquet", w: 10 }, { gift: "diamond", w: 6 }, { gift: "lol_pop", w: 1 }, { gift: "instant_ramen", w: 1 }]
       },
       {
-        id: "classic", title: "Magnat", price: 160, badge: "NEW", emoji: "🎁", img: "Scared cat case.webp", color: "#4cd964",
+        id: "classic", title: "Scared cat case", price: 160, badge: "NEW", emoji: "🎁", img: "Scared cat case.webp", color: "#4cd964",
         desc: "Балансированный кейс.",
-        pool: [{ gift: "toy_bear", w: 14 }, { gift: "heart", w: 14 }, { gift: "gift", w: 12 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 10 }, { gift: "lol_pop", w: 6 }, { gift: "instant_ramen", w: 6 }, { gift: "ice_cream", w: 6 }]
+        pool: [{ gift: "toy_bear", w: 14 }, { gift: "heart", w: 14 }, { gift: "gift", w: 12 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 2 }, { gift: "instant_ramen", w: 2 }, { gift: "ice_cream", w: 2 }]
       },
       {
-        id: "boost", title: "Booster", price: 235, badge: "LIMITED", emoji: "🚀", img: "Astral shard case.webp", color: "#ff3b30",
+        id: "boost", title: "Astral shard case", price: 235, badge: "LIMITED", emoji: "🚀", img: "Astral shard case.webp", color: "#ff3b30",
         desc: "Шанс на дорогие выше.",
-        pool: [{ gift: "gift", w: 14 }, { gift: "rocket", w: 10 }, { gift: "bouquet", w: 10 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 4 }, { gift: "instant_ramen", w: 4 }, { gift: "ice_cream", w: 4 }, { gift: "lunar_snake", w: 5 }, { gift: "easter_egg", w: 2 }, { gift: "input_key", w: 1 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
+        pool: [{ gift: "gift", w: 14 }, { gift: "rocket", w: 8 }, { gift: "bouquet", w: 8 }, { gift: "diamond", w: 6 }, { gift: "lol_pop", w: 2 }, { gift: "instant_ramen", w: 2 }, { gift: "ice_cream", w: 1 }, { gift: "lunar_snake", w: 2 }, { gift: "easter_egg", w: 1 }, { gift: "input_key", w: 1 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
       },
       {
-        id: "rare", title: "Rare Night", price: 399, badge: "HOT", emoji: "🌙", img: "Heroic helmet case.webp", color: "#af52de",
+        id: "rare", title: "Heroic helmet case", price: 399, badge: "HOT", emoji: "🌙", img: "Heroic helmet case.webp", color: "#af52de",
         desc: "Фарм Nft подарков",
         pool: [{ gift: "diamond", w: 16 }, { gift: "lol_pop", w: 7 }, { gift: "instant_ramen", w: 7 }, { gift: "ice_cream", w: 7 }, { gift: "lunar_snake", w: 7 }, { gift: "easter_egg", w: 5 }, { gift: "input_key", w: 4 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
       },
       {
-        id: "key", title: "Key Hunter", price: 452, badge: "🔥", emoji: "🔑", img: "Nail braclet case.webp", color: "#ff9500",
+        id: "key", title: "Nail braclet case", price: 452, badge: "🔥", emoji: "🔑", img: "Nail braclet case.webp", color: "#ff9500",
         desc: "Уклон в Love Candle.",
-        pool: [{ gift: "gift", w: 14 }, { gift: "rocket", w: 10 }, { gift: "bouquet", w: 10 }, { gift: "diamond", w: 10 }, { gift: "ice_cream", w: 8 }, { gift: "lunar_snake", w: 8 }, { gift: "easter_egg", w: 7 }, { gift: "input_key", w: 6 }, { gift: "top_hat", w: 2 }, { gift: "love_candle", w: 1 }]
+        pool: [{ gift: "gift", w: 14 }, { gift: "rocket", w: 10 }, { gift: "bouquet", w: 10 }, { gift: "diamond", w: 10 }, { gift: "ice_cream", w: 4 }, { gift: "lunar_snake", w: 4 }, { gift: "easter_egg", w: 1 }, { gift: "input_key", w: 1 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
       },
       {
-        id: "big", title: "Nft Vibe", price: 549, badge: "LIMITED", emoji: "👑", img: "Precious peach case.webp", big: true, color: "#5ac8fa",
+        id: "big", title: "Precious peach case", price: 549, badge: "LIMITED", emoji: "👑", img: "Precious peach case.webp", big: true, color: "#5ac8fa",
         desc: "Только нфт",
-        pool: [{ gift: "lol_pop", w: 12 }, { gift: "instant_ramen", w: 12 }, { gift: "ice_cream", w: 11 }, { gift: "lunar_snake", w: 11 }, { gift: "easter_egg", w: 8 }, { gift: "input_key", w: 6 }, { gift: "top_hat", w: 3 }, { gift: "love_candle", w: 3 }]
+        pool: [{ gift: "lol_pop", w: 12 }, { gift: "instant_ramen", w: 12 }, { gift: "ice_cream", w: 11 }, { gift: "lunar_snake", w: 11 }, { gift: "easter_egg", w: 6 }, { gift: "input_key", w: 3 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
       },
       {
-        id: "hat", title: "Hat & Candle", price: 419, badge: "🔥", emoji: "🎩", img: "Durove cap case.webp", color: "#5856d6",
+        id: "hat", title: "Durove cap case", price: 419, badge: "🔥", emoji: "🎩", img: "Durove cap case.webp", color: "#5856d6",
         desc: "Уклон в Top Hat и Love Candle.",
-        pool: [{ gift: "diamond", w: 16 }, { gift: "easter_egg", w: 8 }, { gift: "input_key", w: 6 }, { gift: "top_hat", w: 4 }, { gift: "love_candle", w: 4 }, { gift: "lol_pop", w: 8 }, { gift: "instant_ramen", w: 8 }, { gift: "ice_cream", w: 8 }]
+        pool: [{ gift: "diamond", w: 20 }, { gift: "easter_egg", w: 1 }, { gift: "input_key", w: 3 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }, { gift: "lol_pop", w: 8 }, { gift: "instant_ramen", w: 8 }, { gift: "ice_cream", w: 8 }]
       }
     ];
 
@@ -2565,6 +2697,7 @@
     let stars = loadNumber(STORAGE.stars, 0);
     let inventory = loadJSON(STORAGE.inv, {}); // {giftId: qty}
     let tasksDone = loadJSON(STORAGE.tasksDone, {}); // {taskId:true}
+    let usedPromos = loadJSON(STORAGE.promos, {}); // {code:true}
 
     let currentCase = CASES[0];
     let openCount = 1;
@@ -2904,6 +3037,7 @@
       CASES.forEach(c => {
         const el = document.createElement("div");
         el.className = "caseCard";
+        if (c.id === 'free') el.classList.add("free");
         if (c.color) el.style.setProperty("--c", c.color);
         el.innerHTML = `
           <div class="caseHero">
@@ -2913,11 +3047,41 @@
           </div>
           <div class="caseMeta">
             <div class="priceRow">
-              <span class="val">${formatStars(c.price)}</span>
-              <img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">
+              <span class="val">${c.price === 0 ? 'Free case' : formatStars(c.price)}</span>
+              ${c.price === 0 ? '' : `<img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">`}
             </div>
           </div>
         `;
+
+        if (c.id === 'free') {
+          const hero = el.querySelector(".caseHero");
+          const starsWrap = document.createElement("div");
+          starsWrap.className = "caseStars";
+          const edgePositions = [
+            { t: 8, l: 8 }, { t: 8, l: 82 },   // Top corners
+            { t: 88, l: 10 }, { t: 88, l: 82 }, // Bottom corners
+            { t: 45, l: 4 }, { t: 45, l: 88 }, // Sides
+            { t: 4, l: 48 }, { t: 90, l: 48 }  // Top/Bottom middle
+          ];
+
+          edgePositions.forEach((pos, idx) => {
+            const s = document.createElement("div");
+            s.className = "caseStar";
+            // Add jitter for dynamic look
+            const jitterT = randInt(-4, 4);
+            const jitterL = randInt(-4, 4);
+            s.style.top = (pos.t + jitterT) + "%";
+            s.style.left = (pos.l + jitterL) + "%";
+            const angle = randInt(5, 15);
+            const rot = idx % 2 === 0 ? angle : -angle;
+            const scale = (randInt(9, 15) / 10);
+            s.style.transform = `rotate(${rot}deg) scale(${scale})`;
+            s.style.opacity = (randInt(5, 20) / 100).toString(); // Very faint
+            starsWrap.appendChild(s);
+          });
+          hero.appendChild(starsWrap);
+        }
+
         el.addEventListener("click", () => openCaseModal(c));
         casesGrid.appendChild(el);
       });
@@ -3040,15 +3204,54 @@
         ? `<img src="${escapeAttr(c.img)}" alt="">`
         : `<div class="fallback">${escapeHtml(c.emoji || "🎁")}</div>`;
 
+      const isPromo = !!c.promo;
+      document.getElementById("promoSection").style.display = isPromo ? "block" : "none";
+      document.getElementById("modalChooser").style.display = isPromo ? "none" : "flex";
+      document.getElementById("modalOpenAction").style.display = isPromo ? "none" : "block";
+
+      if (isPromo) {
+        document.getElementById("promoInput").value = "";
+      }
+
       buildReel(c);
       updateModalPrice();
-      rouletteHint.textContent = "Нажми “Open case”";
+
       resultToast.classList.remove("show");
 
       showOverlay(caseModal);
       gsap.fromTo(caseModal.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .22, ease: "power2.out" });
       pulse(caseModal.querySelector(".modal"));
     }
+
+    document.getElementById("btnPromoSpin").addEventListener("click", () => {
+      const code = document.getElementById("promoInput").value.trim().toUpperCase();
+      const validPromos = Array.isArray(currentCase.promo) ? currentCase.promo : [currentCase.promo];
+
+      if (validPromos.includes(code)) {
+        // Check if already used
+        if (usedPromos[code]) {
+          showToast("Вы уже использовали этот код!");
+          wiggle("#promoInput");
+          return;
+        }
+
+        // Correct code - trigger spin
+        document.getElementById("promoSection").style.display = "none";
+        document.getElementById("modalOpenAction").style.display = "block";
+
+        // Mark as used immediately to prevent rapid clicks
+        usedPromos[code] = true;
+        saveJSON(STORAGE.promos, usedPromos);
+
+        btnOpenCase.click();
+
+        // Hide standard controls again after clicking
+        document.getElementById("modalOpenAction").style.display = "none";
+      } else {
+        showToast("Неверный код!");
+        wiggle("#promoInput");
+      }
+    });
 
     function updateModalPrice() {
       const total = currentCase.price * openCount;
@@ -3643,7 +3846,6 @@
               <span><img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">${formatStars(g.value)}</span>
             </div>
           </div>
-          <div class="wBadge">w: ${Math.round(p.w)}</div>
         `;
         contentsList.appendChild(row);
       });
