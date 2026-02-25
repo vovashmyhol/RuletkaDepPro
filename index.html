@@ -2700,14 +2700,12 @@
      ********************/
     let tonConnectUI;
     let isTonMode = false;
+    let tonBalance = 0;
     const TON_EXCHANGE_RATE = 100; // 1 TON = 100 Stars
 
     try {
-      // Reverting to absolute URL as user said it worked before.
-      // We use the URL from the manifest itself to be consistent.
       const manifestUrl = 'https://vovashmyhol.github.io/RuletkaDepPro/tonconnect-manifest.json';
-
-      console.log("Initializing TonConnect with manifest:", manifestUrl);
+      console.log("TonConnect initializing with:", manifestUrl);
 
       tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: manifestUrl,
@@ -2716,10 +2714,12 @@
 
       tonConnectUI.onStatusChange(wallet => {
         updateWalletUI(wallet);
+        if (wallet) fetchTonBalance(wallet.account.address);
       });
 
       // Initial UI update to bind click event
       updateWalletUI(tonConnectUI.wallet);
+      if (tonConnectUI.wallet) fetchTonBalance(tonConnectUI.wallet.account.address);
     } catch (e) {
       console.error("TonConnect init error", e);
     }
@@ -2757,6 +2757,24 @@
       }
     }
 
+    async function fetchTonBalance(address) {
+      if (!address) return;
+      try {
+        // Using toncenter public API for simplicity
+        const resp = await fetch(`https://toncenter.com/api/v2/getAddressInformation?address=${address}`);
+        const json = await resp.json();
+        if (json.ok && json.result) {
+          const nano = json.result.balance;
+          tonBalance = Number(nano) / 1e9;
+          if (isTonMode) {
+            document.getElementById("modalBalanceVal").textContent = tonBalance.toFixed(2);
+          }
+        }
+      } catch (e) {
+        console.error("Fetch TON balance error", e);
+      }
+    }
+
     function setTonMode(active) {
       isTonMode = active;
       const card = document.getElementById("replenishCard");
@@ -2772,6 +2790,7 @@
         balanceIcon.src = "Иконка ТОН.webp";
         buyBtnIcon.src = "Иконка ТОН.webp";
         document.getElementById("walletConnectArea").style.display = "flex";
+        document.getElementById("modalBalanceVal").textContent = tonBalance.toFixed(2);
       } else {
         card.classList.remove("ton-mode");
         tStars.classList.add("active");
@@ -2779,6 +2798,7 @@
         balanceIcon.src = "stars-DBKMczxe.png";
         buyBtnIcon.src = "Звезда емодзи.webp";
         document.getElementById("walletConnectArea").style.display = "none";
+        document.getElementById("modalBalanceVal").textContent = formatStars(stars);
       }
       renderStarsOptions();
       updateBuyButtonValue();
@@ -4160,8 +4180,34 @@
           showToast("Ожидание подтверждения...");
           const result = await tonConnectUI.sendTransaction(transaction);
 
-          // If we reach here, transaction was sent (not necessarily confirmed on-chain)
-          // For demo purposes, we add stars immediately if no backend validation exists
+          // Strict 10-second verification delay
+          const btn = document.getElementById("btnModalAdd");
+          const originalText = btn.innerHTML;
+          btn.disabled = true;
+          btn.style.opacity = "0.7";
+          btn.style.pointerEvents = "none";
+
+          for (let i = 10; i > 0; i--) {
+            showToast(`Проверка транзакции... (${i}с)`);
+            btn.querySelector("#buyBtnVal").textContent = `Проверка (${i}с)`;
+            await sleep(1000);
+
+            // Check if modal was closed during delay
+            if (!addStarsModal.classList.contains("show")) {
+              console.log("Verification aborted: modal closed");
+              return;
+            }
+          }
+
+          // Final check after 10s
+          if (!addStarsModal.classList.contains("show")) return;
+
+          btn.disabled = false;
+          btn.style.opacity = "1";
+          btn.style.pointerEvents = "auto";
+          updateBuyButtonValue();
+
+          // If we reach here, transaction was sent and user waited 10s
           stars = round1(stars + selectedStarsAmount);
           saveNumber(STORAGE.stars, stars);
           renderStars();
