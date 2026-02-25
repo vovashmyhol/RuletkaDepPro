@@ -13,6 +13,9 @@
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
+  <!-- TON Connect UI SDK -->
+  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
   <style>
     :root {
       --bg0: #06080d;
@@ -55,6 +58,9 @@
         radial-gradient(800px 520px at 20% 0%, rgba(130, 90, 255, .08), transparent 60%),
         linear-gradient(180deg, var(--bg1), var(--bg0));
       overflow: hidden;
+
+      --ton-blue: #0088cc;
+      --ton-blue-light: #00aaff;
     }
 
     .app {
@@ -207,6 +213,94 @@
       border-radius: 24px;
       padding: 14px;
       box-shadow: var(--shadow);
+    }
+
+    /* ===== TON TOGGLE ===== */
+    .tonToggle {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 10;
+      display: flex;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 3px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .toggleIcon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      border-radius: 9px;
+      transition: all 0.2s;
+      opacity: 0.5;
+    }
+
+    .toggleIcon img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .toggleIcon.active {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ===== WALLET SECTION ===== */
+    .walletConnectArea {
+      margin: 0 12px 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .tonConnectBtn {
+      width: 100%;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 0 16px;
+    }
+
+    .tonConnectBtn img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .walletAddress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+      border-radius: 18px;
+      font-family: monospace;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    /* TON Mode Theme */
+    .balanceCard.ton-mode {
+      background: linear-gradient(135deg, #4aa3ff, #0088cc);
+      box-shadow: 0 12px 30px rgba(0, 136, 204, 0.3);
+    }
+
+    .balanceCard.ton-mode::before,
+    .balanceCard.ton-mode::after {
+      background-image: url('Иконка ТОН.webp');
+      opacity: 0.12;
     }
 
     .sep {
@@ -1684,6 +1778,13 @@
       height: 20px;
     }
 
+    .optionTonPrice {
+      margin-left: auto;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+    }
+
     .starsFooter {
       position: absolute;
       bottom: 0;
@@ -2464,7 +2565,22 @@
       </div>
 
       <div class="modalScroll" style="flex: 1 1 auto; overflow-y: auto;">
-        <div class="balanceCard">
+        <div class="walletConnectArea" id="walletConnectArea">
+          <button class="tonConnectBtn" id="btnTonConnect">
+            <img src="Кошель иконка.webp" alt="Wallet">
+            <span>Подключить кошелек</span>
+          </button>
+        </div>
+
+        <div class="balanceCard" id="replenishCard">
+          <div class="tonToggle">
+            <div class="toggleIcon active" id="toggleStars" title="Stars">
+              <img src="stars-DBKMczxe.png" alt="Stars">
+            </div>
+            <div class="toggleIcon" id="toggleTon" title="TON">
+              <img src="Иконка ТОН.webp" alt="TON">
+            </div>
+          </div>
           <div class="balanceLabel">Баланс кошелька</div>
           <div class="balanceValue">
             <img src="stars-DBKMczxe.png" class="starI" alt="★">
@@ -2555,6 +2671,7 @@
      * CONFIG: put your PNG here
      ********************/
     const STAR_PNG = "stars-DBKMczxe.png"; // <-- вставь свой PNG (путь/имя)
+    const TON_ICON = "Иконка ТОН.webp";
     document.getElementById("starIconTop").src = STAR_PNG;
     document.getElementById("starIconModal").src = STAR_PNG;
     document.getElementById("starIconBtn").src = STAR_PNG;
@@ -2577,6 +2694,112 @@
       taskPending: "gb_final_task_pending",   // taskId
       promos: "gb_final_used_promos"          // {code:true}
     };
+
+    /********************
+     * TON Connect Initialization
+     ********************/
+    let tonConnectUI;
+    let isTonMode = false;
+    const TON_EXCHANGE_RATE = 100; // 1 TON = 100 Stars
+
+    try {
+      // Check if running via file:// protocol (TON Connect will not work)
+      if (window.location.protocol === 'file:') {
+        setTimeout(() => showToast("Ошибка: TON Connect не работает при открытии файла напрямую. Используйте локальный сервер."), 1000);
+      }
+
+      tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+        manifestUrl: './tonconnect-manifest.json',
+        buttonRootId: null
+      });
+
+      tonConnectUI.onStatusChange(wallet => {
+        updateWalletUI(wallet);
+      });
+
+      // Initial UI update to bind click event
+      updateWalletUI(tonConnectUI.wallet);
+    } catch (e) {
+      console.error("TonConnect init error", e);
+    }
+
+    function updateWalletUI(wallet) {
+      const area = document.getElementById("walletConnectArea");
+      if (!wallet) {
+        area.innerHTML = `
+          <button class="tonConnectBtn" id="btnTonConnect">
+            <img src="Кошель иконка.webp" alt="Wallet">
+            <span>Подключить кошелек</span>
+          </button>
+        `;
+        document.getElementById("btnTonConnect").onclick = () => tonConnectUI.connectWallet();
+      } else {
+        const rawAddress = wallet.account.address;
+        let displayAddr = rawAddress;
+
+        try {
+          // Attempt to get user-friendly non-bounceable format (starts with UQ)
+          displayAddr = TON_CONNECT_UI.toUserFriendlyAddress(rawAddress, false);
+        } catch (e) {
+          console.warn("Could not convert address", e);
+        }
+
+        const shortAddr = displayAddr.slice(0, 5) + "..." + displayAddr.slice(-5);
+
+        area.innerHTML = `
+          <div class="walletAddress" id="btnTonWalletMsg" style="cursor:pointer">
+            <img src="Кошель иконка.webp" alt="Wallet" style="width:20px;height:20px">
+            <span>${shortAddr}</span>
+          </div>
+        `;
+        document.getElementById("btnTonWalletMsg").onclick = () => tonConnectUI.disconnect();
+      }
+    }
+
+    function setTonMode(active) {
+      isTonMode = active;
+      const card = document.getElementById("replenishCard");
+      const tStars = document.getElementById("toggleStars");
+      const tTon = document.getElementById("toggleTon");
+      const balanceIcon = document.querySelector(".balanceValue .starI");
+      const buyBtnIcon = document.querySelector(".btnStarBuy .emojiI");
+
+      if (isTonMode) {
+        card.classList.add("ton-mode");
+        tTon.classList.add("active");
+        tStars.classList.remove("active");
+        balanceIcon.src = "Иконка ТОН.webp";
+        buyBtnIcon.src = "Иконка ТОН.webp";
+        document.getElementById("walletConnectArea").style.display = "flex";
+      } else {
+        card.classList.remove("ton-mode");
+        tStars.classList.add("active");
+        tTon.classList.remove("active");
+        balanceIcon.src = "stars-DBKMczxe.png";
+        buyBtnIcon.src = "Звезда емодзи.webp";
+        document.getElementById("walletConnectArea").style.display = "none";
+      }
+      renderStarsOptions();
+      updateBuyButtonValue();
+    }
+
+    document.getElementById("toggleStars").onclick = (e) => {
+      e.stopPropagation();
+      setTonMode(false);
+    };
+    document.getElementById("toggleTon").onclick = (e) => {
+      e.stopPropagation();
+      setTonMode(true);
+    };
+
+    function updateBuyButtonValue() {
+      if (isTonMode) {
+        const tonVal = selectedStarsAmount / TON_EXCHANGE_RATE;
+        document.getElementById("buyBtnVal").textContent = tonVal.toFixed(2) + " TON";
+      } else {
+        document.getElementById("buyBtnVal").textContent = selectedStarsAmount;
+      }
+    }
 
     /********************
      * REAL payment links for openInvoice (you will paste links)
@@ -3864,6 +4087,8 @@
     let selectedStarsAmount = 25;
 
     function openAddStarsModal() {
+      const isInitialTon = false; // Default to stars
+      setTonMode(isInitialTon);
       document.getElementById("modalBalanceVal").textContent = formatStars(stars);
       renderStarsOptions();
       showOverlay(addStarsModal);
@@ -3878,16 +4103,24 @@
       amounts.forEach(amt => {
         const opt = document.createElement("div");
         opt.className = `starOption ${amt === selectedStarsAmount ? "active" : ""}`;
+
+        let priceHtml = "";
+        if (isTonMode) {
+          const tonPrice = amt / TON_EXCHANGE_RATE;
+          priceHtml = `<div class="optionTonPrice">${tonPrice.toFixed(2)} TON</div>`;
+        }
+
         opt.innerHTML = `
           <div class="radioCircle"></div>
           <div class="optionVal">
-            <img src="stars-DBKMczxe.png" class="starI" alt="★">
+            <img src="${isTonMode ? TON_ICON : STAR_PNG}" class="starI" alt="★">
             <span>${amt}</span>
           </div>
+          ${priceHtml}
         `;
         opt.onclick = () => {
           selectedStarsAmount = amt;
-          document.getElementById("buyBtnVal").textContent = amt;
+          updateBuyButtonValue();
           try { tg?.HapticFeedback?.selectionChanged(); } catch (e) { }
           renderStarsOptions();
         };
@@ -3900,7 +4133,51 @@
       setTab("home", 0);
     });
 
-    const startPayment = () => {
+    const startPayment = async () => {
+      if (isTonMode) {
+        if (!tonConnectUI.connected) {
+          showToast("Сначала подключите кошелек");
+          return;
+        }
+
+        const tonAmount = selectedStarsAmount / TON_EXCHANGE_RATE;
+        const amountNano = Math.round(tonAmount * 1000000000).toString();
+
+        const transaction = {
+          validUntil: Math.floor(Date.now() / 1000) + 1200, // 20 minutes
+          messages: [
+            {
+              address: "UQDyKNQLN_PqZgd_NXnVe80cezX9M5mCL0izNW3w2iQAXkp0", // Updated to the new address provided by user
+              amount: amountNano,
+            }
+          ]
+        };
+
+        console.log("TON Transaction request:", transaction);
+
+        try {
+          showToast("Ожидание подтверждения...");
+          const result = await tonConnectUI.sendTransaction(transaction);
+
+          // If we reach here, transaction was sent (not necessarily confirmed on-chain)
+          // For demo purposes, we add stars immediately if no backend validation exists
+          stars = round1(stars + selectedStarsAmount);
+          saveNumber(STORAGE.stars, stars);
+          renderStars();
+          document.getElementById("modalBalanceVal").textContent = formatStars(stars);
+
+          showToast(`Успешно! +${selectedStarsAmount}★`);
+          pulse(".wallet");
+          try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
+        } catch (e) {
+          console.error("TON transaction error", e);
+          const errMsg = e?.message || e?.toString() || "Ошибка транзакции";
+          showToast("Ошибка: " + errMsg);
+          try { tg?.HapticFeedback?.notificationOccurred("error"); } catch (e) { }
+        }
+        return;
+      }
+
       const link = INVOICE_LINKS[selectedStarsAmount];
       if (!link || link.startsWith("PASTE_")) {
         showToast("Для этой суммы еще не добавлена ссылка");
