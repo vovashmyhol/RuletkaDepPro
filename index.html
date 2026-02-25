@@ -2703,13 +2703,14 @@
     const TON_EXCHANGE_RATE = 100; // 1 TON = 100 Stars
 
     try {
-      // Check if running via file:// protocol (TON Connect will not work)
-      if (window.location.protocol === 'file:') {
-        setTimeout(() => showToast("Ошибка: TON Connect не работает при открытии файла напрямую. Используйте локальный сервер."), 1000);
-      }
+      // Reverting to absolute URL as user said it worked before.
+      // We use the URL from the manifest itself to be consistent.
+      const manifestUrl = 'https://vovashmyhol.github.io/RuletkaDepPro/tonconnect-manifest.json';
+
+      console.log("Initializing TonConnect with manifest:", manifestUrl);
 
       tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        manifestUrl: './tonconnect-manifest.json',
+        manifestUrl: manifestUrl,
         buttonRootId: null
       });
 
