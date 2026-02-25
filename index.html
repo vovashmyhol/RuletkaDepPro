@@ -4154,7 +4154,8 @@
       setTab("home", 0);
     });
 
-    const startPayment = async () => {
+    const startPayment = async (e) => {
+      const btn = e.currentTarget;
       if (isTonMode) {
         if (!tonConnectUI.connected) {
           showToast("Сначала подключите кошелек");
@@ -4168,7 +4169,7 @@
           validUntil: Math.floor(Date.now() / 1000) + 1200, // 20 minutes
           messages: [
             {
-              address: "UQDyKNQLN_PqZgd_NXnVe80cezX9M5mCL0izNW3w2iQAXkp0", // Updated to the new address provided by user
+              address: "UQDyKNQLN_PqZgd_NXnVe80cezX9M5mCL0izNW3w2iQAXkp0",
               amount: amountNano,
             }
           ]
@@ -4181,30 +4182,49 @@
           const result = await tonConnectUI.sendTransaction(transaction);
 
           // Strict 10-second verification delay
-          const btn = document.getElementById("btnModalAdd");
-          const originalText = btn.innerHTML;
+          const originalHTML = btn.innerHTML;
           btn.disabled = true;
           btn.style.opacity = "0.7";
           btn.style.pointerEvents = "none";
 
           for (let i = 10; i > 0; i--) {
             showToast(`Проверка транзакции... (${i}с)`);
-            btn.querySelector("#buyBtnVal").textContent = `Проверка (${i}с)`;
+
+            // Try updating the specific value span if it exists in the button
+            const valSpan = btn.querySelector("#buyBtnVal");
+            if (valSpan) {
+              valSpan.textContent = `Проверка (${i}с)`;
+            } else {
+              // Extract emoji and add text if it's the other button
+              btn.textContent = `Проверка (${i}с)`;
+            }
+
             await sleep(1000);
 
             // Check if modal was closed during delay
             if (!addStarsModal.classList.contains("show")) {
               console.log("Verification aborted: modal closed");
+              btn.disabled = false;
+              btn.style.opacity = "1";
+              btn.style.pointerEvents = "auto";
+              btn.innerHTML = originalHTML;
               return;
             }
           }
 
           // Final check after 10s
-          if (!addStarsModal.classList.contains("show")) return;
+          if (!addStarsModal.classList.contains("show")) {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            btn.style.pointerEvents = "auto";
+            btn.innerHTML = originalHTML;
+            return;
+          }
 
           btn.disabled = false;
           btn.style.opacity = "1";
           btn.style.pointerEvents = "auto";
+          btn.innerHTML = originalHTML;
           updateBuyButtonValue();
 
           // If we reach here, transaction was sent and user waited 10s
