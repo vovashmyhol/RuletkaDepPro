@@ -692,7 +692,7 @@
     }
 
     .modal {
-      width: min(520px, 100%);
+      width: min(600px, 100%);
       border-radius: 26px;
       background: rgba(255, 255, 255, .08);
       border: 1px solid rgba(255, 255, 255, .12);
@@ -891,7 +891,7 @@
 
     .track {
       position: relative;
-      height: 120px;
+      height: 180px;
       overflow: hidden;
       background: rgba(0, 0, 0, .10);
     }
@@ -922,25 +922,25 @@
     }
 
     .itemChip {
-      width: 104px;
-      height: 92px;
-      border-radius: 18px;
+      width: 150px;
+      height: 140px;
+      border-radius: 22px;
       border: 1px solid rgba(255, 255, 255, .12);
       background: rgba(255, 255, 255, .06);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 7px;
+      gap: 10px;
       flex: 0 0 auto;
       box-shadow: 0 10px 26px rgba(0, 0, 0, .22);
       overflow: hidden;
     }
 
     .chipImg {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
       background: rgba(0, 0, 0, .18);
       overflow: hidden;
       display: grid;
@@ -959,12 +959,12 @@
     }
 
     .itemChip .n {
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 950;
       color: rgba(255, 255, 255, .85);
       text-align: center;
-      padding: 0 6px;
-      line-height: 1.05;
+      padding: 0 10px;
+      line-height: 1.1;
       max-width: 100%;
       white-space: nowrap;
       overflow: hidden;
@@ -2171,10 +2171,48 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: #06080d;
-      display: grid;
-      place-items: center;
+      background: radial-gradient(circle at center, #0a1f3d 0%, #030811 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       transition: opacity 0.5s ease, visibility 0.5s ease;
+      overflow: hidden;
+      /* Prevent gift sway from causing overflow */
+    }
+
+    /* Small scattered animated gifts */
+    .preloaderGift {
+      position: absolute;
+      background-image: url("Фон гифт.webp");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      pointer-events: none;
+      z-index: -1;
+      animation: floatGift var(--p-dur, 4s) ease-in-out infinite alternate,
+        fadeGift var(--p-dur2, 5s) ease-in-out infinite alternate;
+      /* Initial state applied via inline styles in JS */
+    }
+
+    @keyframes floatGift {
+      0% {
+        transform: translateY(0px) rotate(-6deg);
+      }
+
+      100% {
+        transform: translateY(-15px) rotate(6deg);
+      }
+    }
+
+    @keyframes fadeGift {
+      0% {
+        opacity: 0.05;
+      }
+
+      100% {
+        opacity: 0.25;
+      }
     }
 
     .preloader.hidden {
@@ -2182,38 +2220,60 @@
       visibility: hidden;
     }
 
-    .loaderSquare {
-      width: 64px;
-      height: 64px;
+    .preloaderAvatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: avatarFloat 3s ease-in-out infinite;
+      margin-bottom: 40px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
       background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 18px;
-      position: relative;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
     }
 
-    .app-spinner {
-      width: 28px;
-      height: 28px;
-      border: 3.5px solid rgba(0, 149, 255, 0.15);
-      border-top-color: #0095ff;
-      border-radius: 50%;
-      box-sizing: border-box;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      animation: appSpinCenter 0.8s linear infinite;
+    .preloaderAvatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    @keyframes appSpinCenter {
-      from {
-        transform: translate(-50%, -50%) rotate(0deg);
+    @keyframes avatarFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
       }
 
-      to {
-        transform: translate(-50%, -50%) rotate(360deg);
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .preloaderProgress {
+      width: 80px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .preloaderBar {
+      height: 100%;
+      width: 30%;
+      background: linear-gradient(90deg, #4aa3ff, #2b7bff);
+      border-radius: 4px;
+      animation: loadProgress 1.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes loadProgress {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(300%);
       }
     }
 
@@ -2231,13 +2291,164 @@
         gap: 14px
       }
     }
+
+    /* ===== FULLSCREEN WIN MODAL ===== */
+    .winShowcase {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .winLight {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(74, 163, 255, 0.45) 0%, transparent 60%);
+      z-index: 0;
+      animation: pulseLight 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulseLight {
+      from {
+        transform: scale(0.8);
+        opacity: 0.6;
+      }
+
+      to {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    /* Cross-shaped star */
+    .winStar {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      z-index: 5;
+      pointer-events: none;
+      animation: starTwinkle linear forwards;
+    }
+
+    .winStar::before,
+    .winStar::after {
+      content: "";
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .winStar::before {
+      width: 2px;
+      height: 100%;
+    }
+
+    .winStar::after {
+      width: 100%;
+      height: 2px;
+    }
+
+    @keyframes starTwinkle {
+      0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.2) rotate(45deg);
+        opacity: 1;
+      }
+
+      80% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(0) rotate(90deg);
+        opacity: 0;
+      }
+    }
+
+    .winImage {
+      position: relative;
+      z-index: 1;
+      width: 180px;
+      height: 180px;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+    }
+
+    .winImage img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .winImage .fallback {
+      font-size: 110px;
+    }
+
+    .winName {
+      font-size: 32px;
+      font-weight: 950;
+      color: #fff;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      z-index: 10;
+    }
+
+    .winOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      padding: 20px;
+    }
+
+    .winOverlay.show {
+      display: flex;
+    }
+
+    .winActions {
+      width: 100%;
+      padding: 0;
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 320px;
+      z-index: 10;
+    }
   </style>
 </head>
 
 <body>
   <div class="preloader" id="appPreloader">
-    <div class="loaderSquare">
-      <div class="app-spinner"></div>
+    <div class="preloaderAvatar">
+      <img src="Ава.webp" alt="Bot">
+    </div>
+    <div class="preloaderProgress">
+      <div class="preloaderBar"></div>
     </div>
   </div>
 
@@ -2659,6 +2870,60 @@
     </div>
     <div class="toast-text" id="toastText">Сообщение</div>
   </div>
+
+  <script>
+    // --- Preloader Gifts Script ---
+    (function () {
+      const preloader = document.getElementById('appPreloader');
+
+      // Fixed positions (percentages: x, y) to ensure even distribution and no clumping
+      const positions = [
+        { x: 10, y: 15 }, { x: 40, y: 10 }, { x: 80, y: 20 },
+        { x: 15, y: 45 }, { x: 85, y: 50 },
+        { x: 25, y: 80 }, { x: 50, y: 85 }, { x: 75, y: 75 },
+        { x: 5, y: 70 }, { x: 90, y: 15 }, { x: 60, y: 35 }, { x: 30, y: 30 }
+      ];
+
+      positions.forEach(pos => {
+        const gift = document.createElement('div');
+        gift.className = 'preloaderGift';
+
+        // Random size between 35px and 60px
+        const size = Math.floor(Math.random() * 25) + 35;
+        gift.style.width = size + 'px';
+        gift.style.height = size + 'px';
+
+        // Use fixed positions with a tiny bit of random jitter so it doesn't look too robotic
+        gift.style.left = (pos.x + (Math.random() * 4 - 2)) + '%';
+        gift.style.top = (pos.y + (Math.random() * 4 - 2)) + '%';
+
+        // Random animation durations to make them out of sync
+        gift.style.setProperty('--p-dur', (3 + Math.random() * 3) + 's');
+        gift.style.setProperty('--p-dur2', (4 + Math.random() * 4) + 's');
+
+        // Decrease opacity significantly for a more subtle look
+        gift.style.opacity = '0.02';
+
+        // We override the keyframes with an inline style animation because we want to lower opacity globally
+        const delay = -Math.random() * 10;
+        gift.style.animation = `floatGift var(--p-dur) ease-in-out ${delay}s infinite alternate, fadeGiftSubtle var(--p-dur2) ease-in-out ${delay}s infinite alternate`;
+
+        preloader.appendChild(gift);
+      });
+    })();
+  </script>
+
+  <style>
+    @keyframes fadeGiftSubtle {
+      0% {
+        opacity: 0.02;
+      }
+
+      100% {
+        opacity: 0.08;
+      }
+    }
+  </style>
 
   <script>
     /********************
@@ -3414,19 +3679,97 @@
         addToInv(wonGiftId, 1);
         renderInventory();
 
-        resImg.innerHTML = giftThumbHTML(won, 44);
-        resName.textContent = won.name;
-        resValue.textContent = formatStars(won.value);
-        resTag.className = "tagWin good";
-        resTag.innerHTML = `<span>✔</span><span>WIN</span>`;
-        resultToast.classList.add("show");
-        gsap.fromTo(resultToast, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+        const winModal = document.getElementById("winFullscreenModal");
+        const winImage = document.getElementById("winImage");
+        const winName = document.getElementById("winName");
+        const winSellPrice = document.getElementById("winSellPrice");
+
+        winImage.innerHTML = giftThumbHTML(won, 180);
+        winName.textContent = won.name;
+
+        const sellPrice = round1(won.value * SELL_PAYOUT);
+        winSellPrice.textContent = formatStars(sellPrice);
+
+        winModal.classList.add("show");
+        document.body.style.overflow = "hidden";
+        gsap.fromTo(winModal, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.2)" });
+        try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
+
+        // Start stars animation
+        let starsInterval;
+        const winShowcase = winModal.querySelector('.winShowcase');
+
+        const spawnStar = () => {
+          if (!winModal.classList.contains("show")) return;
+
+          const star = document.createElement("div");
+          star.className = "winStar";
+
+          // Random position around the center image
+          const angle = Math.random() * Math.PI * 2;
+          const radius = 80 + Math.random() * 60; // 80px to 140px from center
+          const x = 125 + Math.cos(angle) * radius - 10; // 125 is center of 250px showcase, -10 to center the 20px star
+          const y = 125 + Math.sin(angle) * radius - 10;
+
+          // Random scale and duration
+          const scale = 0.5 + Math.random() * 1.5;
+          const duration = 1.0 + Math.random() * 1.5; // 1s to 2.5s
+
+          star.style.left = `${x}px`;
+          star.style.top = `${y}px`;
+          star.style.animationDuration = `${duration}s`;
+          star.style.transform = `scale(${scale})`; // Base scale before animation
+
+          winShowcase.appendChild(star);
+
+          // Remove after animation completes
+          setTimeout(() => {
+            if (winShowcase.contains(star)) star.remove();
+          }, duration * 1000);
+        };
+
+        // Spawn first few immediately, then continue
+        for (let i = 0; i < 3; i++) setTimeout(spawnStar, Math.random() * 500);
+        starsInterval = setInterval(spawnStar, 400); // New star every 400ms
+
+        await new Promise(resolve => {
+          const btnSell = document.getElementById("btnWinSell");
+          const btnTake = document.getElementById("btnWinTake");
+
+          const handleSell = () => {
+            sellGift(wonGiftId);
+            cleanup();
+          };
+
+          const handleTake = () => {
+            cleanup();
+          };
+
+          const cleanup = () => {
+            btnSell.removeEventListener("click", handleSell);
+            btnTake.removeEventListener("click", handleTake);
+            clearInterval(starsInterval); // Stop spawning stars
+
+            // Remove all existing stars
+            winShowcase.querySelectorAll('.winStar').forEach(s => s.remove());
+
+            gsap.to(winModal, {
+              opacity: 0, scale: 0.95, duration: 0.2, ease: "power2.in", onComplete: () => {
+                winModal.classList.remove("show");
+                document.body.style.overflow = "";
+                gsap.set(winModal, { clearProps: "all" });
+                resolve();
+              }
+            });
+          };
+
+          btnSell.addEventListener("click", handleSell);
+          btnTake.addEventListener("click", handleTake);
+        });
 
         if (i < openCount - 1) {
-          await sleep(450);
-          resultToast.classList.remove("show");
+          await sleep(300);
           rouletteHint.textContent = `Ещё ${openCount - 1 - i}…`;
-          await sleep(220);
         }
       }
 
@@ -3512,7 +3855,8 @@
       });
 
       const strip = [];
-      for (let i = 0; i < 64; i++) {
+      // Increased from 64 to 96 to support longer spins
+      for (let i = 0; i < 96; i++) {
         strip.push(base[randInt(0, base.length - 1)]);
       }
 
@@ -3521,7 +3865,7 @@
         chip.className = "itemChip";
         chip.dataset.gift = g.id;
         chip.innerHTML = `
-          <div class="chipImg">${giftThumbHTML(g, 42)}</div>
+          <div class="chipImg">${giftThumbHTML(g, 70)}</div>
           <div class="n">${escapeHtml(g.name)}</div>
         `;
         reel.appendChild(chip);
@@ -3534,30 +3878,45 @@
       buildReel(caseObj);
 
       const chips = [...reel.querySelectorAll(".itemChip")];
-      const targetIndex = randInt(40, 56);
+      // Target index increased to allow for longer spin
+      const targetIndex = randInt(70, 85);
 
       const g = getGift(giftId);
       chips[targetIndex].dataset.gift = giftId;
       chips[targetIndex].innerHTML = `
-        <div class="chipImg">${giftThumbHTML(g, 42)}</div>
+        <div class="chipImg">${giftThumbHTML(g, 70)}</div>
         <div class="n">${escapeHtml(g.name)}</div>
       `;
 
-      const chipW = 114;
+      const gap = 10;
+      const chipW = 150 + gap;
       const containerW = document.querySelector(".track").clientWidth;
       const centerX = containerW / 2;
       const leftPadding = 14;
-      const targetX = leftPadding + targetIndex * chipW + 52;
+      // Use chipW for the offset to center the chip under the line
+      const targetX = leftPadding + targetIndex * chipW + (chipW / 2) - (gap / 2);
       const finalX = centerX - targetX;
 
-      const dur = 2.0 + Math.random() * 0.6;
-      const overshoot = finalX - (45 + Math.random() * 45);
+      // Increased duration for super slow stop
+      const dur = 7.0 + Math.random() * 2.0;
 
       gsap.set(reel, { x: 20 });
       await sleep(50);
 
-      await gsapToPromise(reel, { x: overshoot, duration: dur, ease: "power3.out" });
-      await gsapToPromise(reel, { x: finalX, duration: 0.5, ease: "elastic.out(1, 0.35)" });
+      let lastHapticX = 0;
+      await gsapToPromise(reel, {
+        x: finalX,
+        duration: dur,
+        ease: "power4.out", // Smooth deceleration
+        onUpdate: function () {
+          const currentX = gsap.getProperty(reel, "x");
+          const relativeX = Math.abs(currentX - 20);
+          if (Math.floor(relativeX / chipW) > Math.floor(lastHapticX / chipW)) {
+            try { tg?.HapticFeedback?.impactOccurred("light"); } catch (e) { }
+          }
+          lastHapticX = relativeX;
+        }
+      });
 
       const winChip = chips[targetIndex];
       gsap.fromTo(winChip, { scale: 1 }, { scale: 1.07, duration: .16, yoyo: true, repeat: 1, ease: "power2.out" });
@@ -4449,6 +4808,23 @@
 
     Пример кода: "DM-<рандом>-<рандом>" -> Diamond
   -->
+  <!-- Fullscreen Win Modal -->
+  <div class="winOverlay" id="winFullscreenModal">
+    <div class="winShowcase">
+      <div class="winLight"></div>
+      <div id="winImage" class="winImage"></div>
+    </div>
+    <div id="winName" class="winName">Gift Name</div>
+
+    <div class="winActions">
+      <button class="btn" id="btnWinSell">
+        <span>Продать за</span>
+        <img class="starI" src="stars-DBKMczxe.png" alt="★"><span id="winSellPrice">0</span>
+      </button>
+      <button class="btn ghost" id="btnWinTake">В инвентарь</button>
+    </div>
+  </div>
+
 </body>
 
 </html>
