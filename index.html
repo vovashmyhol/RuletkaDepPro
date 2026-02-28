@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
@@ -2464,7 +2464,7 @@
       </div>
 
       <div class="wallet">
-        <div class="plus" id="btnAddStars" title="Пополнить">
+        <div class="plus" id="btnAddStars" title="Top Up">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="3" stroke-linecap="round" />
           </svg>
@@ -2504,10 +2504,10 @@
                     style="width:54px; height:54px; object-fit:contain; display:block;">
                 </div>
                 <div class="ucInfo">
-                  <div class="ucLabel">Выберите</div>
-                  <div class="ucSub">подарок</div>
+                  <div class="ucLabel">Select</div>
+                  <div class="ucSub">a gift</div>
                 </div>
-                <button class="btnSelect" id="pickFromBtn">ВЫБРАТЬ</button>
+                <button class="btnSelect" id="pickFromBtn">SELECT</button>
 
                 <!-- Hidden when empty, shown when selected -->
                 <div class="ucPreview" id="fromPick" style="display:none"></div>
@@ -2527,10 +2527,10 @@
                     style="width:54px; height:54px; object-fit:contain; display:block;">
                 </div>
                 <div class="ucInfo">
-                  <div class="ucLabel">Выберите</div>
-                  <div class="ucSub">цель</div>
+                  <div class="ucLabel">Select</div>
+                  <div class="ucSub">target</div>
                 </div>
-                <button class="btnSelect" id="pickToBtn">ВЫБРАТЬ</button>
+                <button class="btnSelect" id="pickToBtn">SELECT</button>
 
                 <!-- Hidden when empty, shown when selected -->
                 <div class="ucPreview" id="toPick" style="display:none"></div>
@@ -2549,16 +2549,16 @@
 
                 <div class="circleContent">
                   <div class="chanceVal" id="chanceText">0%</div>
-                  <div class="chanceLabel">ШАНС</div>
+                  <div class="chanceLabel">CHANCE</div>
                 </div>
               </div>
             </div>
 
             <!-- Bottom Actions -->
             <div class="upgradeBottom">
-              <div class="statusText" id="upgradeHint">Выберите <b>подарок</b> и <b>цель</b></div>
-              <button class="btnBig" id="btnUpgrade" disabled>АПГРЕЙД</button>
-              <button class="btnText" id="btnResetUpgrade">Сбросить</button>
+              <div class="statusText" id="upgradeHint">Select a <b>gift</b> and a <b>target</b></div>
+              <button class="btnBig" id="btnUpgrade" disabled>UPGRADE</button>
+              <button class="btnText" id="btnResetUpgrade">Reset</button>
             </div>
 
             <div class="note" id="upgradeResultNote"></div>
@@ -2576,9 +2576,9 @@
           <div class="tasksList" id="tasksList"></div>
           <div class="sep"></div>
           <div class="upHint" style="text-align:left">
-            <img src="Лампочка емодзи.webp" class="emojiI" alt="💡">За выполненное задание вы получаете <b>5<img
-                src="Звезда емодзи.webp" class="emojiI" style="width:16px;height:16px;vertical-align:-2px" alt="★"></b>
-            на баланс.
+            Complete a task and earn <b>5<img src="Звезда емодзи.webp" class="emojiI"
+                style="width:16px;height:16px;vertical-align:-2px" alt="★"></b>
+            to your balance.
           </div>
         </div>
       </div>
@@ -2602,7 +2602,7 @@
           <div class="invGrid" id="invGrid"></div>
 
           <div class="sep"></div>
-          <button class="btn ghost" id="btnSellAll">Продать все</button>
+          <button class="btn ghost" id="btnSellAll">Sell all</button>
         </div>
       </div>
 
@@ -2667,7 +2667,7 @@
         <div class="casePreview">
           <div class="bigImg" id="modalBigImg"></div>
           <div class="name" id="modalName">CASE</div>
-          <div class="desc" id="modalDesc">Открой кейс — получи подарок в инвентарь.</div>
+          <div class="desc" id="modalDesc">Open the case — get a gift in your inventory.</div>
         </div>
 
         <div id="promoSection" style="display:none; padding: 0 14px 14px;">
@@ -2722,7 +2722,7 @@
               <b id="resName">Gift</b>
               <span>
                 <img class="starI" id="starIconRes" alt="★"><span id="resValue">0</span>
-                • добавлено в инвентарь
+                • added to inventory
               </span>
             </div>
           </div>
@@ -2737,7 +2737,7 @@
             </button>
             <div class="sep"></div>
           </div>
-          <button class="btn ghost" id="btnShowContents">Показать содержимое</button>
+          <button class="btn ghost" id="btnShowContents">Show contents</button>
         </div>
       </div>
     </div>
@@ -2757,7 +2757,7 @@
       <div class="modalScroll">
         <div class="list" id="contentsList"></div>
         <div style="padding:0 14px 14px;">
-          <button class="btn ghost" id="closeContentsBtn">Закрыть</button>
+          <button class="btn ghost" id="closeContentsBtn">Close</button>
         </div>
       </div>
     </div>
@@ -2767,7 +2767,7 @@
   <div class="overlay" id="addStarsModal">
     <div class="modal" role="dialog" aria-modal="true" style="padding: 0; display: flex; flex-direction: column;">
       <div class="modalHead" style="padding: 12px 14px 10px; flex: 0 0 auto;">
-        <div class="h">ПОПОЛНЕНИЕ</div>
+        <div class="h">TOP UP</div>
         <div class="xbtn" id="closeAddStars">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
@@ -2779,7 +2779,7 @@
         <div class="walletConnectArea" id="walletConnectArea">
           <button class="tonConnectBtn" id="btnTonConnect">
             <img src="Кошель иконка.webp" alt="Wallet">
-            <span>Подключить кошелек</span>
+            <span>Connect wallet</span>
           </button>
         </div>
 
@@ -2792,14 +2792,14 @@
               <img src="Иконка ТОН.webp" alt="TON">
             </div>
           </div>
-          <div class="balanceLabel">Баланс кошелька</div>
+          <div class="balanceLabel">Wallet balance</div>
           <div class="balanceValue">
             <img src="stars-DBKMczxe.png" class="starI" alt="★">
             <span id="modalBalanceVal">0</span>
           </div>
           <div class="balanceActions">
-            <button class="balBtn white" id="btnModalAdd">Пополнить +</button>
-            <button class="balBtn orange" id="btnModalCases">Кейсы ↑</button>
+            <button class="balBtn white" id="btnModalAdd">Top up +</button>
+            <button class="balBtn orange" id="btnModalCases">Cases ↑</button>
           </div>
         </div>
 
@@ -2810,7 +2810,7 @@
 
       <div class="starsFooter">
         <button class="btnStarBuy" id="btnFinalBuy">
-          Пополнить <img src="Звезда емодзи.webp" class="emojiI" style="width:20px;height:20px;vertical-align:middle"
+          Top Up <img src="Звезда емодзи.webp" class="emojiI" style="width:20px;height:20px;vertical-align:middle"
             alt="★"> <span id="buyBtnVal">25</span>
         </button>
       </div>
@@ -2821,7 +2821,7 @@
   <div class="overlay" id="pickerOverlay">
     <div class="modal">
       <div class="modalHead">
-        <div class="h" id="pickerTitle">Выбери подарок</div>
+        <div class="h" id="pickerTitle">Select a gift</div>
         <div class="xbtn" id="pickerClose">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
@@ -2847,13 +2847,13 @@
       </div>
       <div class="modalScroll">
         <div class="smallHint" id="withdrawDesc" style="margin-top:12px">
-          Скопируй код и отправь боту в чат.
+          Copy the code and send it to the bot in chat.
         </div>
         <div class="codeBox" id="withdrawCode">CODE</div>
         <div style="padding: 12px 14px 14px;">
-          <button class="btn" id="btnCopyCode">Скопировать код</button>
+          <button class="btn" id="btnCopyCode">Copy code</button>
           <div class="sep"></div>
-          <button class="btn ghost" id="btnCloseWithdraw2">Закрыть</button>
+          <button class="btn ghost" id="btnCloseWithdraw2">Close</button>
         </div>
       </div>
     </div>
@@ -2868,7 +2868,7 @@
         <line x1="12" y1="8" x2="12.01" y2="8"></line>
       </svg>
     </div>
-    <div class="toast-text" id="toastText">Сообщение</div>
+    <div class="toast-text" id="toastText">Message</div>
   </div>
 
   <script>
@@ -2935,7 +2935,7 @@
     /********************
      * CONFIG: put your PNG here
      ********************/
-    const STAR_PNG = "stars-DBKMczxe.png"; // <-- вставь свой PNG (путь/имя)
+    const STAR_PNG = "stars-DBKMczxe.png"; // <-- insert your PNG (path/name)
     const TON_ICON = "Иконка ТОН.webp";
     document.getElementById("starIconTop").src = STAR_PNG;
     document.getElementById("starIconModal").src = STAR_PNG;
@@ -2945,9 +2945,17 @@
     /********************
      * Economy / Edge tuning
      ********************/
-    const CASE_EDGE_LOW_BOOST = 1.22;  // кейсы: чаще дешёвые
-    const UPGRADE_EDGE = 0.88;         // апгрейд: шанс ниже базового
-    const SELL_PAYOUT = 0.80;          // продажа: 80%
+    const BUY_BTN_TEXT = "Top up";
+    const COPY_CODE_TEXT = "Copy code";
+    const SELL_ALL_TEXT = "Sell all";
+    const ADDED_TO_INV_TEXT = "added to inventory";
+    const INVALID_CODE_TEXT = "Invalid code!";
+    const SELL_TOAST_TEXT = "Sold";
+    const RESET_TEXT = "Reset";
+    const WIN_TEXT = "WIN!";
+    const CASE_EDGE_LOW_BOOST = 1.22;
+    const UPGRADE_EDGE = 0.88;
+    const SELL_PAYOUT = 0.80;
 
     /********************
      * Storage
@@ -2995,7 +3003,7 @@
         area.innerHTML = `
           <button class="tonConnectBtn" id="btnTonConnect">
             <img src="Кошель иконка.webp" alt="Wallet">
-            <span>Подключить кошелек</span>
+            <span>Connect wallet</span>
           </button>
         `;
         document.getElementById("btnTonConnect").onclick = () => tonConnectUI.connectWallet();
@@ -3108,75 +3116,190 @@
      * IMPORTANT: replace img paths with yours
      ********************/
     const GIFTS = [
-      { id: "toy_bear", name: "Toy Bear", emoji: "🧸", value: 15, img: "Bear.png" },
-      { id: "heart", name: "Heart", emoji: "❤️", value: 15, img: "Heart.png" },
-      { id: "gift", name: "Gift", emoji: "🎁", value: 25, img: "Gift.png" },
+      // === Non-NFT (low prices, often drop in cheap cases) ===
+      { id: "toy_bear", name: "Teddy Bear", emoji: "🧸", value: 15, img: "Bear.png" },
+      { id: "heart", name: "Heart", emoji: "💝", value: 15, img: "Heart.png" },
+      { id: "rose", name: "Rose", emoji: "🌹", value: 25, img: "Роза.png" },
+      { id: "champagne", name: "Champagne", emoji: "🍾", value: 50, img: "Шампань.png" },
       { id: "rocket", name: "Rocket", emoji: "🚀", value: 50, img: "Rocket (2).png" },
-      { id: "bouquet", name: "Bouquet", emoji: "💐", value: 50, img: "Buquet.png" },
-      { id: "diamond", name: "Diamond", emoji: "💎", value: 100, img: "Gem.png" },
-      { id: "lol_pop", name: "Lol pop", emoji: "🍭", value: 235, img: "Frozen.png" },
-      { id: "instant_ramen", name: "Instant Ramen", emoji: "🍜", value: 250, img: "Diamonds.png" },
-      { id: "ice_cream", name: "Ice Cream", emoji: "🍦", value: 265, img: "Crystal.png" },
-      { id: "lunar_snake", name: "Lunar Snake", emoji: "🐍", value: 265, img: "Arctic Viper.png" },
-      { id: "easter_egg", name: "Easter Egg", emoji: "🥚", value: 385, img: "Frosted.png" },
-      { id: "input_key", name: "Input Key", emoji: "🔑", value: 465, img: "Chill Key.png" },
-      { id: "love_candle", name: "Love Candle", emoji: "🕯️", value: 935, img: "Vivid Foam.png" },
-      { id: "top_hat", name: "Top Hat", emoji: "🎩", value: 925, img: "Elegance.png" }
+      { id: "cake", name: "Cake", emoji: "🎂", value: 50, img: "Торт за 50зв.png" },
+      { id: "diamond", name: "Diamond", emoji: "💎", value: 100, img: "Алмаз.png" },
+      { id: "ring", name: "Ring", emoji: "💍", value: 100, img: "Кольцо за 100 старс.png" },
+      { id: "trophy", name: "Trophy", emoji: "🏆", value: 100, img: "Кубок.png" },
+      // === NFT gifts (expensive, rarely drop) ===
+      { id: "bday_candle", name: "B-Day Candle", emoji: "🕯️", value: 595, img: "B-Day Candle.png" },
+      { id: "lol_pop", name: "Lol Pop", emoji: "🍭", value: 585, img: "Lol Pop.png" },
+      { id: "spy_agaric", name: "Spy Agaric", emoji: "🍄", value: 585, img: "Spy Agaric.png" },
+      { id: "witch_hat", name: "Witch Hat", emoji: "🧙", value: 595, img: "Witch Hat.png" },
+      { id: "hex_pot", name: "Hex Pot", emoji: "⚱️", value: 600, img: "Hex Pot.png" },
+      { id: "hypno_lollipop", name: "Hypno Lollipop", emoji: "🍭", value: 595, img: "Hypno Lollipop.png" },
+      { id: "spiced_wine", name: "Spiced Wine", emoji: "🍷", value: 595, img: "Spiced Wine.png" },
+      { id: "snoop_dogg", name: "Snoop Dogg", emoji: "🕵️", value: 595, img: "Snoop Dogg.png" },
+      { id: "ice_cream", name: "Ice Cream", emoji: "🍦", value: 595, img: "Ice Cream.png" },
+      { id: "jack_in_the_box", name: "Jack-in-the-Box", emoji: "🎪", value: 595, img: "Jack-in-the-Box.png" },
+      { id: "happy_brownie", name: "Happy Brownie", emoji: "🥩", value: 595, img: "Happy Brownie.png" },
+      { id: "fresh_socks", name: "Fresh Socks", emoji: "🧦", value: 595, img: "Fresh Socks.png" },
+      { id: "bow_tie", name: "Bow Tie", emoji: "🎠", value: 595, img: "Bow Tie.png" },
+      { id: "swag_bag", name: "Swag Bag", emoji: "💰", value: 625, img: "Swag Bag.png" },
+      { id: "eternal_candle", name: "Eternal Candle", emoji: "🕯️", value: 625, img: "Eternal Candle.png" },
+      { id: "light_sword", name: "Light Sword", emoji: "🗡️", value: 625, img: "Light Sword.png" },
+      { id: "jolly_chimp", name: "Jolly Chimp", emoji: "🐵", value: 695, img: "Jolly Chimp.png" },
+      { id: "evil_eye", name: "Evil Eye", emoji: "👁️", value: 725, img: "Evil Eye.png" },
+      { id: "instant_ramen", name: "Instant Ramen", emoji: "🍜", value: 575, img: "Instant Ramen.png" },
+      { id: "snoop_cigar", name: "Snoop Cigar", emoji: "🚹", value: 1125, img: "Snoop Cigar.png" },
+      { id: "love_candle", name: "Love Candle", emoji: "🕯️", value: 1195, img: "Love Candle.png" },
+      { id: "top_hat", name: "Top Hat", emoji: "🎩", value: 1195, img: "Top Hat.png" },
+      { id: "flying_broom", name: "Flying Broom", emoji: "🧹", value: 1095, img: "Flying Broom.png" },
+      { id: "crystal_ball", name: "Crystal Ball", emoji: "🔮", value: 1095, img: "Crystal Ball.png" },
+      { id: "sakura_flower", name: "Sakura Flower", emoji: "🌸", value: 1095, img: "Sakura Flower.png" },
+      { id: "skull_flower", name: "Skull Flower", emoji: "💀", value: 1250, img: "Skull Flower.png" },
+      { id: "record_player", name: "Record Player", emoji: "📻", value: 1395, img: "Record Player.png" },
+      { id: "mad_pumpkin", name: "Mad Pumpkin", emoji: "🎃", value: 1395, img: "Mad Pumpkin.png" },
+      { id: "trapped_heart", name: "Trapped Heart", emoji: "💖", value: 1549, img: "Trapped Heart.png" },
+      { id: "desk_calendar", name: "Desk Calendar", emoji: "📅", value: 595, img: "Desk Calendar.png" },
+      { id: "homemade_cake", name: "Homemade Cake", emoji: "🎂", value: 595, img: "Homemade Cake.png" },
+      { id: "berry_box", name: "Berry Box", emoji: "🍓", value: 825, img: "Berry Box.png" },
+      { id: "hanging_star", name: "Hanging Star", emoji: "⭐", value: 915, img: "Hanging Star.png" },
+      { id: "jelly_bunny", name: "Jelly Bunny", emoji: "🐰", value: 785, img: "Jelly Bunny.png" },
+      // === Очень дорогие НФТ (выпадают КРАЙНЕ редко, только в дорогих кейсах) ===
+      { id: "voodoo_doll", name: "Voodoo Doll", emoji: "🎎", value: 3095, img: "Voodoo Doll.png" },
+      { id: "sharp_tongue", name: "Sharp Tongue", emoji: "👅", value: 4495, img: "Sharp Tongue.png" },
+      { id: "electric_skull", name: "Electric Skull", emoji: "💀", value: 3249, img: "Electric Skull.png" },
+      { id: "vintage_cigar", name: "Vintage Cigar", emoji: "🚹", value: 3125, img: "Vintage Cigar.png" },
+      { id: "eternal_rose", name: "Eternal Rose", emoji: "🌹", value: 2525, img: "Eternal Rose.png" },
+      { id: "kissed_frog", name: "Kissed Frog", emoji: "🐸", value: 6025, img: "Kissed Frog.png" },
+      { id: "gem_signet", name: "Gem Signet", emoji: "💍", value: 6795, img: "Gem Signet.png" },
+      { id: "genie_lamp", name: "Genie Lamp", emoji: "🪔", value: 5225, img: "Genie Lamp.png" },
+      { id: "ion_gem", name: "Ion Gem", emoji: "💎", value: 10400, img: "Ion Gem.png" },
+      { id: "mini_oscar", name: "Mini Oscar", emoji: "🏆", value: 9925, img: "Mini Oscar.png" },
+      { id: "perfume_bottle", name: "Perfume Bottle", emoji: "🧴", value: 9825, img: "Perfume Bottle.png" },
+      { id: "magic_potion", name: "Magic Potion", emoji: "🧪", value: 8335, img: "Magic Potion.png" },
+      { id: "artisan_brick", name: "Artisan Brick", emoji: "🧱", value: 9925, img: "Artisan Brick.png" }
     ];
 
     /********************
      * Cases (you can change prices/images if needed)
      ********************/
     const CASES = [
+      // --- FREE (промокод) --- почти только не-НФТ ---
       {
-        id: "free", title: "Free case", price: 0, promo: ["VOCO26", "MARCH", "SPRING", "8MARCH", "BDAY"], emoji: "🎁", img: "Free case.PNG", color: "#007aff",
+        id: "free", title: "Free case", price: 0, promo: ["VOCO26", "MARCH", "SPRING", "8MARCH", "BDAY", "POLIK", "GIFTS", "BUTTERFLY"], emoji: "🎁", img: "Free case.PNG", color: "#007aff",
         desc: "Enter the secret code to open this case for free.",
-        pool: [{ gift: "toy_bear", w: 30 }, { gift: "heart", w: 30 }, { gift: "gift", w: 15 }, { gift: "rocket", w: 5 }, { gift: "bouquet", w: 5 }, { gift: "diamond", w: 2 }]
+        pool: [
+          { gift: "toy_bear", w: 50 }, { gift: "heart", w: 50 }, { gift: "rose", w: 20 },
+          { gift: "champagne", w: 10 }, { gift: "rocket", w: 10 }, { gift: "cake", w: 10 },
+          { gift: "diamond", w: 10 }, { gift: "ring", w: 5 }, { gift: "trophy", w: 5 },
+          { gift: "lol_pop", w: 1 }, { gift: "ice_cream", w: 1 }, { gift: "spiced_wine", w: 1 }
+        ]
       },
+      // --- 45★ Love Potion --- дешёвые + чуть НФТ 600★ ---
       {
         id: "quick", title: "Love potion case", price: 45, badge: "HOT", emoji: "⚡", img: "Love potion case.webp", color: "#ffcc00",
-        desc: "Быстрый кейс для старта.",
-        pool: [{ gift: "toy_bear", w: 24 }, { gift: "heart", w: 24 }, { gift: "gift", w: 20 }, { gift: "rocket", w: 8 }, { gift: "bouquet", w: 8 }, { gift: "diamond", w: 4 }]
+        desc: "Fast case for starters.",
+        pool: [
+          { gift: "toy_bear", w: 35 }, { gift: "heart", w: 35 }, { gift: "rose", w: 20 },
+          { gift: "champagne", w: 10 }, { gift: "rocket", w: 10 }, { gift: "cake", w: 10 },
+          { gift: "diamond", w: 10 }, { gift: "ring", w: 10 }, { gift: "trophy", w: 10 },
+          { gift: "lol_pop", w: 1 }, { gift: "spy_agaric", w: 1 }, { gift: "witch_hat", w: 1 },
+          { gift: "hex_pot", w: 1 }, { gift: "hypno_lollipop", w: 1 }, { gift: "ice_cream", w: 1 }
+        ]
       },
+      // --- 69★ Signet ring --- non-NFT + нфт до 750★ ---
       {
         id: "blue", title: "Signet ring case", price: 69, badge: "🔥", emoji: "💧", img: "Signet ring case.webp", color: "#0095ff",
-        desc: "Уклон в средние призы.",
-        pool: [{ gift: "toy_bear", w: 18 }, { gift: "heart", w: 18 }, { gift: "gift", w: 14 }, { gift: "rocket", w: 7 }, { gift: "bouquet", w: 7 }, { gift: "diamond", w: 4 }, { gift: "lol_pop", w: 1 }]
+        desc: "Mid-tier prizes.",
+        pool: [
+          { gift: "toy_bear", w: 34 }, { gift: "heart", w: 34 }, { gift: "rose", w: 18 },
+          { gift: "champagne", w: 14 }, { gift: "rocket", w: 12 },
+          { gift: "diamond", w: 14 }, { gift: "ring", w: 10 }, { gift: "trophy", w: 10 },
+          { gift: "lol_pop", w: 1 }, { gift: "spy_agaric", w: 1 }, { gift: "witch_hat", w: 1 },
+          { gift: "hex_pot", w: 1 }, { gift: "evil_eye", w: 1 }, { gift: "ice_cream", w: 1 },
+          { gift: "spiced_wine", w: 1 }, { gift: "instant_ramen", w: 1 }
+        ]
       },
+      // --- 99★ Swiss watch --- non-NFT + нфт до 900★ ---
       {
         id: "sweet", title: "Swiss watch case", price: 99, badge: "NEW", emoji: "🍭", img: "Swiss watch case.webp", color: "#ff2d55",
-        desc: "Сладкая темка.",
-        pool: [{ gift: "toy_bear", w: 16 }, { gift: "heart", w: 16 }, { gift: "gift", w: 14 }, { gift: "rocket", w: 10 }, { gift: "bouquet", w: 10 }, { gift: "diamond", w: 6 }, { gift: "lol_pop", w: 1 }, { gift: "instant_ramen", w: 1 }]
+        desc: "Sweet theme.",
+        pool: [
+          { gift: "toy_bear", w: 32 }, { gift: "heart", w: 32 }, { gift: "rose", w: 12 },
+          { gift: "champagne", w: 10 }, { gift: "rocket", w: 10 },
+          { gift: "diamond", w: 14 }, { gift: "ring", w: 12 }, { gift: "trophy", w: 12 },
+          { gift: "lol_pop", w: 1 }, { gift: "spy_agaric", w: 1 }, { gift: "swag_bag", w: 1 },
+          { gift: "eternal_candle", w: 1 }, { gift: "snoop_dogg", w: 1 }, { gift: "happy_brownie", w: 1 },
+          { gift: "jelly_bunny", w: 1 }, { gift: "berry_box", w: 1 }, { gift: "evil_eye", w: 1 }
+        ]
       },
+      // --- 160★ Scared cat --- non-NFT + нфт до 1100★ ---
       {
         id: "classic", title: "Scared cat case", price: 160, badge: "NEW", emoji: "🎁", img: "Scared cat case.webp", color: "#4cd964",
-        desc: "Балансированный кейс.",
-        pool: [{ gift: "toy_bear", w: 14 }, { gift: "heart", w: 14 }, { gift: "gift", w: 12 }, { gift: "rocket", w: 12 }, { gift: "bouquet", w: 12 }, { gift: "diamond", w: 8 }, { gift: "lol_pop", w: 2 }, { gift: "instant_ramen", w: 2 }, { gift: "ice_cream", w: 2 }]
+        desc: "Balanced case.",
+        pool: [
+          { gift: "diamond", w: 20 }, { gift: "ring", w: 20 }, { gift: "trophy", w: 20 },
+          { gift: "toy_bear", w: 30 }, { gift: "heart", w: 30 }, { gift: "rose", w: 30 },
+          { gift: "lol_pop", w: 1 }, { gift: "spy_agaric", w: 1 }, { gift: "instant_ramen", w: 1 },
+          { gift: "swag_bag", w: 1 }, { gift: "jolly_chimp", w: 1 }, { gift: "evil_eye", w: 1 },
+          { gift: "flying_broom", w: 1 }, { gift: "crystal_ball", w: 1 }, { gift: "sakura_flower", w: 1 }
+        ]
       },
+      // --- 235★ Astral shard --- нфт до 1300★ ---
       {
         id: "boost", title: "Astral shard case", price: 235, badge: "LIMITED", emoji: "🚀", img: "Astral shard case.webp", color: "#ff3b30",
-        desc: "Шанс на дорогие выше.",
-        pool: [{ gift: "gift", w: 14 }, { gift: "rocket", w: 8 }, { gift: "bouquet", w: 8 }, { gift: "diamond", w: 6 }, { gift: "lol_pop", w: 2 }, { gift: "instant_ramen", w: 2 }, { gift: "ice_cream", w: 1 }, { gift: "lunar_snake", w: 2 }, { gift: "easter_egg", w: 1 }, { gift: "input_key", w: 1 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
+        desc: "Higher chance at rare prizes.",
+        pool: [
+          { gift: "bear", w: 14 }, { gift: "diamond", w: 14 }, { gift: "ring", w: 12 }, { gift: "trophy", w: 12 },
+          { gift: "lol_pop", w: 1 }, { gift: "spy_agaric", w: 1 }, { gift: "instant_ramen", w: 1 },
+          { gift: "hex_pot", w: 1 }, { gift: "spiced_wine", w: 1 }, { gift: "snoop_dogg", w: 1 },
+          { gift: "jolly_chimp", w: 1 }, { gift: "evil_eye", w: 1 }, { gift: "jelly_bunny", w: 1 },
+          { gift: "flying_broom", w: 1 }, { gift: "crystal_ball", w: 1 }, { gift: "sakura_flower", w: 1 }, { gift: "skull_flower", w: 1 }
+        ]
       },
+      // --- 399★ Heroic helmet --- нфт до 1500★ ---
       {
         id: "rare", title: "Heroic helmet case", price: 399, badge: "HOT", emoji: "🌙", img: "Heroic helmet case.webp", color: "#af52de",
-        desc: "Фарм Nft подарков",
-        pool: [{ gift: "diamond", w: 16 }, { gift: "lol_pop", w: 7 }, { gift: "instant_ramen", w: 7 }, { gift: "ice_cream", w: 7 }, { gift: "lunar_snake", w: 7 }, { gift: "easter_egg", w: 5 }, { gift: "input_key", w: 4 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
+        desc: "Farm NFT gifts.",
+        pool: [
+          { gift: "bear", w: 10 }, { gift: "diamond", w: 10 }, { gift: "ring", w: 8 }, { gift: "trophy", w: 8 },
+          { gift: "lol_pop", w: 1 }, { gift: "spy_agaric", w: 1 }, { gift: "spiced_wine", w: 1 },
+          { gift: "evil_eye", w: 1 }, { gift: "jolly_chimp", w: 1 }, { gift: "jelly_bunny", w: 1 },
+          { gift: "flying_broom", w: 1 }, { gift: "crystal_ball", w: 1 }, { gift: "sakura_flower", w: 1 },
+          { gift: "skull_flower", w: 1 }, { gift: "record_player", w: 1 }, { gift: "mad_pumpkin", w: 1 }, { gift: "trapped_heart", w: 1 }
+        ]
       },
-      {
-        id: "key", title: "Nail braclet case", price: 452, badge: "🔥", emoji: "🔑", img: "Nail braclet case.webp", color: "#ff9500",
-        desc: "Уклон в Love Candle.",
-        pool: [{ gift: "gift", w: 14 }, { gift: "rocket", w: 10 }, { gift: "bouquet", w: 10 }, { gift: "diamond", w: 10 }, { gift: "ice_cream", w: 4 }, { gift: "lunar_snake", w: 4 }, { gift: "easter_egg", w: 1 }, { gift: "input_key", w: 1 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
-      },
-      {
-        id: "big", title: "Precious peach case", price: 549, badge: "LIMITED", emoji: "👑", img: "Precious peach case.webp", big: true, color: "#5ac8fa",
-        desc: "Только нфт",
-        pool: [{ gift: "lol_pop", w: 12 }, { gift: "instant_ramen", w: 12 }, { gift: "ice_cream", w: 11 }, { gift: "lunar_snake", w: 11 }, { gift: "easter_egg", w: 6 }, { gift: "input_key", w: 3 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }]
-      },
+      // --- 419★ Durove cap --- нфт до 1500★ ---
       {
         id: "hat", title: "Durove cap case", price: 419, badge: "🔥", emoji: "🎩", img: "Durove cap case.webp", color: "#5856d6",
-        desc: "Уклон в Top Hat и Love Candle.",
-        pool: [{ gift: "diamond", w: 20 }, { gift: "easter_egg", w: 1 }, { gift: "input_key", w: 3 }, { gift: "top_hat", w: 1 }, { gift: "love_candle", w: 1 }, { gift: "lol_pop", w: 8 }, { gift: "instant_ramen", w: 8 }, { gift: "ice_cream", w: 8 }]
+        desc: "Top Hat & Love Candle focus.",
+        pool: [
+          { gift: "diamond", w: 12 }, { gift: "ring", w: 10 }, { gift: "trophy", w: 10 },
+          { gift: "snoop_cigar", w: 1 }, { gift: "love_candle", w: 1 }, { gift: "top_hat", w: 1 },
+          { gift: "flying_broom", w: 1 }, { gift: "crystal_ball", w: 1 }, { gift: "sakura_flower", w: 1 },
+          { gift: "skull_flower", w: 1 }, { gift: "record_player", w: 1 }, { gift: "mad_pumpkin", w: 1 }, { gift: "trapped_heart", w: 1 }
+        ]
+      },
+      // --- 452★ Nail braclet --- нфт до 1500★ ---
+      {
+        id: "key", title: "Nail braclet case", price: 452, badge: "🔥", emoji: "🔑", img: "Nail braclet case.webp", color: "#ff9500",
+        desc: "Love Candle focus.",
+        pool: [
+          { gift: "diamond", w: 10 }, { gift: "ring", w: 10 }, { gift: "trophy", w: 10 },
+          { gift: "lol_pop", w: 1 }, { gift: "ice_cream", w: 1 }, { gift: "spy_agaric", w: 1 },
+          { gift: "evil_eye", w: 1 }, { gift: "berry_box", w: 1 }, { gift: "jelly_bunny", w: 1 }, { gift: "hanging_star", w: 1 },
+          { gift: "flying_broom", w: 1 }, { gift: "crystal_ball", w: 1 }, { gift: "sakura_flower", w: 1 },
+          { gift: "skull_flower", w: 1 }, { gift: "record_player", w: 1 }, { gift: "mad_pumpkin", w: 1 }, { gift: "trapped_heart", w: 1 }
+        ]
+      },
+      // --- 549★ Precious peach --- самый дорогой, нфт до 1500★ ---
+      {
+        id: "big", title: "Precious peach case", price: 899, badge: "LIMITED", emoji: "👑", img: "Precious peach case.webp", big: true, color: "#5ac8fa",
+        desc: "NFT gifts up to 1500★",
+        pool: [
+          { gift: "lol_pop", w: 10 }, { gift: "spy_agaric", w: 10 }, { gift: "spiced_wine", w: 6 },
+          { gift: "snoop_dogg", w: 8 }, { gift: "ice_cream", w: 10 }, { gift: "instant_ramen", w: 10 },
+          { gift: "evil_eye", w: 2 }, { gift: "jelly_bunny", w: 2 }, { gift: "berry_box", w: 2 }, { gift: "hanging_star", w: 2 },
+          { gift: "flying_broom", w: 1 }, { gift: "crystal_ball", w: 1 }, { gift: "sakura_flower", w: 1 },
+          { gift: "skull_flower", w: 1 }, { gift: "record_player", w: 1 }, { gift: "mad_pumpkin", w: 1 }, { gift: "trapped_heart", w: 1 }
+        ]
       }
     ];
 
@@ -3195,9 +3318,25 @@
      * Вот префиксы: по ним бот сможет понимать подарок.
      ********************/
     const WITHDRAW_PREFIX = {
-      toy_bear: "TB", heart: "HT", gift: "GF", rocket: "RC", bouquet: "BQ", diamond: "DM",
-      lol_pop: "LP", instant_ramen: "IR", ice_cream: "IC", lunar_snake: "LS", easter_egg: "EE",
-      input_key: "IK", love_candle: "LC", top_hat: "TH"
+      // Non-NFT
+      toy_bear: "TB", heart: "HRT", rose: "RS", champagne: "CHP", rocket: "RKT",
+      cake: "CK", bear: "BR", diamond: "DIA", ring: "RNG", trophy: "TRP",
+      // NFT до 1500★
+      bday_candle: "BDC", desk_calendar: "DC", homemade_cake: "HC", sakura_flower: "SF",
+      lol_pop: "LP", spy_agaric: "SA", eternal_candle: "EC", witch_hat: "WH",
+      flying_broom: "FB", crystal_ball: "CB", skull_flower: "SKF", trapped_heart: "TH",
+      mad_pumpkin: "MP", evil_eye: "EE", hex_pot: "HP",
+      hypno_lollipop: "HL", record_player: "RP", berry_box: "BB",
+      love_candle: "LC", hanging_star: "HS", jelly_bunny: "JB", spiced_wine: "SW",
+      snoop_dogg: "SD", swag_bag: "SB", snoop_cigar: "SC", ice_cream: "IC",
+      jack_in_the_box: "JITB", jolly_chimp: "JC", happy_brownie: "HB",
+      instant_ramen: "IR", top_hat: "THAT", bow_tie: "BT", light_sword: "LS",
+      fresh_socks: "FS", eternal_candle: "ECDL",
+      // Дорогие НФТ
+      voodoo_doll: "VD", sharp_tongue: "ST", ion_gem: "IG", kissed_frog: "KF",
+      electric_skull: "ES", magic_potion: "MPOT", vintage_cigar: "VC", gem_signet: "GS",
+      eternal_rose: "ER", mini_oscar: "MO", perfume_bottle: "PB",
+      genie_lamp: "GL", artisan_brick: "AB"
     };
 
     /********************
@@ -3601,10 +3740,17 @@
      ********************/
     function initLiveFeed() {
       const liveList = document.getElementById("liveList");
-      const expensiveGifts = GIFTS.filter(g => g.value >= 50);
+      const feedGifts = GIFTS.filter(g => g.value >= 10);
 
       function addDrop() {
-        const gift = expensiveGifts[Math.floor(Math.random() * expensiveGifts.length)];
+        const rnd = Math.random();
+        // Give normal gifts higher chance to appear in live feed, expensive ones lower chance
+        let gift = feedGifts[Math.floor(Math.random() * feedGifts.length)];
+        if (gift.value >= 1500 && rnd > 0.1) {
+          // If it randomly picked an expensive one, 90% chance to reroll among cheaper ones
+          const cheaper = feedGifts.filter(g => g.value < 1500);
+          if (cheaper.length > 0) gift = cheaper[Math.floor(Math.random() * cheaper.length)];
+        }
         const item = document.createElement("div");
         item.className = "liveItem";
         item.innerHTML = gift.img
@@ -3623,7 +3769,11 @@
 
       // Populate some initial drops
       for (let i = 0; i < 6; i++) {
-        const gift = expensiveGifts[Math.floor(Math.random() * expensiveGifts.length)];
+        let gift = feedGifts[Math.floor(Math.random() * feedGifts.length)];
+        if (gift.value >= 1500) {
+          const cheaper = feedGifts.filter(g => g.value < 1500);
+          if (cheaper.length > 0) gift = cheaper[Math.floor(Math.random() * cheaper.length)];
+        }
         const item = document.createElement("div");
         item.className = "liveItem";
         item.innerHTML = gift.img
@@ -3769,11 +3919,11 @@
 
         if (i < openCount - 1) {
           await sleep(300);
-          rouletteHint.textContent = `Ещё ${openCount - 1 - i}…`;
+          rouletteHint.textContent = `${openCount - 1 - i} more…`;
         }
       }
 
-      rouletteHint.textContent = "Готово";
+      rouletteHint.textContent = "Done!";
       btnOpenCase.disabled = false;
       pulse(".resultToast");
     });
@@ -3851,7 +4001,20 @@
       const base = [];
       caseObj.pool.forEach(p => {
         const g = getGift(p.gift);
-        for (let k = 0; k < Math.max(1, Math.round(p.w / 8)); k++) base.push(g);
+        if (g) {
+          // Visually respect the drop rate penalty applied in weightedPick
+          let rareMult = 1;
+          if (g.value >= 700) rareMult = 0.5;
+          if (g.value >= 1000) rareMult = 0.05;
+          if (g.value >= 3000) rareMult = 0.01;
+          if (g.value >= 5000) rareMult = 0.005;
+          if (g.value >= 8000) rareMult = 0.001;
+
+          let visualWeight = Math.max(1, Math.round((p.w * rareMult) / 8));
+          if (rareMult < 1 && Math.random() > rareMult * 10) visualWeight = 0; // Extremely rare items won't spam the visual reel
+
+          for (let k = 0; k < visualWeight; k++) base.push(g);
+        }
       });
 
       const strip = [];
@@ -3935,7 +4098,7 @@
         .sort((a, b) => b.value - a.value);
 
       if (entries.length === 0) {
-        invGrid.innerHTML = `<div class="upHint" style="grid-column: span 2; opacity: 0.5;">Ваш инвентарь пуст</div>`;
+        invGrid.innerHTML = `<div class="upHint" style="grid-column: span 2; opacity: 0.5;">Your inventory is empty</div>`;
       } else {
         invGrid.innerHTML = "";
         entries.forEach(it => {
@@ -3959,8 +4122,8 @@
             </div>
 
             <div class="giftActions">
-              <button class="btnSmall" data-act="sell" data-id="${escapeAttr(it.id)}">Продать</button>
-              <button class="btnSmall primary" data-act="withdraw" data-id="${escapeAttr(it.id)}">Вывести</button>
+              <button class="btnSmall" data-act="sell" data-id="${escapeAttr(it.id)}">Sell</button>
+              <button class="btnSmall primary" data-act="withdraw" data-id="${escapeAttr(it.id)}">Withdraw</button>
             </div>
           `;
           invGrid.appendChild(el);
@@ -4000,7 +4163,7 @@
     btnSellAll.addEventListener("click", () => {
       const entries = Object.entries(inventory).filter(([_, q]) => q > 0);
       if (entries.length === 0) {
-        showToast("Нечего продавать");
+        showToast("Nothing to sell");
         return;
       }
 
@@ -4024,7 +4187,7 @@
       renderInventory();
       renderUpgrade();
 
-      showToast(`Продано всё: +${formatStars(total)}★`);
+      showToast(`Sold all: +${formatStars(total)}★`);
       pulse(".wallet");
     });
 
@@ -4517,7 +4680,7 @@
       const btn = e.currentTarget;
       if (isTonMode) {
         if (!tonConnectUI.connected) {
-          showToast("Сначала подключите кошелек");
+          showToast("Please connect your wallet first");
           return;
         }
 
@@ -4537,7 +4700,7 @@
         console.log("TON Transaction request:", transaction);
 
         try {
-          showToast("Ожидание подтверждения...");
+          showToast("Waiting for confirmation...");
           const result = await tonConnectUI.sendTransaction(transaction);
 
           // Strict 10-second verification delay
@@ -4547,15 +4710,15 @@
           btn.style.pointerEvents = "none";
 
           for (let i = 10; i > 0; i--) {
-            showToast(`Проверка транзакции... (${i}с)`);
+            showToast(`Verifying transaction... (${i}s)`);
 
             // Try updating the specific value span if it exists in the button
             const valSpan = btn.querySelector("#buyBtnVal");
             if (valSpan) {
-              valSpan.textContent = `Проверка (${i}с)`;
+              valSpan.textContent = `Verifying (${i}s)`;
             } else {
               // Extract emoji and add text if it's the other button
-              btn.textContent = `Проверка (${i}с)`;
+              btn.textContent = `Verifying (${i}s)`;
             }
 
             await sleep(1000);
@@ -4592,13 +4755,13 @@
           renderStars();
           document.getElementById("modalBalanceVal").textContent = formatStars(stars);
 
-          showToast(`Успешно! +${selectedStarsAmount}★`);
+          showToast(`Success! +${selectedStarsAmount}★`);
           pulse(".wallet");
           try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
         } catch (e) {
           console.error("TON transaction error", e);
-          const errMsg = e?.message || e?.toString() || "Ошибка транзакции";
-          showToast("Ошибка: " + errMsg);
+          const errMsg = e?.message || e?.toString() || "Transaction error";
+          showToast("Error: " + errMsg);
           try { tg?.HapticFeedback?.notificationOccurred("error"); } catch (e) { }
         }
         return;
@@ -4606,11 +4769,11 @@
 
       const link = INVOICE_LINKS[selectedStarsAmount];
       if (!link || link.startsWith("PASTE_")) {
-        showToast("Для этой суммы еще не добавлена ссылка");
+        showToast("Invoice link not set for this amount");
         return;
       }
 
-      showToast("Открываю invoice…");
+      showToast("Opening invoice…");
       try {
         if (tg?.openInvoice) tg.openInvoice(link);
         else window.open(link, "_blank");
@@ -4666,7 +4829,15 @@
         const g = getGift(p.gift);
         const t = (g.value - minV) / Math.max(1, (maxV - minV));
         const mult = lerp(CASE_EDGE_LOW_BOOST, 1 / CASE_EDGE_LOW_BOOST, t);
-        return { gift: p.gift, w: p.w * mult };
+
+        let rarePenalty = 1;
+        if (g.value >= 700) rarePenalty = 0.5;
+        if (g.value >= 1000) rarePenalty = 0.05;
+        if (g.value >= 3000) rarePenalty = 0.01;
+        if (g.value >= 5000) rarePenalty = 0.005;
+        if (g.value >= 8000) rarePenalty = 0.001;
+
+        return { gift: p.gift, w: p.w * mult * rarePenalty };
       });
 
       const sum = adjusted.reduce((s, p) => s + p.w, 0);
