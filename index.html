@@ -2936,22 +2936,32 @@
       
       // Получить значения safe area от Telegram WebApp
       const tg = window.Telegram?.WebApp;
+      let topInset = 0;
       if (tg && tg.safeAreaInset) {
-        root.style.setProperty('--safeTop', tg.safeAreaInset.top + 'px');
+        topInset = tg.safeAreaInset.top;
+        root.style.setProperty('--safeTop', topInset + 'px');
         root.style.setProperty('--safeBottom', tg.safeAreaInset.bottom + 'px');
         root.style.setProperty('--safeLeft', tg.safeAreaInset.left + 'px');
         root.style.setProperty('--safeRight', tg.safeAreaInset.right + 'px');
+      } else {
+        // fallback to CSS env values if tg not available
+        topInset = parseInt(getComputedStyle(root).getPropertyValue('--safeTop')) || 0;
       }
       
-      // Также обновить через viewport API если доступно
-      const topInset = parseInt(getComputedStyle(root).getPropertyValue('--safeTop')) || 0;
-      const bottomInset = parseInt(getComputedStyle(root).getPropertyValue('--safeBottom')) || 0;
-      
-      // Применить к контейнеру приложения
+      // Применить к элементам
       const app = document.querySelector('.app');
       if (app) {
         app.style.paddingTop = topInset + 'px';
-        app.style.paddingBottom = bottomInset + 'px';
+        // keep existing bottom padding unaffected
+      }
+      const topbar = document.querySelector('.topbar');
+      if (topbar) {
+        topbar.style.top = topInset + 'px';
+      }
+      // adjust content padding based on topInset
+      const content = document.querySelector('.content');
+      if (content) {
+        content.style.paddingTop = (topInset + 70) + 'px';
       }
     }
 
