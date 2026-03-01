@@ -103,7 +103,7 @@
     /* ===== TOP BAR ===== */
     .topbar {
       position: fixed;
-      top: var(--safeTop, 0px);
+      top: var(--safeTop, 0px) !important;
       left: 0;
       right: 0;
       z-index: 1000;
@@ -3002,6 +3002,10 @@
         setTimeout(() => {
           updateSafeArea();
         }, 100);
+
+        // Пересчитывать при изменении размера окна
+        window.addEventListener('resize', updateSafeArea);
+        document.addEventListener('DOMContentLoaded', updateSafeArea);
       }
     } catch (e) { console.log('Telegram WebApp init error:', e); }
 
