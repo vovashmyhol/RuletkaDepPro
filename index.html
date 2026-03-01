@@ -103,11 +103,11 @@
     /* ===== TOP BAR ===== */
     .topbar {
       position: fixed;
-      top: 0;
+      top: var(--safeTop, 0px);
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: calc(var(--safeTop, 0px) + 16px) 16px 14px;
+      padding: 16px 16px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -195,7 +195,7 @@
     .content {
     flex: 1;
     overflow: auto;
-    padding: calc(100px + var(--safeTop, 0px)) 14px 110px;
+    padding: calc(70px + var(--safeTop, 0px)) 14px 110px;
     -webkit-overflow-scrolling: touch;
 }
 
