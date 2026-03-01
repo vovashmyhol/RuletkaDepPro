@@ -38,6 +38,8 @@
 
       --safeTop: env(safe-area-inset-top, 0px);
       --safeBottom: env(safe-area-inset-bottom, 0px);
+      --safeLeft: env(safe-area-inset-left, 0px);
+      --safeRight: env(safe-area-inset-right, 0px);
     }
 
     * {
@@ -105,7 +107,7 @@
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: 100px 16px 14px;
+      padding: calc(var(--safeTop, 0px) + 12px) 16px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -2927,10 +2929,62 @@
 
   <script>
     /********************
+     * Update Safe Area Insets
+     ********************/
+    function updateSafeArea() {
+      const root = document.documentElement;
+      
+      // Получить значения safe area от Telegram WebApp
+      const tg = window.Telegram?.WebApp;
+      if (tg && tg.safeAreaInset) {
+        root.style.setProperty('--safeTop', tg.safeAreaInset.top + 'px');
+        root.style.setProperty('--safeBottom', tg.safeAreaInset.bottom + 'px');
+        root.style.setProperty('--safeLeft', tg.safeAreaInset.left + 'px');
+        root.style.setProperty('--safeRight', tg.safeAreaInset.right + 'px');
+      }
+      
+      // Также обновить через viewport API если доступно
+      const topInset = parseInt(getComputedStyle(root).getPropertyValue('--safeTop')) || 0;
+      const bottomInset = parseInt(getComputedStyle(root).getPropertyValue('--safeBottom')) || 0;
+      
+      // Применить к контейнеру приложения
+      const app = document.querySelector('.app');
+      if (app) {
+        app.style.paddingTop = topInset + 'px';
+        app.style.paddingBottom = bottomInset + 'px';
+      }
+    }
+
+    /********************
      * Telegram init
      ********************/
     const tg = window.Telegram?.WebApp;
-    try { tg?.ready(); tg?.expand(); } catch (e) { }
+    try {
+      if (tg) {
+        // Инициализация WebApp
+        tg.ready();
+        
+        // Расширить приложение на весь экран
+        tg.expand();
+        
+        // Отключить вертикальный свайп (для лучшей работы fullscreen)
+        tg.disableVerticalSwipes();
+        
+        // Установить тему на темную
+        if (tg.setHeaderColor) tg.setHeaderColor('transparent');
+        if (tg.setBackgroundColor) tg.setBackgroundColor('#06080d');
+        
+        // Обновить safe area при изменении размера
+        if (tg.onEvent) {
+          tg.onEvent('viewportChanged', () => {
+            updateSafeArea();
+          });
+        }
+        
+        // Сразу обновить safe area
+        updateSafeArea();
+      }
+    } catch (e) { console.log('Telegram WebApp init error:', e); }
 
     /********************
      * CONFIG: put your PNG here
