@@ -106,7 +106,7 @@
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: calc(var(--safeTop, 40px) + 12px) 16px 14px;
+      padding: calc(var(--safeTop, 45px) + 20px) 16px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -194,7 +194,7 @@
     .content {
       flex: 1;
       overflow: auto;
-      padding: calc(70px + var(--safeTop, 40px)) 14px 110px;
+      padding: calc(85px + var(--safeTop, 45px)) 14px 110px;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -2936,8 +2936,9 @@
       const tg = window.Telegram?.WebApp;
 
       if (tg && tg.safeAreaInset) {
-        root.style.setProperty('--safeTop', tg.safeAreaInset.top + 'px');
-        root.style.setProperty('--safeBottom', tg.safeAreaInset.top + (tg.safeAreaInset.bottom || 0) + 'px'); // Correctly handle bottom for nav if needed
+        const top = Math.max(tg.safeAreaInset.top, 45); // Ensure at least 45px for native buttons
+        root.style.setProperty('--safeTop', top + 'px');
+        root.style.setProperty('--safeBottom', (tg.safeAreaInset.bottom || 0) + 'px');
         root.style.setProperty('--safeLeft', tg.safeAreaInset.left + 'px');
         root.style.setProperty('--safeRight', tg.safeAreaInset.right + 'px');
       }
