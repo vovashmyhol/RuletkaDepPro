@@ -36,10 +36,10 @@
 
       --shadow: 0 18px 50px rgba(0, 0, 0, .55);
 
-      --safeTop: env(safe-area-inset-top, 0px);
-      --safeBottom: env(safe-area-inset-bottom, 0px);
-      --safeLeft: env(safe-area-inset-left, 0px);
-      --safeRight: env(safe-area-inset-right, 0px);
+      --safeTop: 0px;
+      --safeBottom: 0px;
+      --safeLeft: 0px;
+      --safeRight: 0px;
     }
 
     * {
@@ -70,6 +70,7 @@
       height: 100%;
       display: flex;
       flex-direction: column;
+      padding-top: var(--safeTop, 110px);
     }
 
     /* ===== STAR ICON (PNG) / EMOJI ICONS ===== */
@@ -102,11 +103,11 @@
     /* ===== TOP BAR ===== */
     .topbar {
       position: fixed;
-      top: 0;
+      top: var(--safeTop, 110px);
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: calc(var(--safeTop, 110px) + 20px) 16px 14px;
+      padding: 12px 16px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -194,7 +195,7 @@
     .content {
       flex: 1;
       overflow: auto;
-      padding: calc(110px + var(--safeTop, 110px)) 14px 110px;
+      padding: 80px 14px 110px;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -2423,7 +2424,7 @@
       align-items: center;
       justify-content: center;
       z-index: 3000;
-      padding: 20px;
+      padding: calc(var(--safeTop, 110px) + 20px) 20px 20px;
     }
 
     .winOverlay.show {
@@ -2936,11 +2937,20 @@
       const tg = window.Telegram?.WebApp;
 
       if (tg && tg.safeAreaInset) {
-        const top = Math.max(tg.safeAreaInset.top, 110); // Increase to 110px minimum
+        let top = tg.safeAreaInset.top;
+        const platform = tg.platform || '';
+
+        // Apply minimum offset only on mobile platforms to clear native buttons
+        if (platform === 'ios' || platform === 'android') {
+          top = Math.max(top, 110);
+        }
+
         root.style.setProperty('--safeTop', top + 'px');
         root.style.setProperty('--safeBottom', (tg.safeAreaInset.bottom || 0) + 'px');
-        root.style.setProperty('--safeLeft', tg.safeAreaInset.left + 'px');
-        root.style.setProperty('--safeRight', tg.safeAreaInset.right + 'px');
+        root.style.setProperty('--safeLeft', (tg.safeAreaInset.left || 0) + 'px');
+        root.style.setProperty('--safeRight', (tg.safeAreaInset.right || 0) + 'px');
+      } else {
+        root.style.setProperty('--safeTop', '0px');
       }
 
       // We don't need manual JS style overrides anymore as CSS handles it via var(--safeTop)
