@@ -106,7 +106,7 @@
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: calc(var(--safeTop, 80px) + 24px) 16px 14px;
+      padding: calc(var(--safeTop, 110px) + 20px) 16px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -194,7 +194,7 @@
     .content {
       flex: 1;
       overflow: auto;
-      padding: calc(100px + var(--safeTop, 80px)) 14px 110px;
+      padding: calc(110px + var(--safeTop, 110px)) 14px 110px;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -685,7 +685,7 @@
       align-items: flex-end;
       justify-content: center;
       z-index: 2000;
-      padding: calc(var(--safeTop, 80px) + 20px) 12px calc(12px + var(--safeBottom));
+      padding: calc(var(--safeTop, 110px) + 25px) 12px calc(12px + var(--safeBottom));
     }
 
     .overlay.show {
@@ -2936,7 +2936,7 @@
       const tg = window.Telegram?.WebApp;
 
       if (tg && tg.safeAreaInset) {
-        const top = Math.max(tg.safeAreaInset.top, 80); // Increased to 80px minimum
+        const top = Math.max(tg.safeAreaInset.top, 110); // Increase to 110px minimum
         root.style.setProperty('--safeTop', top + 'px');
         root.style.setProperty('--safeBottom', (tg.safeAreaInset.bottom || 0) + 'px');
         root.style.setProperty('--safeLeft', tg.safeAreaInset.left + 'px');
