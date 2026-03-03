@@ -738,6 +738,61 @@
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       flex: 1 1 auto;
+      position: relative;
+    }
+
+    /* ===== CASE LOADING OVERLAY ===== */
+    .case-loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 8, 13, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .case-loading-overlay.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .loader-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--blue);
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-text {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .case-content-wrapper {
+      transition: opacity 0.3s ease, filter 0.3s ease;
+    }
+
+    .case-content-wrapper.loading {
+      opacity: 0.5;
+      filter: blur(4px);
+      pointer-events: none;
     }
 
     .btn {
@@ -2667,83 +2722,91 @@
       </div>
 
       <div class="modalScroll">
-        <div class="casePreview">
-          <div class="bigImg" id="modalBigImg"></div>
-          <div class="name" id="modalName">CASE</div>
-          <div class="desc" id="modalDesc">Open the case — get a gift in your inventory.</div>
+        <div class="case-loading-overlay" id="caseLoader">
+          <div class="loader-spinner"></div>
+          <div class="loading-text">LOADING GIFTS...</div>
         </div>
-
-        <div id="promoSection" style="display:none; padding: 0 14px 14px;">
-          <div class="promoInputWrap">
-            <div class="promoInfoRow">
-              <div class="infoIcon">i</div>
-              <span>To open this case, enter the secret code</span>
-            </div>
-            <input type="text" class="promoInput" id="promoInput" placeholder="Secret Code" autocomplete="off">
-            <button class="btn spinBtn" id="btnPromoSpin">
-              <span>Spin</span>
-              <div class="priceBox">0 <img src="stars-DBKMczxe.png" class="starI" alt="★"></div>
-            </button>
-            <div class="promoHint">Search secret codes in <a href="https://t.me/voco_in" target="_blank">@voco_in</a>
-            </div>
+        <div class="case-content-wrapper" id="caseContent">
+          <div class="casePreview">
+            <div class="bigImg" id="modalBigImg"></div>
+            <div class="name" id="modalName">CASE</div>
+            <div class="desc" id="modalDesc">Open the case — get a gift in your inventory.</div>
           </div>
-        </div>
 
-        <div class="chooser" id="modalChooser">
-          <div class="pillRow">
-            <div>How many cases?</div>
-            <div class="starRow">
-              <img class="starI" id="starIconModal" alt="★">
-              <span class="val" id="modalPrice">0</span>
+          <div id="promoSection" style="display:none; padding: 0 14px 14px;">
+            <div class="promoInputWrap">
+              <div class="promoInfoRow">
+                <div class="infoIcon">i</div>
+                <span>To open this case, enter the secret code</span>
+              </div>
+              <input type="text" class="promoInput" id="promoInput" placeholder="Secret Code" autocomplete="off">
+              <button class="btn spinBtn" id="btnPromoSpin">
+                <span>Spin</span>
+                <div class="priceBox">0 <img src="stars-DBKMczxe.png" class="starI" alt="★"></div>
+              </button>
+              <div class="promoHint">Search secret codes in <a href="https://t.me/voco_in" target="_blank">@voco_in</a>
+              </div>
             </div>
           </div>
 
-          <div class="countPills" id="countPills">
-            <div class="pill active" data-n="1">1</div>
-            <div class="pill" data-n="2">2</div>
-            <div class="pill" data-n="3">3</div>
-            <div class="pill" data-n="4">4</div>
-            <div class="pill" data-n="5">5</div>
-          </div>
-        </div>
+          <div class="chooser" id="modalChooser">
+            <div class="pillRow">
+              <div>How many cases?</div>
+              <div class="starRow">
+                <img class="starI" id="starIconModal" alt="★">
+                <span class="val" id="modalPrice">0</span>
+              </div>
+            </div>
 
-        <div class="rouletteWrap">
-          <div class="rouletteTop">
-            <span>roulette</span>
-            <span style="color:rgba(255,255,255,.65)" id="rouletteHint"></span>
-          </div>
-          <div class="track">
-            <div class="centerLine"></div>
-            <div class="reel" id="reel"></div>
-          </div>
-        </div>
-
-        <div class="resultToast" id="resultToast">
-          <div class="resultLeft">
-            <div class="resImg" id="resImg"></div>
-            <div class="t">
-              <b id="resName">Gift</b>
-              <span>
-                <img class="starI" id="starIconRes" alt="★"><span id="resValue">0</span>
-                • added to inventory
-              </span>
+            <div class="countPills" id="countPills">
+              <div class="pill active" data-n="1">1</div>
+              <div class="pill" data-n="2">2</div>
+              <div class="pill" data-n="3">3</div>
+              <div class="pill" data-n="4">4</div>
+              <div class="pill" data-n="5">5</div>
             </div>
           </div>
-          <div class="tagWin good" id="resTag"><span>✔</span><span>WIN</span></div>
-        </div>
 
-        <div style="padding: 0 14px 14px;">
-          <div id="modalOpenAction">
-            <button class="btn" id="btnOpenCase">
-              <span>Open case</span>
-              <img class="starI" id="starIconBtn" alt="★"><span id="btnCost">0</span>
-            </button>
-            <div class="sep"></div>
+          <div class="rouletteWrap">
+            <div class="rouletteTop">
+              <span>roulette</span>
+              <span style="color:rgba(255,255,255,.65)" id="rouletteHint"></span>
+            </div>
+            <div class="track">
+              <div class="centerLine"></div>
+              <div class="reel" id="reel"></div>
+            </div>
           </div>
-          <button class="btn ghost" id="btnShowContents">Show contents</button>
+
+          <div class="resultToast" id="resultToast">
+            <div class="resultLeft">
+              <div class="resImg" id="resImg"></div>
+              <div class="t">
+                <b id="resName">Gift</b>
+                <span>
+                  <img class="starI" id="starIconRes" alt="★"><span id="resValue">0</span>
+                  • added to inventory
+                </span>
+              </div>
+            </div>
+            <div class="tagWin good" id="resTag"><span>✔</span><span>WIN</span></div>
+          </div>
+
+          <div style="padding: 0 14px 14px;">
+            <div id="modalOpenAction">
+              <button class="btn" id="btnOpenCase">
+                <span>Open case</span>
+                <img class="starI" id="starIconBtn" alt="★"><span id="btnCost">0</span>
+              </button>
+              <div class="sep"></div>
+            </div>
+            <button class="btn ghost" id="btnShowContents">Show contents</button>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+  </div>
   </div>
 
   <!-- Contents Modal -->
@@ -3992,7 +4055,19 @@
       pulse(".resultToast");
     });
 
-    function openCaseModal(c) {
+    async function preloadImages(urls) {
+      const promises = urls.map(url => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(url);
+          img.onerror = () => resolve(url); // Resolve anyway to not hang
+          img.src = url;
+        });
+      });
+      return Promise.all(promises);
+    }
+
+    async function openCaseModal(c) {
       currentCase = c;
       openCount = 1;
       [...countPills.querySelectorAll(".pill")].forEach((p, idx) => p.classList.toggle("active", idx === 0));
@@ -4014,12 +4089,30 @@
         document.getElementById("promoInput").value = "";
       }
 
-      buildReel(c);
       updateModalPrice();
-
       resultToast.classList.remove("show");
 
+      // Show overlay and initial loader
       showOverlay(caseModal);
+      const loader = document.getElementById("caseLoader");
+      const content = document.getElementById("caseContent");
+
+      loader.classList.add("show");
+      content.classList.add("loading");
+
+      // Build reel immediately so chips are ready
+      buildReel(c);
+
+      // Preload gift images for this case
+      const giftUrls = c.pool.map(p => getGift(p.gift)?.img).filter(Boolean);
+      if (giftUrls.length > 0) {
+        await preloadImages(giftUrls);
+      }
+
+      // Hide loader and show content
+      loader.classList.remove("show");
+      content.classList.remove("loading");
+
       gsap.fromTo(caseModal.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .22, ease: "power2.out" });
       pulse(caseModal.querySelector(".modal"));
     }
