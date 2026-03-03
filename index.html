@@ -685,8 +685,16 @@
       display: none;
       align-items: flex-end;
       justify-content: center;
-      z-index: 2000;
+      z-index: 999;
       padding: calc(var(--safeTop, 110px) + 25px) 12px calc(12px + var(--safeBottom));
+    }
+
+    #ton-connect-ui-root,
+    tc-root,
+    .tc-widget-root,
+    .tc-connect-modal {
+      z-index: 2147483647 !important;
+      position: fixed !important;
     }
 
     .overlay.show {
@@ -4842,6 +4850,18 @@
         }
 
         const tonAmount = selectedStarsAmount / TON_EXCHANGE_RATE;
+
+        // Refresh balance before checking
+        const address = tonConnectUI.wallet?.account?.address;
+        if (address) {
+          await fetchTonBalance(address);
+        }
+
+        if (tonBalance < tonAmount) {
+          showToast(`Insufficient TON balance! (Need ${tonAmount.toFixed(2)} TON)`);
+          return;
+        }
+
         const amountNano = Math.round(tonAmount * 1000000000).toString();
 
         const transaction = {
