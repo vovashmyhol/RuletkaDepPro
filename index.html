@@ -4815,13 +4815,13 @@
         let priceHtml = "";
         if (isTonMode) {
           const tonPrice = amt / TON_EXCHANGE_RATE;
-          priceHtml = `<div class="optionTonPrice">${tonPrice.toFixed(2)} TON</div>`;
+          priceHtml = `<div class="optionTonPrice">${tonPrice.toFixed(2)} <img src="${TON_ICON}" class="starI" alt="TON"></div>`;
         }
 
         opt.innerHTML = `
           <div class="radioCircle"></div>
           <div class="optionVal">
-            <img src="${isTonMode ? TON_ICON : STAR_PNG}" class="starI" alt="★">
+            <img src="${STAR_PNG}" class="starI" alt="★">
             <span>${amt}</span>
           </div>
           ${priceHtml}
