@@ -70,15 +70,6 @@
       height: 100%;
       display: flex;
       flex-direction: column;
-      padding-top: 0;
-    }
-    #topSpacer {
-      width: 100%;
-      height: calc(var(--safeTop, env(safe-area-inset-top, 0px)));
-      min-height: 40px;
-      /* temporary visible stripe for debugging */
-      background: rgba(255, 0, 0, 0.15);
-      pointer-events: none;
     }
 
     /* ===== STAR ICON (PNG) / EMOJI ICONS ===== */
@@ -112,11 +103,10 @@
     .topbar {
       position: fixed;
       top: 0;
-      margin-top: calc(var(--safeTop, 40px)) !important;
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: 50px 16px 14px;
+      padding: calc(var(--safeTop, 40px) + 12px) 16px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -202,11 +192,11 @@
     }
 
     .content {
-    flex: 1;
-    overflow: auto;
-    padding: calc(70px + var(--safeTop, 0px)) 14px 110px;
-    -webkit-overflow-scrolling: touch;
-}
+      flex: 1;
+      overflow: auto;
+      padding: calc(70px + var(--safeTop, 40px)) 14px 110px;
+      -webkit-overflow-scrolling: touch;
+    }
 
     .sectionTitle {
       margin: 10px 4px 10px;
@@ -2463,8 +2453,6 @@
     </div>
   </div>
 
-  <!-- spacer to push entire app below telegram UI buttons -->
-  <div id="topSpacer"></div>
 
   <div class="app">
     <div class="topbar">
@@ -2945,41 +2933,16 @@
      ********************/
     function updateSafeArea() {
       const root = document.documentElement;
-      
-      // Получить значения safe area от Telegram WebApp
       const tg = window.Telegram?.WebApp;
-      let topInset = 0;
+
       if (tg && tg.safeAreaInset) {
-        topInset = tg.safeAreaInset.top;
-        root.style.setProperty('--safeTop', topInset + 'px');
-        root.style.setProperty('--safeBottom', tg.safeAreaInset.bottom + 'px');
+        root.style.setProperty('--safeTop', tg.safeAreaInset.top + 'px');
+        root.style.setProperty('--safeBottom', tg.safeAreaInset.top + (tg.safeAreaInset.bottom || 0) + 'px'); // Correctly handle bottom for nav if needed
         root.style.setProperty('--safeLeft', tg.safeAreaInset.left + 'px');
         root.style.setProperty('--safeRight', tg.safeAreaInset.right + 'px');
-      } else {
-        // fallback to CSS env values if tg not available
-        topInset = parseInt(getComputedStyle(root).getPropertyValue('--safeTop')) || 0;
       }
-      
-      // Применить к элементам
-      const app = document.querySelector('.app');
-      if (app) {
-        app.style.paddingTop = topInset + 'px';
-        // keep existing bottom padding unaffected
-      }
-      const offset = Math.max(topInset, 40); // гарантируем минимум 40px
-      const spacer = document.getElementById('topSpacer');
-      if (spacer) {
-        spacer.style.height = offset + 'px';
-      }
-      const topbar = document.querySelector('.topbar');
-      if (topbar) {
-        topbar.style.marginTop = offset + 'px';
-      }
-      // adjust content padding based on offset
-      const content = document.querySelector('.content');
-      if (content) {
-        content.style.paddingTop = (offset + 70) + 'px';
-      }
+
+      // We don't need manual JS style overrides anymore as CSS handles it via var(--safeTop)
     }
 
     /********************
@@ -2990,31 +2953,31 @@
       if (tg) {
         // Инициализация WebApp
         tg.ready();
-        
+
         // Запросить полноэкранный режим
         if (tg.requestFullscreen) {
           tg.requestFullscreen();
         }
-        
+
         // Расширить приложение на весь экран
         tg.expand();
-        
+
         // Отключить вертикальный свайп (для лучшей работы fullscreen)
         if (tg.disableVerticalSwipes) {
           tg.disableVerticalSwipes();
         }
-        
+
         // Установить тему на темную
         if (tg.setHeaderColor) tg.setHeaderColor('transparent');
         if (tg.setBackgroundColor) tg.setBackgroundColor('#06080d');
-        
+
         // Обновить safe area при изменении размера
         if (tg.onEvent) {
           tg.onEvent('viewportChanged', () => {
             updateSafeArea();
           });
         }
-        
+
         // Сразу обновить safe area с небольшой задержкой для корректного расчета
         setTimeout(() => {
           updateSafeArea();
