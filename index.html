@@ -2671,10 +2671,16 @@
     }
 
     .cb-back {
-      transform: rotateY(180deg) rotateZ(180deg) translateZ(8px);
+      transform: rotateY(180deg) translateZ(8px);
       background: #1a3a5c url('Фон гифт.webp') no-repeat center;
       background-size: 70%;
       border-color: rgba(30, 144, 255, 0.5);
+    }
+
+    /* Bottom slots need a Z-flip to appear upright after a vertical fold */
+    .slot-2 .cb-back,
+    .slot-3 .cb-back {
+      transform: rotateY(180deg) rotateZ(180deg) translateZ(8px);
     }
 
     /* 3D Edges (Blue) */
@@ -5125,12 +5131,15 @@
           ease: "power2.inOut"
         });
 
-        // Evaporate the top stack (Slot 0) as Slot 2 lands on it
-        tl.to(slots[0], {
+        // Result: Bottom stack (Slot 2) evaporates as it lands on Slot 0
+        tl.to(slots[2], {
           opacity: 0,
           duration: 0.6,
           ease: "power2.in"
-        }, "<0.4");
+        }, "<0.8"); // Disappear near the end of the landing
+        
+        // Ensure Slot 0 stays visible and upright
+        tl.to(slots[0], { opacity: 1 }, "<");
 
         // Center vertically: shift grid DOWN by 25% so the top row is in the middle
         // Calculate pixel shift based on grid height
