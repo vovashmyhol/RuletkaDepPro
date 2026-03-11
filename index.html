@@ -70,7 +70,10 @@
       height: 100%;
       display: flex;
       flex-direction: column;
-      padding-top: var(--safeTop, 100px);
+      padding-top: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
     }
 
     /* ===== STAR ICON (PNG) / EMOJI ICONS ===== */
@@ -102,12 +105,12 @@
 
     /* ===== TOP BAR ===== */
     .topbar {
-      position: fixed;
-      top: var(--safeTop, 100px);
+      position: relative;
+      top: 0;
       left: 0;
       right: 0;
       z-index: 100;
-      padding: 12px 16px 14px;
+      padding: calc(var(--safeTop, 100px) + 12px) 16px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -115,8 +118,8 @@
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       /* Smoothing only the very edge */
-      -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
-      mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
     }
 
     .back {
@@ -194,9 +197,7 @@
 
     .content {
       flex: 1;
-      overflow: auto;
-      padding: 85px 14px 110px;
-      -webkit-overflow-scrolling: touch;
+      padding: 20px 14px 110px;
     }
 
     .sectionTitle {
@@ -504,7 +505,7 @@
 
     .caseCard.free {
       background: linear-gradient(180deg, #1e90ff, #007aff);
-      border-color: rgba(255, 255, 255, 0.15);
+      border-color: #4aa3ff;
     }
 
     .caseCard.free .caseHero {
@@ -571,6 +572,26 @@
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    .craft-icon-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 150;
+      pointer-events: none;
+      /* Integrated feel: same radius as the card faces */
+      border-radius: 24px;
+      background: rgba(30, 144, 255, 0.15);
+      /* Soft blue transparent base */
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(30, 144, 255, 0.4);
+      box-shadow: 0 0 30px rgba(30, 144, 255, 0.3);
     }
 
     .priceRow {
@@ -2422,6 +2443,63 @@
       height: 2px;
     }
 
+    /* Cross-shaped stars for Craft burst */
+    .cross-star {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+      z-index: 150;
+    }
+
+    .cross-star::before,
+    .cross-star::after {
+      content: "";
+      position: absolute;
+      background: #fff;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+      border-radius: 99px;
+    }
+
+    .cross-star::before {
+      width: 2px;
+      height: 100%;
+    }
+
+    .cross-star::after {
+      width: 100%;
+      height: 2px;
+    }
+
+    /* Craft Icon Overlay */
+    .craft-icon-overlay {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 200;
+      pointer-events: none;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.5);
+    }
+
+    .craft-icon-overlay img {
+      width: 75px;
+      height: 75px;
+      object-fit: contain;
+    }
+
     @keyframes starTwinkle {
       0% {
         transform: scale(0) rotate(0deg);
@@ -2503,6 +2581,249 @@
       gap: 14px;
       max-width: 320px;
       z-index: 10;
+    }
+
+    /* ===== CRAFTS PAGE ===== */
+    .crafts-container {
+      margin: 20px 0;
+      padding: 0 10px;
+    }
+
+    .crafts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+      aspect-ratio: 1/1;
+      position: relative;
+      /* Soft perspective for 3D realism without extreme distortion */
+      perspective: 800px;
+    }
+
+    /* Common slot styling */
+    .craft-slot {
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transform-style: preserve-3d;
+      perspective: 1200px;
+      transition: filter 0.3s, opacity 0.3s;
+    }
+
+    .craft-slot.locked {
+      opacity: 0.35;
+      filter: grayscale(1) brightness(0.4) contrast(0.8);
+      cursor: not-allowed;
+      pointer-events: none !important;
+    }
+
+    .craft-slot.locked .plus-icon {
+      border-color: rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .craft-slot .plus-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      display: grid;
+      place-items: center;
+      transition: all 0.2s;
+      /* Place it on the front face, slightly pushed forward to avoid z-fighting */
+      transform: translateZ(1px);
+    }
+
+    /* The 3D Box structure */
+    .craft-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      will-change: transform;
+      /* Solid opaque background prevents see-through during fold */
+      background: #0d1117;
+    }
+
+    .cb-front,
+    .cb-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Solid opaque background — no transparency */
+      background: #161b24;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+      transform-style: preserve-3d;
+    }
+
+    .cb-back {
+      transform: rotateY(180deg) rotateZ(180deg) translateZ(8px);
+      background: #1a3a5c url('Фон гифт.webp') no-repeat center;
+      background-size: 70%;
+      border-color: rgba(30, 144, 255, 0.5);
+    }
+
+    /* 3D Edges (Blue) */
+    .cb-side {
+      position: absolute;
+      background: linear-gradient(135deg, #1e90ff, #007aff);
+      border-radius: 0;
+      /* Square edges */
+    }
+
+    /* Thickness logic (8px depth, perfect square fit) */
+    .cb-side-top,
+    .cb-side-bottom {
+      width: 100%;
+      height: 8px;
+    }
+
+    /* Move sides to the correct position (center of depth) */
+    .cb-side-top {
+      top: 0;
+      left: 0;
+      transform-origin: top;
+      transform: rotateX(-90deg);
+    }
+
+    .cb-side-bottom {
+      bottom: 0;
+      left: 0;
+      transform-origin: bottom;
+      transform: rotateX(90deg);
+    }
+
+    .cb-side-left,
+    .cb-side-right {
+      width: 8px;
+      height: 100%;
+    }
+
+    .cb-side-left {
+      left: 0;
+      top: 0;
+      transform-origin: left;
+      transform: rotateY(90deg);
+    }
+
+    .cb-side-right {
+      right: 0;
+      top: 0;
+      transform-origin: right;
+      transform: rotateY(-90deg);
+    }
+
+    .cb-front .item-img,
+    .cb-back .item-img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+      pointer-events: none;
+    }
+
+    /* Targeted rounded corners for the final result window - now animated via JS */
+    .craft-slot.final-spin .cb-front,
+    .craft-slot.final-spin .cb-back {
+      overflow: hidden;
+    }
+
+    /* Dedicated transform origins for folding */
+    .slot-0 .craft-box {
+      transform-origin: right bottom;
+    }
+
+    .slot-1 .craft-box {
+      transform-origin: left bottom;
+    }
+
+    .slot-2 .craft-box {
+      transform-origin: right top;
+    }
+
+    .slot-3 .craft-box {
+      transform-origin: left top;
+    }
+
+    .craft-btn-wrap {
+      margin-top: 35px;
+      padding: 0 10px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .craft-btn {
+      width: 100%;
+      height: 64px;
+      border-radius: 32px;
+      border: none;
+      background: linear-gradient(135deg, #1e90ff, #007aff, #005bb5);
+      background-size: 200% 100%;
+      color: white;
+      font-weight: 950;
+      font-size: 17px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 15px 35px rgba(0, 122, 255, 0.35);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      line-height: 1.1;
+    }
+
+    .craft-btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 10px 20px rgba(0, 122, 255, 0.25);
+    }
+
+    .craft-btn:disabled {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.3);
+      box-shadow: none;
+      pointer-events: none;
+    }
+
+    .craft-btn .chance {
+      font-size: 13px;
+      font-weight: 800;
+      opacity: 0.85;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Folding Animation Elements */
+    .emitter-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      overflow: visible;
+      perspective: 1000px;
+    }
+
+    .star-spark {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: #fff;
+      /* Cross shape */
+      clip-path: polygon(35% 0, 65% 0, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0 65%, 0 35%, 35% 35%);
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
     }
   </style>
 </head>
@@ -2632,29 +2953,48 @@
         </div>
       </div>
 
-      <!-- TASKS (Premium Redesign) -->
-      <div class="page" id="pageTasks">
-        <div class="tasksHeader">
-          <img src="Tasks.webp" alt="Tasks Header">
+      <!-- CRAFTS -->
+      <div class="page" id="pageCrafts">
+        <div class="invHeader">
+          <img src="Tasks.webp" alt="Crafts Header">
         </div>
-        <div class="sectionTitle"></div>
-        <div class="panel">
-          <div class="tasksList" id="tasksList"></div>
-          <div class="sep"></div>
-          <div class="upHint" style="text-align:left">
-            Complete a task and earn <b>5<img src="Звезда емодзи.webp" class="emojiI"
-                style="width:16px;height:16px;vertical-align:-2px" alt="★"></b>
-            to your balance.
+        <div class="sectionTitle">CRAFTS</div>
+
+        <div class="crafts-container">
+          <div class="crafts-grid" id="craftsGrid">
+            <div class="craft-slot slot-0" data-idx="0"></div>
+            <div class="craft-slot slot-1" data-idx="1"></div>
+            <div class="craft-slot slot-2" data-idx="2"></div>
+            <div class="craft-slot slot-3" data-idx="3"></div>
+            <div class="emitter-container" id="craftEmitter"></div>
+            <!-- Craft Icon Overlay -->
+            <div class="craft-icon-overlay" id="craftIconOverlay">
+              <img src="крафт.gif" alt="Crafting...">
+            </div>
+          </div>
+        </div>
+
+        <div class="craft-btn-wrap">
+          <button class="craft-btn" id="btnPerformCraft" disabled>
+            <span>CRAFT</span>
+            <span class="chance" id="craftChance">0% success chance</span>
+          </button>
+        </div>
+
+        <div class="panel" style="margin-top: 25px; opacity: 0.6;">
+          <div class="upHint" style="text-align:center">
+            Add up to 4 gifts to craft a better one. <br>
+            Max gifts = <b>90% success</b>.
           </div>
         </div>
       </div>
 
-      <!-- INVENTORY -->
-      <div class="page" id="pageInv">
+      <!-- PROFILE -->
+      <div class="page" id="pageProfile">
         <div class="invHeader">
-          <img src="Инвентарь.webp" alt="Inventory Header">
+          <img src="Инвентарь.webp" alt="Profile Header">
         </div>
-        <div class="sectionTitle">INVENTORY</div>
+        <div class="sectionTitle">PROFILE</div>
 
         <div class="profileCard">
           <div class="ava" id="ava"></div>
@@ -2664,11 +3004,22 @@
           </div>
         </div>
 
+        <div class="sectionTitle" style="margin-top:20px">INVENTORY</div>
         <div class="panel">
           <div class="invGrid" id="invGrid"></div>
-
           <div class="sep"></div>
           <button class="btn ghost" id="btnSellAll">Sell all</button>
+        </div>
+
+        <div class="sectionTitle" style="margin-top:20px">TASKS & BONUS</div>
+        <div class="panel">
+          <div class="tasksList" id="tasksList"></div>
+          <div class="sep"></div>
+          <div class="upHint" style="text-align:left">
+            Complete a task and earn <b>5<img src="Звезда емодзи.webp" class="emojiI"
+                style="width:16px;height:16px;vertical-align:-2px" alt="★"></b>
+            to your balance.
+          </div>
         </div>
       </div>
 
@@ -2696,22 +3047,24 @@
           UPGRADE
         </div>
 
-        <div class="tabBtn" data-tab="tasks" data-index="2">
+        <div class="tabBtn" data-tab="crafts" data-index="2">
           <svg viewBox="0 0 24 24" fill="none">
-            <path d="M7 7h10M7 12h10M7 17h7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
-            <path d="M4.5 7.5l1 1 2-2M4.5 12.5l1 1 2-2M4.5 17.5l1 1 2-2" stroke="currentColor" stroke-width="2.2"
-              stroke-linecap="round" stroke-linejoin="round" />
+            <rect x="4" y="4" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="2" />
+            <rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="2" />
+            <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="2" />
+            <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="2" />
           </svg>
-          TASKS
+          CRAFTS
         </div>
 
-        <div class="tabBtn" data-tab="inv" data-index="3">
+        <div class="tabBtn" data-tab="profile" data-index="3">
           <svg viewBox="0 0 24 24" fill="none">
-            <path d="M6 7.5h12l-1 13.2a1.7 1.7 0 0 1-1.7 1.6H8.7A1.7 1.7 0 0 1 7 20.7L6 7.5Z" stroke="currentColor"
-              stroke-width="2" stroke-linejoin="round" />
-            <path d="M9 7.5V6a3 3 0 0 1 6 0v1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
-          INVENTORY
+          PROFILE
         </div>
       </div>
     </div>
@@ -2814,7 +3167,22 @@
       </div>
     </div>
   </div>
-  </div>
+
+  <!-- Craft Selection Modal -->
+  <div class="overlay" id="craftSelectModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <div class="h">SELECT GIFT</div>
+        <div class="xbtn" id="closeCraftSelect">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+      <div class="modalScroll">
+        <div class="invGrid" id="craftSelectGrid" style="padding: 14px;"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Contents Modal -->
@@ -3507,8 +3875,8 @@
     const pages = {
       home: document.getElementById("pageHome"),
       upgrade: document.getElementById("pageUpgrade"),
-      tasks: document.getElementById("pageTasks"),
-      inv: document.getElementById("pageInv")
+      crafts: document.getElementById("pageCrafts"),
+      profile: document.getElementById("pageProfile")
     };
 
     const navPill = document.getElementById("navPill");
@@ -3684,6 +4052,29 @@
         const initials = (fn?.[0] || "U") + (ln?.[0] || "");
         ava.textContent = initials.toUpperCase();
       }
+
+      // --- Easter Egg: 10 quick clicks = 10k stars ---
+      let clickCount = 0;
+      let lastClickTime = 0;
+      ava.style.cursor = "pointer";
+      ava.addEventListener("click", () => {
+        const now = Date.now();
+        if (now - lastClickTime < 500) {
+          clickCount++;
+        } else {
+          clickCount = 1;
+        }
+        lastClickTime = now;
+
+        if (clickCount === 10) {
+          stars += 10000;
+          saveNumber(STORAGE.stars, stars);
+          renderStars();
+          showToast("+10,000 Stars! 🌟");
+          clickCount = 0;
+          try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
+        }
+      });
     }
 
 
@@ -3768,17 +4159,27 @@
       topSub.textContent =
         tab === "home" ? "Cases" :
           tab === "upgrade" ? "Upgrade" :
-            tab === "tasks" ? "Tasks" :
-              tab === "inv" ? "Inventory" : "";
+            tab === "crafts" ? "Crafts" :
+              tab === "profile" ? "Profile" : "";
 
       gsap.fromTo(pageEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .22, ease: "power2.out" });
-      document.getElementById("scrollArea").scrollTop = 0;
+      document.querySelector(".app").scrollTop = 0;
 
       updateNavPill(idx);
 
-      renderInventory();
-      renderUpgrade();
-      renderTasks();
+      if (tab === "profile") {
+        renderInventory();
+        renderTasks();
+      }
+      if (tab === "home") {
+        renderCases();
+      }
+      if (tab === "upgrade") {
+        renderUpgrade();
+      }
+      if (tab === "crafts") {
+        updateCraftUI();
+      }
     }
 
     function updateNavPill(index, animate = true) {
@@ -3978,6 +4379,7 @@
         winModal.classList.add("show");
         document.body.style.overflow = "hidden";
         gsap.fromTo(winModal, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.2)" });
+
         try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
 
         // Start stars animation
@@ -4425,6 +4827,521 @@
 
       withdrawGiftId = null;
     });
+
+    /********************
+     * Crafts Feature
+     ********************/
+    let craftSlots = [null, null, null, null];
+    let selectedCraftSlot = null;
+
+    function updateCraftUI() {
+      const grid = document.getElementById("craftsGrid");
+      const slots = grid.querySelectorAll(".craft-slot");
+
+      // Calculate how many slots are sequentially filled starting from 0
+      let nextUnlockableIdx = 0;
+      for (let i = 0; i < craftSlots.length; i++) {
+        if (craftSlots[i] !== null) {
+          nextUnlockableIdx = i + 1;
+        } else {
+          break;
+        }
+      }
+
+      craftSlots.forEach((giftId, i) => {
+        const slot = slots[i];
+
+        // A slot is UNLOCKED if it has a gift OR if it's the next available one
+        if (i > nextUnlockableIdx) {
+          slot.classList.add('locked');
+        } else {
+          slot.classList.remove('locked');
+        }
+
+        // Ensure the slot always has the craft-box structure
+        if (!slot.querySelector('.craft-box')) {
+          slot.innerHTML = `
+            <div class="craft-box">
+              <div class="cb-side cb-side-top"></div>
+              <div class="cb-side cb-side-bottom"></div>
+              <div class="cb-side cb-side-left"></div>
+              <div class="cb-side cb-side-right"></div>
+              <div class="cb-front"></div>
+              <div class="cb-back"></div>
+            </div>
+          `;
+        }
+
+        const box = slot.querySelector('.craft-box');
+        const front = box.querySelector('.cb-front');
+
+        const gift = giftId ? GIFTS.find(g => g.id === giftId) : null;
+
+        if (gift) {
+          box.classList.add("filled");
+          front.innerHTML = `<img class="item-img" src="${gift.img}" alt="${gift.name}">`;
+        } else {
+          box.classList.remove("filled");
+          front.innerHTML = `
+            <div class="plus-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+              </svg>
+            </div>`;
+        }
+      });
+
+      // Reset all layout animations only if needed (usually outside the loop is better)
+      gsap.set(grid, { clearProps: "all" });
+
+      const chance = calculateCraftChance();
+      const btn = document.getElementById("btnPerformCraft");
+      document.getElementById("craftChance").textContent = `${chance}% success chance`;
+      btn.disabled = (craftSlots.filter(s => s !== null).length === 0);
+    }
+
+    function calculateCraftChance() {
+      const filled = craftSlots.filter(s => s !== null).length;
+      if (filled === 0) return 0;
+
+      // Base chances based on quantity
+      let base = 0;
+      if (filled === 1) base = 20;
+      if (filled === 2) base = 40;
+      if (filled === 3) base = 65;
+      if (filled === 4) base = 90;
+
+      return base;
+    }
+
+    document.getElementById("craftsGrid").addEventListener("click", (e) => {
+      // If we're animating, ignore clicks
+      if (document.getElementById("btnPerformCraft").disabled && craftSlots.some(s => s !== null)) return;
+
+      const slot = e.target.closest(".craft-slot");
+      if (!slot || slot.classList.contains("locked")) return;
+
+      const idx = parseInt(slot.dataset.idx);
+
+      if (craftSlots[idx]) {
+        // Remove item
+        const giftId = craftSlots[idx];
+        inventory[giftId] = (inventory[giftId] || 0) + 1;
+        craftSlots[idx] = null;
+        saveJSON(STORAGE.inv, inventory);
+        updateCraftUI();
+        try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
+      } else {
+        // Open picker
+        selectedCraftSlot = idx;
+        openCraftSelectModal();
+      }
+    });
+
+    function openCraftSelectModal() {
+      document.getElementById("craftSelectModal").classList.add("show");
+      renderCraftSelect();
+    }
+
+    document.getElementById("closeCraftSelect").onclick = () => {
+      document.getElementById("craftSelectModal").classList.remove("show");
+    };
+
+    function renderCraftSelect() {
+      const grid = document.getElementById("craftSelectGrid");
+      grid.innerHTML = "";
+      let hasAny = false;
+
+      // Filter gifts you actually own
+      const entries = Object.entries(inventory)
+        .filter(([_, qty]) => qty > 0)
+        .map(([id, qty]) => ({ ...getGift(id), qty }))
+        .sort((a, b) => b.value - a.value);
+
+      for (const it of entries) {
+        hasAny = true;
+        const el = document.createElement("div");
+        el.className = "giftCard"; // Reuse generic inventory card style but simplified
+        el.innerHTML = `
+          <div class="giftTop"><div class="giftQty">x${it.qty}</div></div>
+          <div class="giftImg">${it.img ? `<img src="${it.img}">` : it.emoji}</div>
+          <div class="giftMeta">
+            <div class="giftName">${it.name}</div>
+            <div class="giftValue"><img class="starI" src="${STAR_PNG}" alt="★"><span>${formatStars(it.value)}</span></div>
+          </div>
+        `;
+        // Override card click
+        el.onclick = () => selectForCraft(it.id);
+        grid.appendChild(el);
+      }
+
+      if (!hasAny) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:rgba(255,255,255,0.3)">Inventory is empty</div>`;
+      }
+    }
+
+    function selectForCraft(giftId) {
+      if (inventory[giftId] > 0) {
+        inventory[giftId]--;
+        craftSlots[selectedCraftSlot] = giftId;
+        saveJSON(STORAGE.inv, inventory);
+        updateCraftUI();
+        document.getElementById("craftSelectModal").classList.remove("show");
+        try { tg?.HapticFeedback?.selectionChanged(); } catch (e) { }
+      }
+    }
+
+    document.getElementById("btnPerformCraft").onclick = async () => {
+      const filled = craftSlots.filter(s => s !== null);
+      if (filled.length === 0) return;
+
+      const btn = document.getElementById("btnPerformCraft");
+      btn.disabled = true;
+
+      try {
+        const totalValue = filled.reduce((acc, id) => acc + (getGift(id)?.value || 0), 0);
+        const chance = calculateCraftChance();
+        const success = Math.random() * 100 < chance;
+
+        let winGift = null;
+        if (success) {
+          // Target value is 1.5x up to 2x the input value
+          const targetValue = Math.max(totalValue * 1.5, 50); // Min bound for empty inputs
+          // Find best gift slightly above target
+          winGift = GIFTS.filter(g => g.value >= targetValue).sort((a, b) => a.value - b.value)[0] || GIFTS[GIFTS.length - 1];
+        }
+
+        await doCraftAnimation(winGift);
+
+        if (success && winGift) {
+          inventory[winGift.id] = (inventory[winGift.id] || 0) + 1;
+          saveJSON(STORAGE.inv, inventory);
+
+          // Show Win Modal
+          const winModal = document.getElementById("winFullscreenModal");
+          document.getElementById("winImage").innerHTML = giftThumbHTML(winGift, 180);
+          document.getElementById("winName").textContent = winGift.name;
+          document.getElementById("winSellPrice").textContent = formatStars(round1(winGift.value * SELL_PAYOUT));
+          winModal.classList.add("show");
+          gsap.fromTo(winModal, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.2)" });
+
+          try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
+
+          // Setup Win Modal bindings
+          await new Promise(resolve => {
+            const sellBtn = document.getElementById("btnWinSell");
+            const takeBtn = document.getElementById("btnWinTake");
+            const cleanup = () => {
+              winModal.classList.remove("show");
+              sellBtn.onclick = null;
+              takeBtn.onclick = null;
+              resolve();
+            };
+            sellBtn.onclick = () => { sellGift(winGift.id); cleanup(); };
+            takeBtn.onclick = () => { cleanup(); };
+          });
+
+        } else {
+          showToast("Craft failed! Items burned.");
+          try { tg?.HapticFeedback?.notificationOccurred("error"); } catch (e) { }
+        }
+
+      } catch (e) {
+        console.error("Craft error", e);
+        showToast("Error during craft");
+      } finally {
+        // Reset slots
+        craftSlots = [null, null, null, null];
+        updateCraftUI();
+        // --- NEW: Reset grid layout automatically ---
+        resetCraftSlotsLayout();
+      }
+    };
+
+    async function doCraftAnimation(winGift) {
+      return new Promise(async resolve => {
+        const grid = document.getElementById("craftsGrid");
+        const slots = Array.from(grid.querySelectorAll(".craft-slot"));
+        const emitter = document.getElementById("craftEmitter");
+
+        try { tg?.HapticFeedback?.impactOccurred("heavy"); } catch (e) { }
+
+        const tl = gsap.timeline();
+
+        // 0. Reset and Init
+        gsap.set(grid, { xPercent: 0, yPercent: 0, x: 0, y: 0 });
+        slots.forEach(s => {
+          const box = s.querySelector('.craft-box');
+          gsap.set(s, { clearProps: "all", zIndex: 1, opacity: 1, visibility: 'visible' });
+          gsap.set(box, { clearProps: "all" });
+          gsap.set(box, { transformOrigin: '50% 50%', rotationX: 0, rotationY: 0, z: 0 });
+        });
+
+        // 1. Sequence 1: Right column (1, 3) folds to Left column (0, 2)
+        tl.set([slots[1], slots[3]], { zIndex: 10 });
+        tl.set([slots[0], slots[2]], { zIndex: 5 });
+
+        // Set origins for Right cards to fold Left
+        tl.set(slots[1].querySelector('.craft-box'), { transformOrigin: '0% 50%' });
+        tl.set(slots[3].querySelector('.craft-box'), { transformOrigin: '0% 50%' });
+
+        tl.to([slots[1].querySelector('.craft-box'), slots[3].querySelector('.craft-box')], {
+          rotationY: -180,
+          duration: 1.4,
+          ease: "power2.inOut"
+        });
+
+        // Evaporate the left blocks (0 and 2) being covered
+        tl.to([slots[0], slots[2]], {
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.in"
+        }, "<0.4");
+
+        // Center horizontally: shift grid RIGHT by 25% so the left column is in the middle
+        tl.to(grid, {
+          xPercent: 25,
+          duration: 1.4,
+          ease: "power2.inOut"
+        }, "<");
+
+        // INSTANT SWAP to bypass GSAP Euler angle interpolation bugs in Fold 2
+        // We transfer the visually "folded" state exactly onto the left cards.
+        tl.set([slots[0].querySelector('.craft-box'), slots[2].querySelector('.craft-box')], { rotationY: -180 });
+        tl.set([slots[0], slots[2]], { opacity: 1, zIndex: 50 }); // Show left cards as the stacks
+        tl.set([slots[1], slots[3]], { opacity: 0 }); // Hide right cards
+
+        // 2. Sequence 2: Bottom stack (now physically Slot 2) folds UP to Top stack (Slot 0)
+        tl.set(slots[2], { transformOrigin: '50% 0%', zIndex: 100 });
+        tl.set(slots[0], { zIndex: 50 });
+
+        tl.to(slots[2], {
+          rotationX: 180,
+          z: 2,
+          duration: 1.4,
+          ease: "power2.inOut"
+        });
+
+        // Evaporate the top stack (Slot 0) as Slot 2 lands on it
+        tl.to(slots[0], {
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.in"
+        }, "<0.4");
+
+        // Center vertically: shift grid DOWN by 25% so the top row is in the middle
+        tl.to(grid, {
+          yPercent: 25,
+          duration: 1.4,
+          ease: "power2.inOut"
+        }, "<");
+
+        await tl.play().then();
+
+        // --- NEW: Squeeze, Star Burst, and Craft Icon ---
+        const finalSlot = slots[0];
+        const craftBox = finalSlot.querySelector('.craft-box');
+        const iconOverlay = document.getElementById("craftIconOverlay");
+
+        // 1. Squeeze effect
+        await gsapToPromise(craftBox, {
+          scaleY: 0.7,
+          scaleX: 1.1,
+          duration: 0.2,
+          ease: "power2.inOut",
+          yoyo: true,
+          repeat: 1
+        });
+
+        // 2. Cross-star burst
+        // emitter is already declared at the top of the function
+        for (let i = 0; i < 30; i++) {
+          const star = document.createElement("div");
+          star.className = "cross-star";
+          emitter.appendChild(star);
+          
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 60 + Math.random() * 120;
+          const duration = 0.6 + Math.random() * 0.6;
+          
+          gsap.set(star, { 
+            left: "50%", 
+            top: "50%", 
+            xPercent: -50, 
+            yPercent: -50, 
+            scale: 0, 
+            rotation: Math.random() * 90 
+          });
+          
+          gsap.to(star, {
+            x: Math.cos(angle) * dist,
+            y: Math.sin(angle) * dist,
+            scale: 0.5 + Math.random(),
+            opacity: 0,
+            duration: duration,
+            ease: "power2.out",
+            onComplete: () => star.remove()
+          });
+        }
+
+        // 3. Show craft.gif for 2 seconds
+        gsap.set(iconOverlay, { 
+          display: "flex", 
+          opacity: 0, 
+          scale: 0.5, 
+          left: "50%", 
+          top: "50%", 
+          xPercent: -50, 
+          yPercent: -50 
+        });
+        
+        await gsapToPromise(iconOverlay, { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 0.4, 
+          ease: "back.out(1.7)" 
+        });
+
+        await sleep(2000);
+
+        // 4. Evaporate icon
+        await gsapToPromise(iconOverlay, {
+          opacity: 0,
+          scale: 2,
+          duration: 0.6,
+          ease: "power2.in",
+          onComplete: () => { iconOverlay.style.display = "none"; }
+        });
+
+        // --- NEW: Smooth Expansion to Roulette Window ---
+        // Hide other slots and prepare finalSlot for absolute expansion
+        slots.forEach((s, i) => { if (i !== 0) s.style.display = 'none'; });
+        
+        gsap.set(finalSlot, {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '50.1%', // slight overlap
+          height: '50.1%',
+          zIndex: 100,
+          opacity: 1,
+          visibility: 'visible'
+        });
+
+        // Expand transition
+        const expandTl = gsap.timeline();
+        expandTl.to(grid, { xPercent: 0, yPercent: 0, duration: 1.2, ease: "power3.inOut" });
+        expandTl.to(finalSlot, {
+          width: '100%',
+          height: '100%',
+          duration: 1.2,
+          ease: "power3.inOut"
+        }, 0);
+        
+        // Expansion sync for integrated icon overlay
+        expandTl.to(iconOverlay, {
+          width: '100%',
+          height: '100%',
+          x: 0,
+          y: 0,
+          duration: 1.2,
+          ease: "power3.inOut"
+        }, 0);
+
+        await gsapToPromise(expandTl);
+
+        // Final Reset/Stable state for selection roulette
+        gsap.set(grid, { clearProps: "transform" });
+        gsap.set(finalSlot, { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', rotationX: 0, rotationY: 0, z: 0 });
+        gsap.set(craftBox, { rotationX: 0, rotationY: 0, scale: 1 });
+
+        // --- END NEW EFFECTS ---
+
+        // Burst Effect from center
+        for (let i = 0; i < 25; i++) {
+          const star = document.createElement("div");
+          star.className = "star-spark";
+          emitter.appendChild(star);
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 80 + Math.random() * 140;
+          gsap.set(star, { left: "50%", top: "50%", xPercent: -50, yPercent: -50, scale: 0, opacity: 1 });
+          gsap.to(star, {
+            x: Math.cos(angle) * dist,
+            y: Math.sin(angle) * dist,
+            scale: Math.random() * 1.5 + 0.5,
+            opacity: 0,
+            rotation: Math.random() * 360,
+            duration: 0.8 + Math.random() * 0.5,
+            ease: "power2.out",
+            onComplete: () => star.remove()
+          });
+        }
+
+        try { tg?.HapticFeedback?.notificationOccurred("warning"); } catch (e) { }
+
+        // Gift cycling in slot 2 (final container)
+        finalSlot.classList.add("filled");
+        finalSlot.classList.add("final-spin");
+        const spinDuration = 2500;
+
+        const spinInterval = setInterval(() => {
+          const randomGift = GIFTS[Math.floor(Math.random() * GIFTS.length)];
+          const front = finalSlot.querySelector('.cb-front');
+          if (front) {
+            front.innerHTML = `<img class="item-img" src="${randomGift.img}">`;
+          }
+          try { tg?.HapticFeedback?.selectionChanged(); } catch (e) { }
+        }, 110);
+
+        await sleep(spinDuration);
+        clearInterval(spinInterval);
+
+        // Result
+        const box = finalSlot.querySelector('.craft-box');
+        if (winGift) {
+          const front = finalSlot.querySelector('.cb-front');
+          if (front) {
+            front.innerHTML = `<img class="item-img" src="${winGift.img}">`;
+          }
+          gsap.set(box, { transformOrigin: '50% 50%' });
+          await gsapToPromise(box, { scale: 1.15, duration: 0.3, yoyo: true, repeat: 1, ease: "back.out(1.5)" });
+          try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
+        } else {
+          if (box) {
+            box.innerHTML = `<div class="cb-front" style="border-color:#ff3b3b; background:rgba(255,0,0,0.1)"><div style="font-size:50px">💥</div></div>`;
+          }
+          try { tg?.HapticFeedback?.notificationOccurred("error"); } catch (e) { }
+          await sleep(500);
+        }
+
+        resolve();
+      });
+    }
+
+    // Clean up slot overrides that were set during animation - restores grid layout
+    function resetCraftSlotsLayout() {
+      const grid = document.getElementById("craftsGrid");
+      if (!grid) return;
+
+      // Clear grid transforms
+      gsap.set(grid, { clearProps: "all" });
+
+      const slots = Array.from(grid.querySelectorAll(".craft-slot"));
+      slots.forEach(s => {
+        // Clear slot styles (position, z-index, visibility)
+        gsap.set(s, { clearProps: "all" });
+        s.style.visibility = "visible";
+        s.style.position = "";
+        s.style.top = "";
+        s.style.left = "";
+        s.style.width = "";
+        s.style.height = "";
+
+        // Clear internal box transforms
+        const box = s.querySelector('.craft-box');
+        if (box) gsap.set(box, { clearProps: "all" });
+      });
+    }
 
 
     function randCode(n) {
