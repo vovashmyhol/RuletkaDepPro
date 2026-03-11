@@ -576,22 +576,24 @@
 
     .craft-icon-overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0; /* Fill the whole slot perfectly */
       display: none;
       justify-content: center;
       align-items: center;
       z-index: 150;
       pointer-events: none;
-      /* Integrated feel: same radius as the card faces */
-      border-radius: 24px;
-      background: rgba(30, 144, 255, 0.15);
-      /* Soft blue transparent base */
+      border-radius: inherit; /* Matches slot rounding */
+      background: rgba(30, 144, 255, 0.2); 
       backdrop-filter: blur(8px);
       border: 2px solid rgba(30, 144, 255, 0.4);
       box-shadow: 0 0 30px rgba(30, 144, 255, 0.3);
+      transform-origin: center center;
+    }
+
+    .craft-icon-overlay img {
+      width: 65%;
+      height: 65%;
+      object-fit: contain;
     }
 
     .priceRow {
@@ -2962,15 +2964,15 @@
 
         <div class="crafts-container">
           <div class="crafts-grid" id="craftsGrid">
-            <div class="craft-slot slot-0" data-idx="0"></div>
+            <div class="craft-slot slot-0" data-idx="0">
+              <div class="craft-icon-overlay">
+                <img src="крафт.gif" alt="">
+              </div>
+            </div>
             <div class="craft-slot slot-1" data-idx="1"></div>
             <div class="craft-slot slot-2" data-idx="2"></div>
             <div class="craft-slot slot-3" data-idx="3"></div>
             <div class="emitter-container" id="craftEmitter"></div>
-            <!-- Craft Icon Overlay -->
-            <div class="craft-icon-overlay" id="craftIconOverlay">
-              <img src="крафт.gif" alt="Crafting...">
-            </div>
           </div>
         </div>
 
@@ -5057,7 +5059,6 @@
         resetCraftSlotsLayout();
       }
     };
-
     async function doCraftAnimation(winGift) {
       return new Promise(async resolve => {
         const grid = document.getElementById("craftsGrid");
@@ -5069,7 +5070,7 @@
         const tl = gsap.timeline();
 
         // 0. Reset and Init
-        gsap.set(grid, { xPercent: 0, yPercent: 0, x: 0, y: 0 });
+        gsap.set(grid, { x: 0, y: 0 }); // Use x, y for pixel-based shifts
         slots.forEach(s => {
           const box = s.querySelector('.craft-box');
           gsap.set(s, { clearProps: "all", zIndex: 1, opacity: 1, visibility: 'visible' });
@@ -5099,8 +5100,10 @@
         }, "<0.4");
 
         // Center horizontally: shift grid RIGHT by 25% so the left column is in the middle
+        // Calculate pixel shift based on grid width
+        const gridWidth = grid.offsetWidth;
         tl.to(grid, {
-          xPercent: 25,
+          x: gridWidth * 0.25, // Shift right by 25% of grid width
           duration: 1.4,
           ease: "power2.inOut"
         }, "<");
@@ -5130,8 +5133,10 @@
         }, "<0.4");
 
         // Center vertically: shift grid DOWN by 25% so the top row is in the middle
+        // Calculate pixel shift based on grid height
+        const gridHeight = grid.offsetHeight;
         tl.to(grid, {
-          yPercent: 25,
+          y: gridHeight * 0.25, // Shift down by 25% of grid height
           duration: 1.4,
           ease: "power2.inOut"
         }, "<");
@@ -5141,25 +5146,30 @@
         // --- NEW: Squeeze, Star Burst, and Craft Icon ---
         const finalSlot = slots[0];
         const craftBox = finalSlot.querySelector('.craft-box');
-        const iconOverlay = document.getElementById("craftIconOverlay");
+        const iconOverlay = finalSlot.querySelector(".craft-icon-overlay");
 
-        // 1. Squeeze effect
-        await gsapToPromise(craftBox, {
+        // 1. Squeeze effect + Corner Rounding (Sync)
+        const roundingTl = gsap.timeline();
+        roundingTl.to([finalSlot.querySelectorAll('.cb-front, .cb-back'), iconOverlay], {
+          borderRadius: "24px",
+          duration: 0.8,
+          ease: "power2.out"
+        });
+        roundingTl.to(craftBox, {
           scaleY: 0.7,
           scaleX: 1.1,
           duration: 0.2,
           ease: "power2.inOut",
           yoyo: true,
           repeat: 1
-        });
+        }, 0);
+        await roundingTl;
 
-        // 2. Cross-star burst
-        // emitter is already declared at the top of the function
+        // 2. Cross-star burst (from center of final slot)
         for (let i = 0; i < 30; i++) {
           const star = document.createElement("div");
           star.className = "cross-star";
           emitter.appendChild(star);
-          
           const angle = Math.random() * Math.PI * 2;
           const dist = 60 + Math.random() * 120;
           const duration = 0.6 + Math.random() * 0.6;
@@ -5184,23 +5194,9 @@
           });
         }
 
-        // 3. Show craft.gif for 2 seconds
-        gsap.set(iconOverlay, { 
-          display: "flex", 
-          opacity: 0, 
-          scale: 0.5, 
-          left: "50%", 
-          top: "50%", 
-          xPercent: -50, 
-          yPercent: -50 
-        });
-        
-        await gsapToPromise(iconOverlay, { 
-          opacity: 1, 
-          scale: 1, 
-          duration: 0.4, 
-          ease: "back.out(1.7)" 
-        });
+        // 3. Show integrated craft.gif
+        gsap.set(iconOverlay, { display: "flex", opacity: 0, scale: 0.8 });
+        await gsapToPromise(iconOverlay, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" });
 
         await sleep(2000);
 
@@ -5217,42 +5213,45 @@
         // Hide other slots and prepare finalSlot for absolute expansion
         slots.forEach((s, i) => { if (i !== 0) s.style.display = 'none'; });
         
+        // Calculate the center of the grid container in pixels for rock-solid mobile alignment
+        const gridRect = grid.getBoundingClientRect();
+        // Since finalSlot is inside grid, we use its own offset
+        const slotW = finalSlot.offsetWidth;
+        const slotH = finalSlot.offsetHeight;
+        const targetX = (gridRect.width - slotW) / 2;
+        const targetY = (gridRect.height - slotH) / 2;
+
         gsap.set(finalSlot, {
           position: 'absolute',
           top: 0,
           left: 0,
-          width: '50.1%', // slight overlap
-          height: '50.1%',
+          width: slotW,
+          height: slotH,
           zIndex: 100,
           opacity: 1,
-          visibility: 'visible'
+          visibility: 'visible',
+          x: finalSlot.offsetLeft, // Start at current grid position
+          y: finalSlot.offsetTop
         });
 
-        // Expand transition
         const expandTl = gsap.timeline();
-        expandTl.to(grid, { xPercent: 0, yPercent: 0, duration: 1.2, ease: "power3.inOut" });
+        // Move slot to absolute center of container and scale up to fills it
         expandTl.to(finalSlot, {
-          width: '100%',
-          height: '100%',
-          duration: 1.2,
-          ease: "power3.inOut"
-        }, 0);
-        
-        // Expansion sync for integrated icon overlay
-        expandTl.to(iconOverlay, {
-          width: '100%',
-          height: '100%',
           x: 0,
           y: 0,
+          width: gridRect.width,
+          height: gridRect.height,
           duration: 1.2,
           ease: "power3.inOut"
-        }, 0);
+        });
+        // Clear grid shifts simultaneously
+        expandTl.to(grid, { x: 0, y: 0, duration: 1.2, ease: "power3.inOut" }, 0);
 
         await gsapToPromise(expandTl);
 
         // Final Reset/Stable state for selection roulette
         gsap.set(grid, { clearProps: "transform" });
-        gsap.set(finalSlot, { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', rotationX: 0, rotationY: 0, z: 0 });
+        gsap.set(finalSlot, { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', x: 0, y: 0, rotationX: 0, rotationY: 0, z: 0 });
         gsap.set(craftBox, { rotationX: 0, rotationY: 0, scale: 1 });
 
         // --- END NEW EFFECTS ---
