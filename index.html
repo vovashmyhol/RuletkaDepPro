@@ -5076,12 +5076,12 @@
         const tl = gsap.timeline();
 
         // 0. Reset and Init
-        gsap.set(grid, { x: 0, y: 0 }); // Use x, y for pixel-based shifts
+        gsap.set(grid, { x: 0, y: 0, transformStyle: "preserve-3d" }); 
         slots.forEach(s => {
           const box = s.querySelector('.craft-box');
-          gsap.set(s, { clearProps: "all", zIndex: 1, opacity: 1, visibility: 'visible' });
+          gsap.set(s, { clearProps: "all", zIndex: 1, opacity: 1, visibility: 'visible', transformStyle: "preserve-3d" });
           gsap.set(box, { clearProps: "all" });
-          gsap.set(box, { transformOrigin: '50% 50%', rotationX: 0, rotationY: 0, z: 0 });
+          gsap.set(box, { transformOrigin: '50% 50%', rotationX: 0, rotationY: 0, rotationZ: 0, z: 0, force3D: true });
         });
 
         // 1. Sequence 1: Right column (1, 3) folds to Left column (0, 2)
@@ -5095,7 +5095,8 @@
         tl.to([slots[1].querySelector('.craft-box'), slots[3].querySelector('.craft-box')], {
           rotationY: -180,
           duration: 1.4,
-          ease: "power2.inOut"
+          ease: "power2.inOut",
+          force3D: true
         });
 
         // Evaporate the left blocks (0 and 2) being covered
@@ -5120,15 +5121,18 @@
         tl.set([slots[0], slots[2]], { opacity: 1, zIndex: 50 }); // Show left cards as the stacks
         tl.set([slots[1], slots[3]], { opacity: 0 }); // Hide right cards
 
-        // 2. Sequence 2: Bottom stack (now physically Slot 2) folds UP to Top stack (Slot 0)
-        tl.set(slots[2], { transformOrigin: '50% 0%', zIndex: 100 });
+        // 2. Sequence 2: Bottom stack (now physically Slot 2's box) folds UP to Top stack
+        const box2 = slots[2].querySelector('.craft-box');
+        tl.set(slots[2], { zIndex: 100 });
+        tl.set(box2, { transformOrigin: '50% 0%' });
         tl.set(slots[0], { zIndex: 50 });
 
-        tl.to(slots[2], {
+        tl.to(box2, {
           rotationX: 180,
           z: 2,
           duration: 1.4,
-          ease: "power2.inOut"
+          ease: "power2.inOut",
+          force3D: true
         });
 
         // Result: Bottom stack (Slot 2) evaporates as it lands on Slot 0
