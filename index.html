@@ -13,6 +13,9 @@
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
+  <!-- Lottie -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
+
   <!-- TON Connect UI SDK -->
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 
@@ -508,6 +511,53 @@
       border-color: #4aa3ff;
     }
 
+    .caseCard.rainbow {
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 1px;
+      background: #11141a;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 214, 106, 0.25);
+    }
+
+    .caseCard.rainbow .caseHero {
+      padding: 2px;
+      background: #11141a;
+    }
+
+    .caseCard.rainbow .caseHero::before {
+      content: "";
+      position: absolute;
+      inset: -50%;
+      background: conic-gradient(#ff3b30,
+          #ffcc00,
+          #34c759,
+          #00c7ff,
+          #5856d6,
+          #ff2d55,
+          #ff3b30);
+      animation: rainbowCaseBorder 2.8s linear infinite;
+      z-index: 0;
+    }
+
+    .caseCard.rainbow .caseAvatar {
+      position: relative;
+      z-index: 1;
+      border-radius: 26px;
+      overflow: hidden;
+      background: linear-gradient(45deg, color-mix(in srgb, var(--c, #0095ff), transparent 56%) 0%, rgba(6, 8, 13, 1) 55%, rgba(255, 255, 255, 0.12) 100%);
+    }
+
+    @keyframes rainbowCaseBorder {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .caseCard.rainbow .caseHero,
+    .caseCard.rainbow .caseMeta {
+      position: relative;
+      z-index: 1;
+    }
+
     .caseCard.free .caseHero {
       background: transparent;
       box-shadow: none;
@@ -564,6 +614,12 @@
       width: 85%;
       height: 85%;
       object-fit: contain;
+      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+    }
+
+    .caseLottie {
+      width: 90%;
+      height: 90%;
       filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
     }
 
@@ -890,6 +946,11 @@
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+
+    .bigImg .caseLottie {
+      width: 100%;
+      height: 100%;
     }
 
     .bigImg .fallback {
@@ -2838,8 +2899,8 @@
     .starsBanner {
       position: relative;
       margin-bottom: 20px;
-      padding: 18px 20px;
-      background: linear-gradient(135deg, #5eb3ff 0%, #3d8dff 100%);
+      padding: 0;
+      background: rgba(255, 255, 255, 0.06);
       border-radius: 20px;
       overflow: hidden;
       cursor: pointer;
@@ -2848,8 +2909,30 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 70px;
+      height: 78px;
       text-decoration: none;
+    }
+
+    .starsBannerPhoto {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: blur(4px);
+      transform: scale(1.04);
+    }
+
+    .starsBannerSoon {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 28px;
+      font-weight: 950;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.75);
     }
 
     .starsBanner:hover {
@@ -2967,19 +3050,9 @@
       <div class="page active" id="pageHome">
         
         <!-- STARS BANNER -->
-        <a href="https://t.me/starsUArobot" target="_blank" class="starsBanner">
-          <div class="starsBannerBg">
-            <img src="Звезда емодзи.webp" alt="star" class="bannerStarIcon">
-            <img src="Звезда емодзи.webp" alt="star" class="bannerStarIcon">
-            <img src="Звезда емодзи.webp" alt="star" class="bannerStarIcon">
-          </div>
-          <div class="bannerContent">
-            <div class="bannerText">
-              Купить 
-              <img src="stars-DBKMczxe.png" alt="stars" class="bannerStarSmall">
-              <span class="bannerPrice">за 36₴</span>
-            </div>
-          </div>
+        <a href="https://t.me/festables" target="_blank" class="starsBanner">
+          <img src="FeastablesEvent.JPEG" alt="Feastables Event" class="starsBannerPhoto">
+          <div class="starsBannerSoon">Soon...</div>
         </a>
 
         <div class="liveFeed" id="liveFeed">
@@ -3744,8 +3817,10 @@
       { id: "diamond", name: "Diamond", emoji: "💎", value: 100, img: "Алмаз.png" },
       { id: "ring", name: "Ring", emoji: "💍", value: 100, img: "Кольцо за 100 старс.png" },
       { id: "trophy", name: "Trophy", emoji: "🏆", value: 100, img: "Кубок.png" },
+      { id: "bday_candle_teaser", name: "B-Day Candle", emoji: "🕯️", value: 2099, img: "bdaycandle-11298.medium.jpg", teaserOnly: true },
+      { id: "nothing", name: "Nothing", emoji: "-", value: 0, img: "nothing_drop.png", isNothing: true },
       // === NFT gifts (expensive, rarely drop) ===
-      { id: "bday_candle", name: "B-Day Candle", emoji: "🕯️", value: 595, img: "B-Day Candle.png" },
+      { id: "bday_candle", name: "B-Day Candle", emoji: "🕯️", value: 2099, img: "B-Day Candle.png" },
       { id: "lol_pop", name: "Lol Pop", emoji: "🍭", value: 585, img: "Lol Pop.png" },
       { id: "spy_agaric", name: "Spy Agaric", emoji: "🍄", value: 585, img: "Spy Agaric.png" },
       { id: "witch_hat", name: "Witch Hat", emoji: "🧙", value: 595, img: "Witch Hat.png" },
@@ -3808,6 +3883,16 @@
           { gift: "champagne", w: 10 }, { gift: "rocket", w: 10 }, { gift: "cake", w: 10 },
           { gift: "diamond", w: 10 }, { gift: "ring", w: 5 }, { gift: "trophy", w: 5 },
           { gift: "lol_pop", w: 1 }, { gift: "ice_cream", w: 1 }, { gift: "spiced_wine", w: 1 }
+        ]
+      },
+      {
+        id: "bday_nothing", title: "B-Day Candle case", price: 20, badge: "NEW", emoji: "🕯️", lottie: "https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/stick_moneygun.json", color: "#ff8a00",
+        desc: "Try your luck.",
+        forceDrop: "nothing",
+        alternateReel: true,
+        pool: [
+          { gift: "bday_candle_teaser", w: 0 },
+          { gift: "nothing", w: 1 }
         ]
       },
       // --- 45★ Love Potion --- дешёвые + чуть НФТ 600★ ---
@@ -4330,6 +4415,30 @@
     /********************
      * Cases grid
      ********************/
+    function caseVisualHTML(c) {
+      if (c.lottie) {
+        return `<div class="caseLottie" data-lottie="${escapeAttr(c.lottie)}"></div>`;
+      }
+      return c.img
+        ? `<img src="${escapeAttr(c.img)}" alt="">`
+        : `<div class="fallback">${escapeHtml(c.emoji || "🎁")}</div>`;
+    }
+
+    function initLottieIn(root) {
+      if (!window.lottie) return;
+      root.querySelectorAll("[data-lottie]").forEach(container => {
+        if (container.dataset.lottieLoaded) return;
+        container.dataset.lottieLoaded = "1";
+        window.lottie.loadAnimation({
+          container,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          path: container.dataset.lottie
+        });
+      });
+    }
+
     function renderCases() {
       casesGrid.innerHTML = "";
       // No special "big" logic anymore, all cases are 2 per row
@@ -4337,11 +4446,12 @@
         const el = document.createElement("div");
         el.className = "caseCard";
         if (c.id === 'free') el.classList.add("free");
+        if (c.id === 'bday_nothing') el.classList.add("rainbow");
         if (c.color) el.style.setProperty("--c", c.color);
         el.innerHTML = `
           <div class="caseHero">
             <div class="caseAvatar">
-              ${c.img ? `<img src="${escapeAttr(c.img)}" alt="">` : `<div class="fallback">${escapeHtml(c.emoji || "🎁")}</div>`}
+              ${caseVisualHTML(c)}
             </div>
           </div>
           <div class="caseMeta">
@@ -4383,6 +4493,7 @@
 
         el.addEventListener("click", () => openCaseModal(c));
         casesGrid.appendChild(el);
+        initLottieIn(el);
       });
     }
 
@@ -4391,7 +4502,7 @@
      ********************/
     function initLiveFeed() {
       const liveList = document.getElementById("liveList");
-      const feedGifts = GIFTS.filter(g => g.value >= 10);
+      const feedGifts = GIFTS.filter(g => isRealGift(g) && g.value >= 10);
 
       function addDrop() {
         const rnd = Math.random();
@@ -4472,21 +4583,29 @@
       resultToast.classList.remove("show");
 
       for (let i = 0; i < openCount; i++) {
-        const wonGiftId = weightedPickWithEdge(currentCase.pool);
+        const wonGiftId = currentCase.forceDrop || weightedPickWithEdge(currentCase.pool);
         const won = getGift(wonGiftId);
+        const isNothingDrop = Boolean(won.isNothing);
 
         await spinTo(wonGiftId, currentCase);
 
-        addToInv(wonGiftId, 1);
-        renderInventory();
+        if (!isNothingDrop) {
+          addToInv(wonGiftId, 1);
+          renderInventory();
+        }
 
         const winModal = document.getElementById("winFullscreenModal");
         const winImage = document.getElementById("winImage");
         const winName = document.getElementById("winName");
         const winSellPrice = document.getElementById("winSellPrice");
+        const btnSell = document.getElementById("btnWinSell");
+        const btnTake = document.getElementById("btnWinTake");
+        const defaultTakeText = btnTake.textContent;
 
         winImage.innerHTML = giftThumbHTML(won, 180);
         winName.textContent = won.name;
+        btnSell.style.display = isNothingDrop ? "none" : "";
+        btnTake.textContent = isNothingDrop ? "OK" : defaultTakeText;
 
         const sellPrice = round1(won.value * SELL_PAYOUT);
         winSellPrice.textContent = formatStars(sellPrice);
@@ -4535,10 +4654,8 @@
         starsInterval = setInterval(spawnStar, 400); // New star every 400ms
 
         await new Promise(resolve => {
-          const btnSell = document.getElementById("btnWinSell");
-          const btnTake = document.getElementById("btnWinTake");
-
           const handleSell = () => {
+            if (isNothingDrop) return;
             sellGift(wonGiftId);
             cleanup();
           };
@@ -4550,6 +4667,8 @@
           const cleanup = () => {
             btnSell.removeEventListener("click", handleSell);
             btnTake.removeEventListener("click", handleTake);
+            btnSell.style.display = "";
+            btnTake.textContent = defaultTakeText;
             clearInterval(starsInterval); // Stop spawning stars
 
             // Remove all existing stars
@@ -4601,9 +4720,8 @@
       modalName.textContent = c.title;
       modalDesc.textContent = c.desc;
 
-      modalBigImg.innerHTML = c.img
-        ? `<img src="${escapeAttr(c.img)}" alt="">`
-        : `<div class="fallback">${escapeHtml(c.emoji || "🎁")}</div>`;
+      modalBigImg.innerHTML = caseVisualHTML(c);
+      initLottieIn(modalBigImg);
 
       const isPromo = !!c.promo;
       document.getElementById("promoSection").style.display = isPromo ? "block" : "none";
@@ -4681,28 +4799,35 @@
     function buildReel(caseObj) {
       reel.innerHTML = "";
       const base = [];
-      caseObj.pool.forEach(p => {
-        const g = getGift(p.gift);
-        if (g) {
-          // Visually respect the drop rate penalty applied in weightedPick
-          let rareMult = 1;
-          if (g.value >= 700) rareMult = 0.5;
-          if (g.value >= 1000) rareMult = 0.05;
-          if (g.value >= 3000) rareMult = 0.01;
-          if (g.value >= 5000) rareMult = 0.005;
-          if (g.value >= 8000) rareMult = 0.001;
-
-          let visualWeight = Math.max(1, Math.round((p.w * rareMult) / 8));
-          if (rareMult < 1 && Math.random() > rareMult * 10) visualWeight = 0; // Extremely rare items won't spam the visual reel
-
-          for (let k = 0; k < visualWeight; k++) base.push(g);
+      if (caseObj.alternateReel) {
+        const reelGifts = caseObj.pool.map(p => getGift(p.gift)).filter(Boolean);
+        for (let i = 0; i < 96; i++) {
+          base.push(reelGifts[i % reelGifts.length]);
         }
-      });
+      } else {
+        caseObj.pool.forEach(p => {
+          const g = getGift(p.gift);
+          if (g) {
+            // Visually respect the drop rate penalty applied in weightedPick
+            let rareMult = 1;
+            if (g.value >= 700) rareMult = 0.5;
+            if (g.value >= 1000) rareMult = 0.05;
+            if (g.value >= 3000) rareMult = 0.01;
+            if (g.value >= 5000) rareMult = 0.005;
+            if (g.value >= 8000) rareMult = 0.001;
+
+            let visualWeight = Math.max(1, Math.round((p.w * rareMult) / 8));
+            if (rareMult < 1 && Math.random() > rareMult * 10) visualWeight = 0; // Extremely rare items won't spam the visual reel
+
+            for (let k = 0; k < visualWeight; k++) base.push(g);
+          }
+        });
+      }
 
       const strip = [];
       // Increased from 64 to 96 to support longer spins
       for (let i = 0; i < 96; i++) {
-        strip.push(base[randInt(0, base.length - 1)]);
+        strip.push(caseObj.alternateReel ? base[i] : base[randInt(0, base.length - 1)]);
       }
 
       strip.forEach(g => {
@@ -4724,7 +4849,9 @@
 
       const chips = [...reel.querySelectorAll(".itemChip")];
       // Target index increased to allow for longer spin
-      const targetIndex = randInt(70, 85);
+      const targetIndex = caseObj.alternateReel && caseObj.forceDrop
+        ? (randInt(35, 42) * 2 + 1)
+        : randInt(70, 85);
 
       const g = getGift(giftId);
       chips[targetIndex].dataset.gift = giftId;
@@ -5123,7 +5250,8 @@
           // Target value is 1.5x up to 2x the input value
           const targetValue = Math.max(totalValue * 1.5, 50); // Min bound for empty inputs
           // Find best gift slightly above target
-          winGift = GIFTS.filter(g => g.value >= targetValue).sort((a, b) => a.value - b.value)[0] || GIFTS[GIFTS.length - 1];
+          const craftableGifts = GIFTS.filter(isRealGift);
+          winGift = craftableGifts.filter(g => g.value >= targetValue).sort((a, b) => a.value - b.value)[0] || craftableGifts[craftableGifts.length - 1];
         }
 
         await doCraftAnimation(winGift);
@@ -5404,7 +5532,8 @@
         const spinDuration = 2500;
 
         const spinInterval = setInterval(() => {
-          const randomGift = GIFTS[Math.floor(Math.random() * GIFTS.length)];
+          const animationGifts = GIFTS.filter(isRealGift);
+          const randomGift = animationGifts[Math.floor(Math.random() * animationGifts.length)];
           const front = finalSlot.querySelector('.cb-front');
           if (front) {
             front.innerHTML = `<img class="item-img" src="${randomGift.img}">`;
@@ -5688,6 +5817,7 @@
       pickerBody.innerHTML = "";
       GIFTS
         .slice()
+        .filter(isRealGift)
         .sort((a, b) => b.value - a.value)
         .forEach(g => {
           const el = document.createElement("div");
@@ -6031,6 +6161,10 @@
      ********************/
     function getGift(id) {
       return GIFTS.find(g => g.id === id) || { id, name: "Unknown", emoji: "❓", value: 0, img: "" };
+    }
+
+    function isRealGift(gift) {
+      return Boolean(gift) && !gift.isNothing && !gift.teaserOnly;
     }
 
     function weightedPickWithEdge(pool) {
