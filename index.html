@@ -1277,6 +1277,157 @@
       color: rgba(255, 255, 255, 0.4);
     }
 
+    .xpPanel {
+      padding: 16px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.24);
+      margin: -4px 0 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .xpTop {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .xpLevelWrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .xpBadge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 24px rgba(0, 0, 0, 0.28);
+      flex-shrink: 0;
+    }
+
+    .xpBadge.bronze {
+      background: linear-gradient(145deg, #9a5b32, #e49b54);
+    }
+
+    .xpBadge.silver {
+      background: linear-gradient(145deg, #7e8b9b, #dce6f0);
+      color: #18202a;
+    }
+
+    .xpBadge.blue {
+      background: linear-gradient(145deg, #1d5cff, #39d5ff);
+    }
+
+    .xpBadge.purple {
+      background: linear-gradient(145deg, #7a35ff, #ff4fd8);
+    }
+
+    .xpBadge.gold {
+      background: linear-gradient(145deg, #c68200, #ffe36a);
+      color: #231700;
+    }
+
+    .xpTitle {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.15;
+      color: #fff;
+      font-weight: 850;
+    }
+
+    .xpSub {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .xpNeed {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .xpBar {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.28);
+    }
+
+    .xpFill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #35d6ff, #7d5cff 48%, #ffcc3d);
+      box-shadow: 0 0 18px rgba(125, 92, 255, 0.35);
+      transition: width 0.35s ease;
+    }
+
+    .xpBadgeRow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .xpMiniBadge {
+      height: 26px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      opacity: 0.45;
+    }
+
+    .xpMiniBadge.active {
+      opacity: 1;
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+    }
+
+    .xpMiniBadge.bronze {
+      background: linear-gradient(145deg, #8f542e, #d88746);
+    }
+
+    .xpMiniBadge.silver {
+      background: linear-gradient(145deg, #768493, #d2dce7);
+      color: #18202a;
+    }
+
+    .xpMiniBadge.blue {
+      background: linear-gradient(145deg, #1d5cff, #31c9f4);
+    }
+
+    .xpMiniBadge.purple {
+      background: linear-gradient(145deg, #7035e8, #e747c8);
+    }
+
+    .xpMiniBadge.gold {
+      background: linear-gradient(145deg, #bb7b00, #f4d44e);
+      color: #231700;
+    }
+
 
 
     .invGrid {
@@ -1370,6 +1521,24 @@
       padding: 0 12px 12px;
       display: flex;
       gap: 8px;
+    }
+
+    .chargeBadge {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(53, 214, 255, 0.22), rgba(255, 204, 61, 0.2));
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      box-shadow: 0 8px 18px rgba(53, 214, 255, 0.15);
+    }
+
+    .btnSmall:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
     }
 
     .btnSmall {
@@ -2320,7 +2489,10 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: radial-gradient(circle at center, #0a1f3d 0%, #030811 100%);
+      background:
+        radial-gradient(560px 420px at 50% 38%, rgba(184, 135, 75, 0.34), transparent 68%),
+        radial-gradient(760px 520px at 50% 115%, rgba(96, 62, 34, 0.32), transparent 64%),
+        linear-gradient(180deg, #221a13 0%, #15100c 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -2402,18 +2574,30 @@
     .preloaderProgress {
       width: 80px;
       height: 6px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 238, 205, 0.13);
       border-radius: 6px;
       overflow: hidden;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.45), 0 10px 24px rgba(94, 61, 33, 0.28);
     }
 
     .preloaderBar {
       height: 100%;
       width: 30%;
-      background: linear-gradient(90deg, #4aa3ff, #2b7bff);
+      background: linear-gradient(90deg, #d4944b, #ffd27a);
       border-radius: 4px;
       animation: loadProgress 1.6s ease-in-out infinite alternate;
+    }
+
+    .preloaderVersion {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+      text-align: center;
+      color: rgba(255, 238, 205, 0.58);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0;
     }
 
     @keyframes loadProgress {
@@ -2909,7 +3093,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 78px;
+      height: 110px;
       text-decoration: none;
     }
 
@@ -2918,21 +3102,6 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      filter: blur(4px);
-      transform: scale(1.04);
-    }
-
-    .starsBannerSoon {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 28px;
-      font-weight: 950;
-      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.75);
     }
 
     .starsBanner:hover {
@@ -3017,6 +3186,7 @@
     <div class="preloaderProgress">
       <div class="preloaderBar"></div>
     </div>
+    <div class="preloaderVersion" id="appVersionText">v1.1.0</div>
   </div>
 
 
@@ -3051,8 +3221,7 @@
         
         <!-- STARS BANNER -->
         <a href="https://t.me/festables" target="_blank" class="starsBanner">
-          <img src="FeastablesEvent.JPEG" alt="Feastables Event" class="starsBannerPhoto">
-          <div class="starsBannerSoon">Soon...</div>
+          <img src="IMG_1991.webp" alt="Summer Drop" class="starsBannerPhoto">
         </a>
 
         <div class="liveFeed" id="liveFeed">
@@ -3141,14 +3310,24 @@
         </div>
       </div>
 
-      <!-- CRAFTS -->
+      <!-- EARN -->
       <div class="page" id="pageCrafts">
         <div class="invHeader">
-          <img src="Tasks.webp" alt="Crafts Header">
+          <img src="Tasks.webp" alt="Earn Header">
         </div>
-        <div class="sectionTitle">CRAFTS</div>
+        <div class="sectionTitle">EARN</div>
 
-        <div class="crafts-container">
+        <div class="panel">
+          <div class="tasksList" id="tasksList"></div>
+          <div class="sep"></div>
+          <div class="upHint" style="text-align:left">
+            Complete a task and earn <b>5<img src="Звезда емодзи.webp" class="emojiI"
+                style="width:16px;height:16px;vertical-align:-2px" alt="в…"></b>
+            to your balance.
+          </div>
+        </div>
+
+        <div class="crafts-container" style="display:none">
           <div class="crafts-grid" id="craftsGrid">
             <div class="craft-slot slot-0" data-idx="0">
               <div class="craft-icon-overlay">
@@ -3162,14 +3341,14 @@
           </div>
         </div>
 
-        <div class="craft-btn-wrap">
+        <div class="craft-btn-wrap" style="display:none">
           <button class="craft-btn" id="btnPerformCraft" disabled>
             <span>CRAFT</span>
             <span class="chance" id="craftChance">0% success chance</span>
           </button>
         </div>
 
-        <div class="panel" style="margin-top: 25px; opacity: 0.6;">
+        <div class="panel" style="margin-top: 25px; opacity: 0.6; display:none;">
           <div class="upHint" style="text-align:center">
             Add up to 4 gifts to craft a better one. <br>
             Max gifts = <b>90% success</b>.
@@ -3192,6 +3371,23 @@
           </div>
         </div>
 
+        <div class="xpPanel">
+          <div class="xpTop">
+            <div class="xpLevelWrap">
+              <div class="xpBadge bronze" id="xpBadge">I</div>
+              <div>
+                <p class="xpTitle" id="xpTitle">Level 1</p>
+                <p class="xpSub" id="xpSub">0 / 100 XP</p>
+              </div>
+            </div>
+            <div class="xpNeed" id="xpNeed">100 XP left</div>
+          </div>
+          <div class="xpBar">
+            <div class="xpFill" id="xpFill"></div>
+          </div>
+          <div class="xpBadgeRow" id="xpBadgeRow"></div>
+        </div>
+
         <div class="sectionTitle" style="margin-top:20px">INVENTORY</div>
         <div class="panel">
           <div class="invGrid" id="invGrid"></div>
@@ -3199,9 +3395,9 @@
           <button class="btn ghost" id="btnSellAll">Sell all</button>
         </div>
 
-        <div class="sectionTitle" style="margin-top:20px">TASKS & BONUS</div>
-        <div class="panel">
-          <div class="tasksList" id="tasksList"></div>
+        <div class="sectionTitle" style="margin-top:20px; display:none">TASKS & BONUS</div>
+        <div class="panel" style="display:none">
+          <div class="tasksList"></div>
           <div class="sep"></div>
           <div class="upHint" style="text-align:left">
             Complete a task and earn <b>5<img src="Звезда емодзи.webp" class="emojiI"
@@ -3242,7 +3438,7 @@
             <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="2" />
             <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="2" />
           </svg>
-          CRAFTS
+          EARN
         </div>
 
         <div class="tabBtn" data-tab="profile" data-index="3">
@@ -3346,6 +3542,9 @@
               <button class="btn" id="btnOpenCase">
                 <span>Open case</span>
                 <img class="starI" id="starIconBtn" alt="★"><span id="btnCost">0</span>
+              </button>
+              <button class="btn ghost" id="btnQuickPurchase" style="margin-top:10px; display:none;">
+                Quick purchase
               </button>
               <div class="sep"></div>
             </div>
@@ -3644,6 +3843,8 @@
     const SELL_TOAST_TEXT = "Sold";
     const RESET_TEXT = "Reset";
     const WIN_TEXT = "WIN!";
+    const QUICK_PURCHASE_CASE_ID = "bday_nothing";
+    const QUICK_PURCHASE_INVOICE_LINK = "https://t.me/$tm1IijFr2Eo-FAAAzvcBryqe1_w";
     const CASE_EDGE_LOW_BOOST = 1.22;
     const UPGRADE_EDGE = 0.88;
     const SELL_PAYOUT = 0.80;
@@ -3654,6 +3855,8 @@
     const STORAGE = {
       stars: "gb_final_stars",
       inv: "gb_final_inventory",
+      chargedInv: "gb_final_charged_inventory",
+      xp: "gb_final_xp",
       tasksDone: "gb_final_tasks_done",      // {taskId:true}
       taskPending: "gb_final_task_pending",   // taskId
       promos: "gb_final_used_promos"          // {code:true}
@@ -3886,13 +4089,16 @@
         ]
       },
       {
-        id: "bday_nothing", title: "B-Day Candle case", price: 20, badge: "NEW", emoji: "🕯️", lottie: "https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/stick_moneygun.json", color: "#ff8a00",
-        desc: "Try your luck.",
-        forceDrop: "nothing",
-        alternateReel: true,
+        id: "bday_nothing", title: "NFT Summer Drop", price: 125, badge: "NFT", emoji: "🕯️", lottie: "https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/stick_moneygun.json", color: "#ff8a00",
+        desc: "NFT-only charged drops.",
+        chargedDrops: true,
         pool: [
-          { gift: "bday_candle_teaser", w: 0 },
-          { gift: "nothing", w: 1 }
+          { gift: "instant_ramen", w: 1 },
+          { gift: "spy_agaric", w: 1 },
+          { gift: "ice_cream", w: 1 },
+          { gift: "evil_eye", w: 1 },
+          { gift: "lol_pop", w: 1 },
+          { gift: "snoop_dogg", w: 1 }
         ]
       },
       // --- 45★ Love Potion --- дешёвые + чуть НФТ 600★ ---
@@ -3980,9 +4186,9 @@
           { gift: "skull_flower", w: 1 }, { gift: "record_player", w: 1 }, { gift: "mad_pumpkin", w: 1 }, { gift: "trapped_heart", w: 1 }
         ]
       },
-      // --- 452★ Nail braclet --- нфт до 1500★ ---
+      // --- 419★ Nail braclet --- нфт до 1500★ ---
       {
-        id: "key", title: "Nail braclet case", price: 452, badge: "🔥", emoji: "🔑", img: "Nail braclet case.webp", color: "#ff9500",
+        id: "key", title: "Nail braclet case", price: 419, badge: "🔥", emoji: "🔑", img: "Nail braclet case.webp", color: "#ff9500",
         desc: "Love Candle focus.",
         pool: [
           { gift: "diamond", w: 10 }, { gift: "ring", w: 10 }, { gift: "trophy", w: 10 },
@@ -3992,9 +4198,9 @@
           { gift: "skull_flower", w: 1 }, { gift: "record_player", w: 1 }, { gift: "mad_pumpkin", w: 1 }, { gift: "trapped_heart", w: 1 }
         ]
       },
-      // --- 549★ Precious peach --- самый дорогой, нфт до 1500★ ---
+      // --- 599★ Precious peach --- самый дорогой, нфт до 1500★ ---
       {
-        id: "big", title: "Precious peach case", price: 899, badge: "LIMITED", emoji: "👑", img: "Precious peach case.webp", big: true, color: "#5ac8fa",
+        id: "big", title: "Precious peach case", price: 599, badge: "LIMITED", emoji: "👑", img: "Precious peach case.webp", big: true, color: "#5ac8fa",
         desc: "NFT gifts up to 1500★",
         pool: [
           { gift: "lol_pop", w: 10 }, { gift: "spy_agaric", w: 10 }, { gift: "spiced_wine", w: 6 },
@@ -4012,7 +4218,7 @@
     const TASKS = [
       { id: "join_channel", title: "Join our channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/voco_in" },
       { id: "open_site", title: "Join our channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/vo2co" },
-      { id: "invite_friend", title: "Open market", icon: "Маркет.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/portals/market?startapp=wfu2s0" }
+      { id: "invite_friend", title: "Join channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/festables" }
     ];
 
     /********************
@@ -4046,12 +4252,16 @@
      * State
      ********************/
     let stars = loadNumber(STORAGE.stars, 0);
+    let profileXp = loadNumber(STORAGE.xp, 0);
     let inventory = loadJSON(STORAGE.inv, {}); // {giftId: qty}
+    let chargedInventory = loadJSON(STORAGE.chargedInv, {}); // {giftId: qty}
     let tasksDone = loadJSON(STORAGE.tasksDone, {}); // {taskId:true}
     let usedPromos = loadJSON(STORAGE.promos, {}); // {code:true}
 
     let currentCase = CASES[0];
     let openCount = 1;
+    let pendingQuickPurchase = false;
+    let quickPurchaseOpenReady = false;
 
     let upgradeFrom = null;
     let upgradeTo = null;
@@ -4092,6 +4302,7 @@
     const modalPrice = document.getElementById("modalPrice");
     const btnCost = document.getElementById("btnCost");
     const btnOpenCase = document.getElementById("btnOpenCase");
+    const btnQuickPurchase = document.getElementById("btnQuickPurchase");
     const btnShowContents = document.getElementById("btnShowContents");
     const countPills = document.getElementById("countPills");
     const reel = document.getElementById("reel");
@@ -4141,6 +4352,12 @@
     const ava = document.getElementById("ava");
     const pname = document.getElementById("pname");
     const puser = document.getElementById("puser");
+    const xpBadge = document.getElementById("xpBadge");
+    const xpTitle = document.getElementById("xpTitle");
+    const xpSub = document.getElementById("xpSub");
+    const xpNeed = document.getElementById("xpNeed");
+    const xpFill = document.getElementById("xpFill");
+    const xpBadgeRow = document.getElementById("xpBadgeRow");
     const btnSellAll = document.getElementById("btnSellAll");
 
     // Tasks
@@ -4155,6 +4372,7 @@
     const withdrawCode = document.getElementById("withdrawCode");
     const btnCopyCode = document.getElementById("btnCopyCode");
     let withdrawGiftId = null;
+    let withdrawGiftCharged = false;
 
     // Toast
     const toast = document.getElementById("toast");
@@ -4216,6 +4434,7 @@
     renderStars();
     renderCases();
     renderInventory();
+    renderProfileProgress();
     renderTasks();
     renderUpgrade();
     buildReel(currentCase);
@@ -4359,7 +4578,7 @@
       topSub.textContent =
         tab === "home" ? "Cases" :
           tab === "upgrade" ? "Upgrade" :
-            tab === "crafts" ? "Crafts" :
+            tab === "crafts" ? "Earn" :
               tab === "profile" ? "Profile" : "";
 
       gsap.fromTo(pageEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .22, ease: "power2.out" });
@@ -4369,7 +4588,7 @@
 
       if (tab === "profile") {
         renderInventory();
-        renderTasks();
+        renderProfileProgress();
       }
       if (tab === "home") {
         renderCases();
@@ -4378,7 +4597,7 @@
         renderUpgrade();
       }
       if (tab === "crafts") {
-        updateCraftUI();
+        renderTasks();
       }
     }
 
@@ -4566,16 +4785,41 @@
 
     btnShowContents.addEventListener("click", () => openContentsModal(currentCase));
 
+    btnQuickPurchase.addEventListener("click", () => {
+      if (currentCase.id !== QUICK_PURCHASE_CASE_ID || pendingQuickPurchase) return;
+
+      openCount = 1;
+      [...countPills.querySelectorAll(".pill")].forEach((p, idx) => p.classList.toggle("active", idx === 0));
+      updateModalPrice();
+
+      pendingQuickPurchase = true;
+      btnQuickPurchase.disabled = true;
+      showToast("Opening invoice...");
+
+      try {
+        if (tg?.openInvoice) tg.openInvoice(QUICK_PURCHASE_INVOICE_LINK);
+        else window.open(QUICK_PURCHASE_INVOICE_LINK, "_blank");
+      } catch (e) {
+        window.open(QUICK_PURCHASE_INVOICE_LINK, "_blank");
+      }
+    });
+
     btnOpenCase.addEventListener("click", async () => {
       const totalCost = currentCase.price * openCount;
-      if (stars + 1e-9 < totalCost) {
+      const isPaidQuickOpen = quickPurchaseOpenReady && currentCase.id === QUICK_PURCHASE_CASE_ID && openCount === 1;
+      if (!isPaidQuickOpen && stars + 1e-9 < totalCost) {
         showToast("Не хватает ★");
         wiggle(".wallet");
         return;
       }
 
-      stars = round1(stars - totalCost);
-      saveNumber(STORAGE.stars, stars);
+      if (isPaidQuickOpen) {
+        quickPurchaseOpenReady = false;
+      } else {
+        stars = round1(stars - totalCost);
+        saveNumber(STORAGE.stars, stars);
+      }
+      addProfileXp(totalCost);
       renderStars();
 
       btnOpenCase.disabled = true;
@@ -4589,8 +4833,10 @@
 
         await spinTo(wonGiftId, currentCase);
 
+        const isChargedDrop = Boolean(currentCase.chargedDrops && !isNothingDrop);
+
         if (!isNothingDrop) {
-          addToInv(wonGiftId, 1);
+          addToInv(wonGiftId, 1, isChargedDrop);
           renderInventory();
         }
 
@@ -4604,7 +4850,7 @@
 
         winImage.innerHTML = giftThumbHTML(won, 180);
         winName.textContent = won.name;
-        btnSell.style.display = isNothingDrop ? "none" : "";
+        btnSell.style.display = isNothingDrop || isChargedDrop ? "none" : "";
         btnTake.textContent = isNothingDrop ? "OK" : defaultTakeText;
 
         const sellPrice = round1(won.value * SELL_PAYOUT);
@@ -4655,7 +4901,7 @@
 
         await new Promise(resolve => {
           const handleSell = () => {
-            if (isNothingDrop) return;
+            if (isNothingDrop || isChargedDrop) return;
             sellGift(wonGiftId);
             cleanup();
           };
@@ -4727,6 +4973,8 @@
       document.getElementById("promoSection").style.display = isPromo ? "block" : "none";
       document.getElementById("modalChooser").style.display = isPromo ? "none" : "flex";
       document.getElementById("modalOpenAction").style.display = isPromo ? "none" : "block";
+      btnQuickPurchase.style.display = !isPromo && c.id === QUICK_PURCHASE_CASE_ID ? "flex" : "none";
+      btnQuickPurchase.disabled = pendingQuickPurchase;
 
       if (isPromo) {
         document.getElementById("promoInput").value = "";
@@ -4900,10 +5148,15 @@
      ********************/
     function renderInventory() {
       saveJSON(STORAGE.inv, inventory);
+      saveJSON(STORAGE.chargedInv, chargedInventory);
 
-      const entries = Object.entries(inventory)
+      const regularEntries = Object.entries(inventory)
         .filter(([_, qty]) => qty > 0)
-        .map(([id, qty]) => ({ ...getGift(id), qty }))
+        .map(([id, qty]) => ({ ...getGift(id), qty, charged: false }));
+      const chargedEntries = Object.entries(chargedInventory)
+        .filter(([_, qty]) => qty > 0)
+        .map(([id, qty]) => ({ ...getGift(id), qty, charged: true }));
+      const entries = regularEntries.concat(chargedEntries)
         .sort((a, b) => b.value - a.value);
 
       if (entries.length === 0) {
@@ -4916,6 +5169,7 @@
           el.innerHTML = `
             <div class="giftTop">
               <div class="giftQty">x${it.qty}</div>
+              ${it.charged ? `<div class="chargeBadge">&#9889;</div>` : ""}
             </div>
 
             <div class="giftImg">
@@ -4931,8 +5185,8 @@
             </div>
 
             <div class="giftActions">
-              <button class="btnSmall" data-act="sell" data-id="${escapeAttr(it.id)}">Sell</button>
-              <button class="btnSmall primary" data-act="withdraw" data-id="${escapeAttr(it.id)}">Withdraw</button>
+              <button class="btnSmall" data-act="sell" data-id="${escapeAttr(it.id)}" data-charged="${it.charged ? "1" : "0"}"${it.charged ? " disabled" : ""}>Sell</button>
+              <button class="btnSmall primary" data-act="withdraw" data-id="${escapeAttr(it.id)}" data-charged="${it.charged ? "1" : "0"}">Withdraw</button>
             </div>
           `;
           invGrid.appendChild(el);
@@ -4943,14 +5197,20 @@
         b.addEventListener("click", () => {
           const act = b.dataset.act;
           const id = b.dataset.id;
+          const charged = b.dataset.charged === "1";
           if (!id) return;
-          if (act === "sell") sellGift(id);
-          if (act === "withdraw") openWithdrawModal(id);
+          if (act === "sell") sellGift(id, charged);
+          if (act === "withdraw") openWithdrawModal(id, charged);
         });
       });
     }
 
-    function sellGift(giftId) {
+    function sellGift(giftId, charged = false) {
+      if (charged) {
+        showToast("\u0417\u0430\u0440\u044f\u0436\u0435\u043d\u043d\u044b\u0435 \u0433\u0438\u0444\u0442\u044b \u043d\u0435\u043b\u044c\u0437\u044f \u043f\u0440\u043e\u0434\u0430\u0442\u044c");
+        return;
+      }
+
       const qty = inventory[giftId] || 0;
       if (qty <= 0) return;
 
@@ -5000,25 +5260,33 @@
       pulse(".wallet");
     });
 
-    function addToInv(giftId, qty) {
-      inventory[giftId] = (inventory[giftId] || 0) + qty;
-      saveJSON(STORAGE.inv, inventory);
+    function addToInv(giftId, qty, charged = false) {
+      const target = charged ? chargedInventory : inventory;
+      target[giftId] = (target[giftId] || 0) + qty;
+      saveJSON(charged ? STORAGE.chargedInv : STORAGE.inv, target);
     }
-    function removeFromInv(giftId, qty) {
-      const cur = inventory[giftId] || 0;
+    function removeFromInv(giftId, qty, charged = false) {
+      const target = charged ? chargedInventory : inventory;
+      const cur = target[giftId] || 0;
       const next = Math.max(0, cur - qty);
-      inventory[giftId] = next;
-      saveJSON(STORAGE.inv, inventory);
+      target[giftId] = next;
+      saveJSON(charged ? STORAGE.chargedInv : STORAGE.inv, target);
     }
 
     /********************
      * Withdraw modal (generate code)
      ********************/
-    function openWithdrawModal(giftId) {
-      const qty = inventory[giftId] || 0;
+    function openWithdrawModal(giftId, charged = false) {
+      const qty = (charged ? chargedInventory : inventory)[giftId] || 0;
       if (qty <= 0) return;
 
+      if (charged && getLevelInfo(profileXp).level < 8) {
+        showToast("\u041d\u0443\u0436\u0435\u043d \u043c\u0438\u043d\u0438\u043c\u0443\u043c 8 \u0443\u0440\u043e\u0432\u0435\u043d\u044c. \u041f\u043e\u0432\u044b\u0448\u0430\u0439\u0442\u0435 \u0443\u0440\u043e\u0432\u0435\u043d\u044c \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u044f \u043a\u0435\u0439\u0441\u044b \u0438 \u0438\u0433\u0440\u0430\u044f \u0432 \u0438\u0433\u0440\u044b");
+        return;
+      }
+
       withdrawGiftId = giftId;
+      withdrawGiftCharged = charged;
       const g = getGift(giftId);
 
       const prefix = WITHDRAW_PREFIX[giftId] || "XX";
@@ -5048,10 +5316,10 @@
       }
 
       // 1️⃣ УДАЛЯЕМ 1 ПОДАРОК ИЗ ИНВЕНТАРЯ
-      removeFromInv(withdrawGiftId, 1);
+      removeFromInv(withdrawGiftId, 1, withdrawGiftCharged);
 
       // если подарков 0 — очищаем выбор апгрейда
-      if (inventory[withdrawGiftId] <= 0) {
+      if ((inventory[withdrawGiftId] || 0) <= 0 && (chargedInventory[withdrawGiftId] || 0) <= 0) {
         if (upgradeFrom === withdrawGiftId) upgradeFrom = null;
         if (upgradeTo === withdrawGiftId) upgradeTo = null;
       }
@@ -5068,6 +5336,7 @@
       pulse(".wallet");
 
       withdrawGiftId = null;
+      withdrawGiftCharged = false;
     });
 
     /********************
@@ -6135,6 +6404,24 @@
         // data: {url, status: "paid"|"cancelled"|"failed"...}
         // we add stars only if paid AND amount is known by chosen preset:
         const status = data?.status;
+        if (pendingQuickPurchase) {
+          pendingQuickPurchase = false;
+          btnQuickPurchase.disabled = false;
+
+          if (status === "paid") {
+            quickPurchaseOpenReady = true;
+            if (currentCase.id !== QUICK_PURCHASE_CASE_ID) {
+              currentCase = CASES.find(c => c.id === QUICK_PURCHASE_CASE_ID) || currentCase;
+            }
+            openCount = 1;
+            [...countPills.querySelectorAll(".pill")].forEach((p, idx) => p.classList.toggle("active", idx === 0));
+            updateModalPrice();
+            showToast("Payment received. Opening case...");
+            btnOpenCase.click();
+          }
+          return;
+        }
+
         if (status !== "paid") return;
 
         // We can't read exact amount from invoiceClosed reliably without backend,
@@ -6194,6 +6481,80 @@
         if (r <= 0) return p.gift;
       }
       return adjusted[adjusted.length - 1].gift;
+    }
+
+    function xpToNextLevel(level) {
+      if (level === 1) return 100;
+      if (level === 2) return 350;
+      if (level === 3) return 800;
+      return Math.floor(800 * Math.pow(level / 3, 1.42));
+    }
+
+    function getLevelInfo(totalXp) {
+      let level = 1;
+      let levelStart = 0;
+      let need = xpToNextLevel(level);
+
+      while (level < 100 && totalXp >= levelStart + need) {
+        levelStart += need;
+        level += 1;
+        need = xpToNextLevel(level);
+      }
+
+      const current = level >= 100 ? need : Math.max(0, totalXp - levelStart);
+      const progress = level >= 100 ? 1 : clamp(current / need, 0, 1);
+      return { level, levelStart, need, current, progress };
+    }
+
+    function getProfileRank(level) {
+      if (level >= 80) return { cls: "gold", mark: "V", name: "Gold" };
+      if (level >= 60) return { cls: "purple", mark: "IV", name: "Elite" };
+      if (level >= 35) return { cls: "blue", mark: "III", name: "Pro" };
+      if (level >= 15) return { cls: "silver", mark: "II", name: "Silver" };
+      return { cls: "bronze", mark: "I", name: "Bronze" };
+    }
+
+    function renderProfileProgress() {
+      if (!xpBadge || !xpTitle || !xpSub || !xpNeed || !xpFill || !xpBadgeRow) return;
+
+      const info = getLevelInfo(profileXp);
+      const rank = getProfileRank(info.level);
+      xpBadge.className = `xpBadge ${rank.cls}`;
+      xpBadge.textContent = rank.mark;
+      xpTitle.textContent = `Level ${info.level} - ${rank.name}`;
+
+      if (info.level >= 100) {
+        xpSub.textContent = `${formatStars(profileXp)} XP total`;
+        xpNeed.textContent = "Max level";
+      } else {
+        const left = Math.max(0, info.need - info.current);
+        xpSub.textContent = `${formatStars(info.current)} / ${formatStars(info.need)} XP`;
+        xpNeed.textContent = `${formatStars(left)} XP left`;
+      }
+
+      xpFill.style.width = `${Math.round(info.progress * 100)}%`;
+
+      const ranks = [
+        { cls: "bronze", mark: "I", min: 1 },
+        { cls: "silver", mark: "II", min: 15 },
+        { cls: "blue", mark: "III", min: 35 },
+        { cls: "purple", mark: "IV", min: 60 },
+        { cls: "gold", mark: "V", min: 80 }
+      ];
+
+      xpBadgeRow.innerHTML = ranks.map(r => `
+        <div class="xpMiniBadge ${r.cls}${info.level >= r.min ? " active" : ""}">
+          ${r.mark}
+        </div>
+      `).join("");
+    }
+
+    function addProfileXp(amount) {
+      const value = Number(amount);
+      if (!Number.isFinite(value) || value <= 0) return;
+      profileXp = round1(profileXp + value);
+      saveNumber(STORAGE.xp, profileXp);
+      renderProfileProgress();
     }
 
     function renderStars() { starsValue.textContent = formatStars(stars); }
