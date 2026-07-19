@@ -1230,8 +1230,8 @@
     /* ===== INVENTORY (PREMIUM) ===== */
     .profileCard {
       display: flex;
-      align-items: center;
-      gap: 16px;
+      flex-direction: column;
+      gap: 14px;
       padding: 16px;
       border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1239,6 +1239,31 @@
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
       margin-bottom: 20px;
       backdrop-filter: blur(10px);
+    }
+
+    .profileMainRow {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .profileIdentity {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .profileLevelSide {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      margin-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .ava {
@@ -1278,13 +1303,12 @@
     }
 
     .xpPanel {
-      padding: 16px;
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.24);
-      margin: -4px 0 20px;
-      backdrop-filter: blur(10px);
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      margin: 0;
+      backdrop-filter: none;
     }
 
     .xpTop {
@@ -1316,28 +1340,215 @@
       border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 24px rgba(0, 0, 0, 0.28);
       flex-shrink: 0;
+      padding: 8px;
+      box-sizing: border-box;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .xpBadge:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 14px 28px rgba(0, 0, 0, 0.32);
+    }
+
+    .xpBadge .levelIcon {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      color: inherit;
+      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
     }
 
     .xpBadge.bronze {
       background: linear-gradient(145deg, #9a5b32, #e49b54);
+      color: #ffe2bc;
     }
 
     .xpBadge.silver {
       background: linear-gradient(145deg, #7e8b9b, #dce6f0);
-      color: #18202a;
+      color: #f3f8ff;
     }
 
     .xpBadge.blue {
       background: linear-gradient(145deg, #1d5cff, #39d5ff);
+      color: #dffcff;
     }
 
     .xpBadge.purple {
       background: linear-gradient(145deg, #7a35ff, #ff4fd8);
+      color: #ffe1fb;
     }
 
     .xpBadge.gold {
       background: linear-gradient(145deg, #c68200, #ffe36a);
-      color: #231700;
+      color: #fff3bf;
+    }
+
+    .levelInfoOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 6, 12, 0.82);
+      backdrop-filter: blur(16px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 2200;
+    }
+
+    .levelInfoOverlay.show {
+      display: flex;
+    }
+
+    .levelInfoCard {
+      width: min(500px, 100%);
+      max-height: min(80vh, 480px);
+      border-radius: 24px;
+      padding: 18px;
+      color: #fff;
+      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: 0 24px 72px rgba(0,0,0,0.42);
+      transform: translateY(16px) scale(0.97);
+      opacity: 0;
+      box-sizing: border-box;
+    }
+
+    .levelInfoHeader {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .levelInfoBadge {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      box-sizing: border-box;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 12px 24px rgba(0,0,0,0.24);
+      flex-shrink: 0;
+      color: #fff;
+    }
+
+    .levelInfoBadge .levelIcon {
+      width: 100%;
+      height: 100%;
+      display: block;
+      color: inherit;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
+    }
+
+    .levelInfoBadge.bronze {
+      background: linear-gradient(145deg, #9a5b32, #e49b54);
+      color: #ffe2bc;
+    }
+
+    .levelInfoBadge.silver {
+      background: linear-gradient(145deg, #7e8b9b, #dce6f0);
+      color: #f3f8ff;
+    }
+
+    .levelInfoBadge.blue {
+      background: linear-gradient(145deg, #1d5cff, #39d5ff);
+      color: #dffcff;
+    }
+
+    .levelInfoBadge.purple {
+      background: linear-gradient(145deg, #7a35ff, #ff4fd8);
+      color: #ffe1fb;
+    }
+
+    .levelInfoBadge.gold {
+      background: linear-gradient(145deg, #c68200, #ffe36a);
+      color: #fff3bf;
+    }
+
+    .levelInfoTitle {
+      font-size: 18px;
+      font-weight: 900;
+      margin: 0 0 3px;
+    }
+
+    .levelInfoSubtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+      font-weight: 700;
+    }
+
+    .levelInfoProgress {
+      margin-bottom: 12px;
+    }
+
+    .levelInfoProgressBar {
+      height: 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 8px;
+    }
+
+    .levelInfoProgressFill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #35d6ff, #7d5cff 50%, #ffcc3d);
+      transition: width 0.7s ease;
+    }
+
+    .levelInfoProgressText {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 700;
+    }
+
+    .levelInfoBody {
+      border-radius: 18px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 12px;
+    }
+
+    .levelInfoLabel {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      color: rgba(255,255,255,0.56);
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .levelInfoValue {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .levelInfoHint {
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.45;
+    }
+
+    .levelInfoCloseBtn {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(90deg, #35d6ff, #7d5cff 55%, #ffcc3d);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.22);
+      cursor: pointer;
     }
 
     .xpTitle {
@@ -1371,6 +1582,29 @@
       box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.28);
     }
 
+    .profileBar {
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    .xpAboutLink {
+      margin-top: 6px;
+      font-size: 10px;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: rgba(255, 255, 255, 0.58);
+      font-weight: 400;
+      cursor: pointer;
+      user-select: none;
+      align-self: center;
+      text-align: center;
+    }
+
+    .xpAboutLink:hover {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
     .xpFill {
       height: 100%;
       width: 0%;
@@ -1379,56 +1613,6 @@
       box-shadow: 0 0 18px rgba(125, 92, 255, 0.35);
       transition: width 0.35s ease;
     }
-
-    .xpBadgeRow {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .xpMiniBadge {
-      height: 26px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 900;
-      color: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      opacity: 0.45;
-    }
-
-    .xpMiniBadge.active {
-      opacity: 1;
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
-    }
-
-    .xpMiniBadge.bronze {
-      background: linear-gradient(145deg, #8f542e, #d88746);
-    }
-
-    .xpMiniBadge.silver {
-      background: linear-gradient(145deg, #768493, #d2dce7);
-      color: #18202a;
-    }
-
-    .xpMiniBadge.blue {
-      background: linear-gradient(145deg, #1d5cff, #31c9f4);
-    }
-
-    .xpMiniBadge.purple {
-      background: linear-gradient(145deg, #7035e8, #e747c8);
-    }
-
-    .xpMiniBadge.gold {
-      background: linear-gradient(145deg, #bb7b00, #f4d44e);
-      color: #231700;
-    }
-
-
 
     .invGrid {
       display: grid;
@@ -3364,28 +3548,35 @@
         <div class="sectionTitle">PROFILE</div>
 
         <div class="profileCard">
-          <div class="ava" id="ava"></div>
-          <div class="pmeta">
-            <p class="pname" id="pname">User</p>
-            <p class="puser" id="puser">@username</p>
-          </div>
-        </div>
-
-        <div class="xpPanel">
-          <div class="xpTop">
-            <div class="xpLevelWrap">
-              <div class="xpBadge bronze" id="xpBadge">I</div>
-              <div>
-                <p class="xpTitle" id="xpTitle">Level 1</p>
-                <p class="xpSub" id="xpSub">0 / 100 XP</p>
+          <div class="profileMainRow">
+            <div class="profileIdentity">
+              <div class="ava" id="ava"></div>
+              <div class="pmeta">
+                <p class="pname" id="pname">User</p>
+                <p class="puser" id="puser">@username</p>
               </div>
             </div>
-            <div class="xpNeed" id="xpNeed">100 XP left</div>
+
+            <div class="profileLevelSide">
+              <div class="xpLevelWrap">
+                <div class="xpBadge bronze" id="xpBadge">
+                  <svg class="levelIcon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="currentColor" d="M16.445 3h-8.89c-.345 0-.666.178-.849.47L3.25 9h17.5l-3.456-5.53a1.003 1.003 0 0 0-.849-.47zM11.26 21.186a1 1 0 0 0 1.48 0L22 11H2l9.26 10.186z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="xpTitle" id="xpTitle">Level 1</p>
+                  <p class="xpSub" id="xpSub">0 / 100 XP</p>
+                </div>
+              </div>
+              <div class="xpNeed" id="xpNeed">100 XP left</div>
+            </div>
           </div>
-          <div class="xpBar">
+
+          <div class="xpBar profileBar">
             <div class="xpFill" id="xpFill"></div>
           </div>
-          <div class="xpBadgeRow" id="xpBadgeRow"></div>
+          <div class="xpAboutLink" id="xpAboutLink" role="button" tabindex="0">about level</div>
         </div>
 
         <div class="sectionTitle" style="margin-top:20px">INVENTORY</div>
@@ -3407,6 +3598,39 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="levelInfoOverlay" id="levelInfoOverlay">
+      <div class="levelInfoCard" id="levelInfoCard">
+        <div class="levelInfoHeader">
+          <div class="levelInfoBadge bronze" id="levelInfoBadge">
+            <svg class="levelIcon" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M16.445 3h-8.89c-.345 0-.666.178-.849.47L3.25 9h17.5l-3.456-5.53a1.003 1.003 0 0 0-.849-.47zM11.26 21.186a1 1 0 0 0 1.48 0L22 11H2l9.26 10.186z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="levelInfoTitle" id="levelInfoTitle">Level 1</p>
+            <p class="levelInfoSubtitle" id="levelInfoSubtitle">Bronze stage</p>
+          </div>
+        </div>
+        <div class="levelInfoProgress">
+          <div class="levelInfoProgressBar">
+            <div class="levelInfoProgressFill" id="levelInfoProgressFill"></div>
+          </div>
+          <div class="levelInfoProgressText" id="levelInfoProgressText">0 / 100 XP</div>
+        </div>
+        <div class="levelInfoBody">
+          <div class="levelInfoLabel">Next stage</div>
+          <div class="levelInfoValue" id="levelInfoValue">Need 100 XP for level 2</div>
+          <div class="levelInfoHint" id="levelInfoHint">Earn 100 more XP to unlock the next badge.</div>
+        </div>
+        <div class="levelInfoBody">
+          <div class="levelInfoLabel">Special feature</div>
+          <div class="levelInfoValue" id="levelInfoValue2">Find NFT gifts in random places in the mini app. To do this, you need at least level 3.</div>
+          <div class="levelInfoHint" id="levelInfoHint2">Keep progressing to reach level 3 and unlock it.</div>
+        </div>
+        <button class="levelInfoCloseBtn" id="btnLevelInfoClose">Got it</button>
+      </div>
     </div>
 
     <!-- Bottom Nav -->
@@ -4262,6 +4486,9 @@
     let openCount = 1;
     let pendingQuickPurchase = false;
     let quickPurchaseOpenReady = false;
+    let lastFastOpenTime = 0;
+    let fastOpenPendingTimer = null;
+    let isOpeningCase = false;
 
     let upgradeFrom = null;
     let upgradeTo = null;
@@ -4357,7 +4584,19 @@
     const xpSub = document.getElementById("xpSub");
     const xpNeed = document.getElementById("xpNeed");
     const xpFill = document.getElementById("xpFill");
-    const xpBadgeRow = document.getElementById("xpBadgeRow");
+    const xpAboutLink = document.getElementById("xpAboutLink");
+    const levelInfoOverlay = document.getElementById("levelInfoOverlay");
+    const levelInfoCard = document.getElementById("levelInfoCard");
+    const levelInfoBadge = document.getElementById("levelInfoBadge");
+    const levelInfoTitle = document.getElementById("levelInfoTitle");
+    const levelInfoSubtitle = document.getElementById("levelInfoSubtitle");
+    const levelInfoProgressFill = document.getElementById("levelInfoProgressFill");
+    const levelInfoProgressText = document.getElementById("levelInfoProgressText");
+    const levelInfoValue = document.getElementById("levelInfoValue");
+    const levelInfoHint = document.getElementById("levelInfoHint");
+    const levelInfoValue2 = document.getElementById("levelInfoValue2");
+    const levelInfoHint2 = document.getElementById("levelInfoHint2");
+    const btnLevelInfoClose = document.getElementById("btnLevelInfoClose");
     const btnSellAll = document.getElementById("btnSellAll");
 
     // Tasks
@@ -4430,6 +4669,21 @@
     /********************
      * Init
      ********************/
+    xpBadge.addEventListener("click", openLevelInfoModal);
+    if (xpAboutLink) {
+      xpAboutLink.addEventListener("click", openLevelInfoModal);
+      xpAboutLink.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openLevelInfoModal();
+        }
+      });
+    }
+    btnLevelInfoClose.addEventListener("click", closeLevelInfoModal);
+    levelInfoOverlay.addEventListener("click", (e) => {
+      if (e.target === levelInfoOverlay) closeLevelInfoModal();
+    });
+
     applyTelegramProfile();
     renderStars();
     renderCases();
@@ -4805,34 +5059,38 @@
     });
 
     btnOpenCase.addEventListener("click", async () => {
-      const totalCost = currentCase.price * openCount;
-      const isPaidQuickOpen = quickPurchaseOpenReady && currentCase.id === QUICK_PURCHASE_CASE_ID && openCount === 1;
-      if (!isPaidQuickOpen && stars + 1e-9 < totalCost) {
-        showToast("Не хватает ★");
-        wiggle(".wallet");
-        return;
-      }
+      if (isOpeningCase) return;
 
-      if (isPaidQuickOpen) {
-        quickPurchaseOpenReady = false;
-      } else {
-        stars = round1(stars - totalCost);
-        saveNumber(STORAGE.stars, stars);
-      }
-      addProfileXp(totalCost);
-      renderStars();
+      const now = Date.now();
+      const isDoubleFastOpen = lastFastOpenTime > 0 && now - lastFastOpenTime <= 700;
+      lastFastOpenTime = now;
 
-      btnOpenCase.disabled = true;
-      rouletteHint.textContent = "Крутим…";
-      resultToast.classList.remove("show");
+      if (isDoubleFastOpen) {
+        if (fastOpenPendingTimer) {
+          clearTimeout(fastOpenPendingTimer);
+          fastOpenPendingTimer = null;
+        }
 
-      for (let i = 0; i < openCount; i++) {
+        const totalCost = currentCase.price * openCount;
+        const isPaidQuickOpen = quickPurchaseOpenReady && currentCase.id === QUICK_PURCHASE_CASE_ID && openCount === 1;
+        if (!isPaidQuickOpen && stars + 1e-9 < totalCost) {
+          showToast("Не хватает ★");
+          wiggle(".wallet");
+          return;
+        }
+
+        if (isPaidQuickOpen) {
+          quickPurchaseOpenReady = false;
+        } else {
+          stars = round1(stars - totalCost);
+          saveNumber(STORAGE.stars, stars);
+        }
+        addProfileXp(totalCost);
+        renderStars();
+
         const wonGiftId = currentCase.forceDrop || weightedPickWithEdge(currentCase.pool);
         const won = getGift(wonGiftId);
         const isNothingDrop = Boolean(won.isNothing);
-
-        await spinTo(wonGiftId, currentCase);
-
         const isChargedDrop = Boolean(currentCase.chargedDrops && !isNothingDrop);
 
         if (!isNothingDrop) {
@@ -4858,91 +5116,158 @@
 
         winModal.classList.add("show");
         document.body.style.overflow = "hidden";
-        gsap.fromTo(winModal, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.2)" });
-
-        try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
-
-        // Start stars animation
-        let starsInterval;
-        const winShowcase = winModal.querySelector('.winShowcase');
-
-        const spawnStar = () => {
-          if (!winModal.classList.contains("show")) return;
-
-          const star = document.createElement("div");
-          star.className = "winStar";
-
-          // Random position around the center image
-          const angle = Math.random() * Math.PI * 2;
-          const radius = 80 + Math.random() * 60; // 80px to 140px from center
-          const x = 125 + Math.cos(angle) * radius - 10; // 125 is center of 250px showcase, -10 to center the 20px star
-          const y = 125 + Math.sin(angle) * radius - 10;
-
-          // Random scale and duration
-          const scale = 0.5 + Math.random() * 1.5;
-          const duration = 1.0 + Math.random() * 1.5; // 1s to 2.5s
-
-          star.style.left = `${x}px`;
-          star.style.top = `${y}px`;
-          star.style.animationDuration = `${duration}s`;
-          star.style.transform = `scale(${scale})`; // Base scale before animation
-
-          winShowcase.appendChild(star);
-
-          // Remove after animation completes
-          setTimeout(() => {
-            if (winShowcase.contains(star)) star.remove();
-          }, duration * 1000);
-        };
-
-        // Spawn first few immediately, then continue
-        for (let i = 0; i < 3; i++) setTimeout(spawnStar, Math.random() * 500);
-        starsInterval = setInterval(spawnStar, 400); // New star every 400ms
-
-        await new Promise(resolve => {
-          const handleSell = () => {
-            if (isNothingDrop || isChargedDrop) return;
-            sellGift(wonGiftId);
-            cleanup();
-          };
-
-          const handleTake = () => {
-            cleanup();
-          };
-
-          const cleanup = () => {
-            btnSell.removeEventListener("click", handleSell);
-            btnTake.removeEventListener("click", handleTake);
-            btnSell.style.display = "";
-            btnTake.textContent = defaultTakeText;
-            clearInterval(starsInterval); // Stop spawning stars
-
-            // Remove all existing stars
-            winShowcase.querySelectorAll('.winStar').forEach(s => s.remove());
-
-            gsap.to(winModal, {
-              opacity: 0, scale: 0.95, duration: 0.2, ease: "power2.in", onComplete: () => {
-                winModal.classList.remove("show");
-                document.body.style.overflow = "";
-                gsap.set(winModal, { clearProps: "all" });
-                resolve();
-              }
-            });
-          };
-
-          btnSell.addEventListener("click", handleSell);
-          btnTake.addEventListener("click", handleTake);
-        });
-
-        if (i < openCount - 1) {
-          await sleep(300);
-          rouletteHint.textContent = `${openCount - 1 - i} more…`;
-        }
+        gsap.fromTo(winModal, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(1.2)" });
+        btnOpenCase.disabled = false;
+        return;
       }
 
-      rouletteHint.textContent = "Done!";
-      btnOpenCase.disabled = false;
-      pulse(".resultToast");
+      if (fastOpenPendingTimer) {
+        clearTimeout(fastOpenPendingTimer);
+      }
+
+      fastOpenPendingTimer = setTimeout(() => {
+        fastOpenPendingTimer = null;
+        if (isOpeningCase) return;
+
+        isOpeningCase = true;
+        btnOpenCase.disabled = true;
+        rouletteHint.textContent = "Крутим…";
+        resultToast.classList.remove("show");
+
+        const totalCost = currentCase.price * openCount;
+        const isPaidQuickOpen = quickPurchaseOpenReady && currentCase.id === QUICK_PURCHASE_CASE_ID && openCount === 1;
+        if (!isPaidQuickOpen && stars + 1e-9 < totalCost) {
+          isOpeningCase = false;
+          btnOpenCase.disabled = false;
+          showToast("Не хватает ★");
+          wiggle(".wallet");
+          return;
+        }
+
+        if (isPaidQuickOpen) {
+          quickPurchaseOpenReady = false;
+        } else {
+          stars = round1(stars - totalCost);
+          saveNumber(STORAGE.stars, stars);
+        }
+        addProfileXp(totalCost);
+        renderStars();
+
+        (async () => {
+          for (let i = 0; i < openCount; i++) {
+            const wonGiftId = currentCase.forceDrop || weightedPickWithEdge(currentCase.pool);
+            const won = getGift(wonGiftId);
+            const isNothingDrop = Boolean(won.isNothing);
+
+            await spinTo(wonGiftId, currentCase);
+
+            const isChargedDrop = Boolean(currentCase.chargedDrops && !isNothingDrop);
+
+            if (!isNothingDrop) {
+              addToInv(wonGiftId, 1, isChargedDrop);
+              renderInventory();
+            }
+
+            const winModal = document.getElementById("winFullscreenModal");
+            const winImage = document.getElementById("winImage");
+            const winName = document.getElementById("winName");
+            const winSellPrice = document.getElementById("winSellPrice");
+            const btnSell = document.getElementById("btnWinSell");
+            const btnTake = document.getElementById("btnWinTake");
+            const defaultTakeText = btnTake.textContent;
+
+            winImage.innerHTML = giftThumbHTML(won, 180);
+            winName.textContent = won.name;
+            btnSell.style.display = isNothingDrop || isChargedDrop ? "none" : "";
+            btnTake.textContent = isNothingDrop ? "OK" : defaultTakeText;
+
+            const sellPrice = round1(won.value * SELL_PAYOUT);
+            winSellPrice.textContent = formatStars(sellPrice);
+
+            winModal.classList.add("show");
+            document.body.style.overflow = "hidden";
+            gsap.fromTo(winModal, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.2)" });
+
+            try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
+
+            let starsInterval;
+            const winShowcase = winModal.querySelector('.winShowcase');
+
+            const spawnStar = () => {
+              if (!winModal.classList.contains("show")) return;
+
+              const star = document.createElement("div");
+              star.className = "winStar";
+
+              const angle = Math.random() * Math.PI * 2;
+              const radius = 80 + Math.random() * 60;
+              const x = 125 + Math.cos(angle) * radius - 10;
+              const y = 125 + Math.sin(angle) * radius - 10;
+
+              const scale = 0.5 + Math.random() * 1.5;
+              const duration = 1.0 + Math.random() * 1.5;
+
+              star.style.left = `${x}px`;
+              star.style.top = `${y}px`;
+              star.style.animationDuration = `${duration}s`;
+              star.style.transform = `scale(${scale})`;
+
+              winShowcase.appendChild(star);
+
+              setTimeout(() => {
+                if (winShowcase.contains(star)) star.remove();
+              }, duration * 1000);
+            };
+
+            for (let j = 0; j < 3; j++) setTimeout(spawnStar, Math.random() * 500);
+            starsInterval = setInterval(spawnStar, 400);
+
+            await new Promise(resolve => {
+              const handleSell = () => {
+                if (isNothingDrop || isChargedDrop) return;
+                sellGift(wonGiftId);
+                cleanup();
+              };
+
+              const handleTake = () => {
+                cleanup();
+              };
+
+              const cleanup = () => {
+                btnSell.removeEventListener("click", handleSell);
+                btnTake.removeEventListener("click", handleTake);
+                btnSell.style.display = "";
+                btnTake.textContent = defaultTakeText;
+                clearInterval(starsInterval);
+
+                winShowcase.querySelectorAll('.winStar').forEach(s => s.remove());
+
+                gsap.to(winModal, {
+                  opacity: 0, scale: 0.95, duration: 0.2, ease: "power2.in", onComplete: () => {
+                    winModal.classList.remove("show");
+                    document.body.style.overflow = "";
+                    gsap.set(winModal, { clearProps: "all" });
+                    resolve();
+                  }
+                });
+              };
+
+              btnSell.addEventListener("click", handleSell);
+              btnTake.addEventListener("click", handleTake);
+            });
+
+            if (i < openCount - 1) {
+              await sleep(300);
+              rouletteHint.textContent = `${openCount - 1 - i} more…`;
+            }
+          }
+
+          rouletteHint.textContent = "Done!";
+          btnOpenCase.disabled = false;
+          isOpeningCase = false;
+          pulse(".resultToast");
+        })();
+      }, 300);
     });
 
     async function preloadImages(urls) {
@@ -6514,13 +6839,74 @@
       return { cls: "bronze", mark: "I", name: "Bronze" };
     }
 
+    function getLevelIconMarkup() {
+      return `
+        <svg class="levelIcon" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M16.445 3h-8.89c-.345 0-.666.178-.849.47L3.25 9h17.5l-3.456-5.53a1.003 1.003 0 0 0-.849-.47zM11.26 21.186a1 1 0 0 0 1.48 0L22 11H2l9.26 10.186z"></path>
+        </svg>
+      `;
+    }
+
+    function openLevelInfoModal() {
+      if (!levelInfoOverlay || !levelInfoCard) return;
+
+      const info = getLevelInfo(profileXp);
+      const rank = getProfileRank(info.level);
+      const nextLevel = Math.min(100, info.level + 1);
+      const nextNeed = nextLevel >= 100 ? 0 : xpToNextLevel(nextLevel);
+      const progress = info.level >= 100 ? 1 : info.progress;
+      const left = info.level >= 100 ? 0 : Math.max(0, info.need - info.current);
+      const nftUnlockText = info.level >= 3
+        ? "You already unlocked NFT gifts in the mini app."
+        : "Find NFT gifts in random places in the mini app. To do this, you need at least level 3.";
+      const nftHintText = info.level >= 3
+        ? "You can already discover NFT gifts here."
+        : `Keep progressing to reach level 3. You need ${formatStars(Math.max(0, 3 - info.level))} more level(s) to unlock it.`;
+      const levelText = info.level >= 100 ? "Maximum level reached" : `Need ${formatStars(nextNeed)} XP for level ${nextLevel}`;
+      const levelHint = info.level >= 100
+        ? "You are already at the maximum level. No further progress is needed."
+        : `Earn ${formatStars(left)} more XP to unlock the next badge.`;
+
+      levelInfoBadge.className = `levelInfoBadge ${rank.cls}`;
+      levelInfoBadge.innerHTML = getLevelIconMarkup();
+      levelInfoTitle.textContent = `Level ${info.level}`;
+      levelInfoSubtitle.textContent = `${rank.name} stage`;
+      levelInfoProgressText.textContent = `${formatStars(info.current)} / ${formatStars(info.need)} XP`;
+      levelInfoValue.textContent = levelText;
+      levelInfoHint.textContent = levelHint;
+      levelInfoValue2.textContent = nftUnlockText;
+      levelInfoHint2.textContent = nftHintText;
+
+      levelInfoOverlay.classList.add("show");
+      document.body.style.overflow = "hidden";
+      gsap.fromTo(levelInfoCard, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power2.out" });
+      gsap.fromTo(levelInfoProgressFill, { width: "0%" }, { width: `${Math.round(progress * 100)}%`, duration: 0.7, ease: "power2.out" });
+    }
+
+    function closeLevelInfoModal() {
+      if (!levelInfoOverlay || !levelInfoCard) return;
+      gsap.to(levelInfoCard, {
+        opacity: 0,
+        y: 24,
+        scale: 0.96,
+        duration: 0.22,
+        ease: "power2.in",
+        onComplete: () => {
+          levelInfoOverlay.classList.remove("show");
+          document.body.style.overflow = "";
+          gsap.set(levelInfoCard, { clearProps: "all" });
+          levelInfoProgressFill.style.width = "0%";
+        }
+      });
+    }
+
     function renderProfileProgress() {
-      if (!xpBadge || !xpTitle || !xpSub || !xpNeed || !xpFill || !xpBadgeRow) return;
+      if (!xpBadge || !xpTitle || !xpSub || !xpNeed || !xpFill) return;
 
       const info = getLevelInfo(profileXp);
       const rank = getProfileRank(info.level);
       xpBadge.className = `xpBadge ${rank.cls}`;
-      xpBadge.textContent = rank.mark;
+      xpBadge.innerHTML = getLevelIconMarkup();
       xpTitle.textContent = `Level ${info.level} - ${rank.name}`;
 
       if (info.level >= 100) {
@@ -6533,20 +6919,6 @@
       }
 
       xpFill.style.width = `${Math.round(info.progress * 100)}%`;
-
-      const ranks = [
-        { cls: "bronze", mark: "I", min: 1 },
-        { cls: "silver", mark: "II", min: 15 },
-        { cls: "blue", mark: "III", min: 35 },
-        { cls: "purple", mark: "IV", min: 60 },
-        { cls: "gold", mark: "V", min: 80 }
-      ];
-
-      xpBadgeRow.innerHTML = ranks.map(r => `
-        <div class="xpMiniBadge ${r.cls}${info.level >= r.min ? " active" : ""}">
-          ${r.mark}
-        </div>
-      `).join("");
     }
 
     function addProfileXp(amount) {
