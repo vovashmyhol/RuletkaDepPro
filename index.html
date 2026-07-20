@@ -6526,7 +6526,10 @@
       resetUpgradeSpinner(); // Ensure clean state
 
       // 1️⃣ CONSUME IMMEDIATELY TO PREVENT EXPLOIT
+      const upgradeFromGift = getGift(upgradeFrom);
       removeFromInv(upgradeFrom, 1);
+      // 2× XP от стоимости поставленного подарка
+      addProfileXp(upgradeFromGift.value * 2);
       renderInventory();
       renderUpgrade();
 
