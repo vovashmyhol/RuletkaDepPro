@@ -7844,6 +7844,15 @@
           resetBall();
           startLoop();
           
+          // Show Telegram Back Button
+          try {
+            const tg = window.Telegram?.WebApp;
+            if (tg && tg.BackButton) {
+              tg.BackButton.show();
+              tg.BackButton.onClick(closeGame);
+            }
+          } catch(e) { console.log("BackButton error:", e); }
+          
           // Attach direct click handler to OK button
           const okBtn = document.getElementById("fbIntroOkBtn");
           if (okBtn) {
@@ -7880,6 +7889,14 @@
           fbIntroHidden = false;
           fbAttempts = 0;
           showIntro();
+          
+          // Hide Telegram Back Button
+          try {
+            const tg = window.Telegram?.WebApp;
+            if (tg && tg.BackButton) {
+              tg.BackButton.hide();
+            }
+          } catch(e) { console.log("BackButton error:", e); }
         }
 
         function hideIntro() {
