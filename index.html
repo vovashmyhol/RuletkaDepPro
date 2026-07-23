@@ -3631,85 +3631,39 @@
       position: fixed;
       inset: 0;
       z-index: 9000;
-      background: #0a1a0d;
+      background: radial-gradient(circle at 50% 10%, #124626 0%, #06150c 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.28s ease;
+      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
+      font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
     }
     .footballModal.show {
       opacity: 1;
       pointer-events: all;
     }
     .fbHeader {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0;
-      flex-shrink: 0;
-      height: 0;
-      overflow: hidden;
+      display: none !important;
     }
-    .fbTitle {
-      font-size: 18px;
-      font-weight: 950;
-      color: #fff;
-      letter-spacing: 0.3px;
-    }
-    .fbCloseBtn {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      transition: background 0.15s;
-    }
-    .fbCloseBtn:active { background: rgba(255,255,255,0.2); }
 
     .fbStatsRow {
-      display: none;
-      gap: 20px;
-      padding: 0 18px 10px;
-      width: 100%;
-    }
-    .fbStat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 8px 18px;
-      flex: 1;
-    }
-    .fbStatVal {
-      font-size: 22px;
-      font-weight: 950;
-      color: #fff;
-    }
-    .fbStatLabel {
-      font-size: 10px;
-      color: rgba(255,255,255,0.5);
-      margin-top: 2px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
+      display: none !important;
     }
 
     /* Field canvas wrapper */
     .fbField {
       width: 100%;
+      margin: 0;
       flex: 1;
       position: relative;
       overflow: hidden;
+      background: #092213;
+      box-shadow: inset 0 20px 40px rgba(0, 0, 0, 0.5);
+      border: none;
     }
     #fbCanvas {
       display: block;
@@ -3720,18 +3674,26 @@
 
     /* Bottom hint */
     .fbHint {
-      padding: 10px 18px 20px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.45);
+      padding: 12px 20px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
       text-align: center;
       flex-shrink: 0;
+      letter-spacing: 0.2px;
+      animation: pulseHint 2s infinite ease-in-out;
+    }
+    @keyframes pulseHint {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
     }
 
     /* Goal flash overlay */
     .fbGoalFlash {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle, rgba(74,222,128,0.55) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(0, 255, 135, 0.6) 0%, transparent 70%);
       opacity: 0;
       pointer-events: none;
       border-radius: 0;
@@ -3743,18 +3705,21 @@
     /* Goal popup text */
     .fbGoalText {
       position: absolute;
-      top: 50%;
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.5);
-      font-size: 52px;
+      font-size: 58px;
       font-weight: 950;
-      color: #4ade80;
-      text-shadow: 0 0 30px rgba(74,222,128,0.9), 0 4px 16px rgba(0,0,0,0.6);
+      color: #00ff87;
+      text-shadow: 
+        0 0 30px rgba(0, 255, 135, 0.8),
+        0 0 60px rgba(0, 255, 135, 0.4),
+        0 4px 20px rgba(0,0,0,0.8);
       pointer-events: none;
       opacity: 0;
       z-index: 11;
       white-space: nowrap;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s;
     }
     .fbGoalText.show {
       transform: translate(-50%, -50%) scale(1);
@@ -3769,46 +3734,64 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 18px;
-      padding: 250px 22px 30px;
+      gap: 22px;
+      padding: 40px 24px;
+      box-sizing: border-box;
       background:
-        radial-gradient(circle at 50% 18%, rgba(250,204,21,0.22), transparent 34%),
-        linear-gradient(180deg, #0f3d20 0%, #07170c 100%);
+        radial-gradient(circle at 50% 25%, rgba(0, 255, 135, 0.2), transparent 45%),
+        linear-gradient(180deg, #092011 0%, #030805 100%);
       text-align: center;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
     }
     .fbIntro.hidden {
       display: none;
     }
     .fbIntroBear {
-      width: min(58vw, 230px);
+      width: min(58vw, 210px);
       aspect-ratio: 1;
       object-fit: contain;
-      filter: drop-shadow(0 18px 28px rgba(0,0,0,0.5));
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.6));
+      animation: floatBear 3s infinite ease-in-out;
+    }
+    @keyframes floatBear {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
     .fbIntroTitle {
       max-width: 320px;
-      font-size: 27px;
-      line-height: 1.08;
-      font-weight: 950;
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 850;
       color: #fff;
-      text-shadow: 0 3px 14px rgba(0,0,0,0.45);
+      text-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
     .fbIntroBtn,
     .fbBuyAttemptBtn {
       border: 0;
-      border-radius: 16px;
-      min-height: 52px;
+      border-radius: 18px;
+      min-height: 54px;
       padding: 0 24px;
-      background: linear-gradient(135deg, #facc15, #fb923c);
-      color: #1f1300;
+      background: linear-gradient(135deg, #00ff87, #60efff);
+      color: #041208;
       font-size: 15px;
-      font-weight: 950;
-      box-shadow: 0 12px 26px rgba(251,146,60,0.3);
+      font-weight: 850;
+      box-shadow: 0 8px 24px rgba(0, 255, 135, 0.35);
       cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .fbIntroBtn:hover,
+    .fbBuyAttemptBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 255, 135, 0.55);
+    }
+    .fbIntroBtn:active,
+    .fbBuyAttemptBtn:active {
+      transform: translateY(1px);
     }
     .fbIntroBtn {
       width: min(100%, 280px);
-      margin-top: auto;
+      margin-top: 15px;
     }
     .fbPlayBar {
       display: flex;
@@ -3816,9 +3799,9 @@
       justify-content: center;
       gap: 10px;
       width: 100%;
-      padding: 18px 18px 2px;
+      padding: 18px 20px 4px;
+      box-sizing: border-box;
       flex-shrink: 0;
-      border-radius: 0 0 20px 20px;
     }
     .fbBuyAttemptBtn {
       width: 100%;
@@ -3826,20 +3809,20 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       padding: 12px 16px !important;
       font-size: 14px;
-      font-weight: 950;
       white-space: nowrap;
     }
     .fbBuyAttemptBtn:disabled {
-      opacity: 0.65;
+      opacity: 0.5;
       cursor: default;
       box-shadow: none;
+      transform: none;
     }
     .fbBuyAttemptBtn .starI {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   </style>
 </head>
@@ -3853,7 +3836,7 @@
     <div class="preloaderProgress">
       <div class="preloaderBar"></div>
     </div>
-    <div class="preloaderVersion" id="appVersionText">v1.1.0</div>
+    <div class="preloaderVersion" id="appVersionText">v1.2.0</div>
   </div>
 
 
@@ -7813,6 +7796,7 @@
         let ball = {};
         let goalkeep = {};
         let particles = [];
+        let fbIdleParticles = [];
         let animId = null;
         let phase = "idle"; // idle | flying | reset
         let keeperDir = 1;
@@ -7878,6 +7862,16 @@
           // Attach direct click handler to Buy button
           const buyBtn = document.getElementById("fbBuyAttemptBtn");
           if (buyBtn) {
+            const tg = window.Telegram?.WebApp;
+            const isNotTgMiniApp = !tg || !tg.initData || tg.platform === 'unknown';
+            const isLocal = window.location.hostname === 'localhost' || 
+                            window.location.hostname === '127.0.0.1' || 
+                            window.location.protocol === 'file:';
+            if (isNotTgMiniApp || isLocal) {
+              buyBtn.innerHTML = "Get 1 try for Free ⚽";
+            } else {
+              buyBtn.innerHTML = `Buy 1 try for <span>7</span><img src="stars-DBKMczxe.png" class="starI" alt="★">`;
+            }
             buyBtn.onclick = function(e) {
               e.stopPropagation();
               console.log("✅ Buy button direct click!");
@@ -7951,11 +7945,26 @@
         };
 
         function buyAttempt() {
+          console.log("Buy attempt function called...");
+          
+          const tg = window.Telegram?.WebApp;
+          const isNotTgMiniApp = !tg || !tg.initData || tg.platform === 'unknown';
+          const isLocal = window.location.hostname === 'localhost' || 
+                          window.location.hostname === '127.0.0.1' || 
+                          window.location.protocol === 'file:';
+                          
+          if (isNotTgMiniApp || isLocal) {
+            console.log("Free attempt granted (running locally / not in TG Mini App)");
+            if (typeof window.grantFootballAttempt === "function") {
+              window.grantFootballAttempt();
+            }
+            return;
+          }
+
           console.log("Buy attempt function called, opening invoice...");
           showToastMsg("Opening invoice...");
           
           try {
-            const tg = window.Telegram?.WebApp;
             if (tg?.openInvoice) {
               tg.openInvoice(FOOTBALL_INVOICE_LINK);
             } else {
@@ -8113,6 +8122,25 @@
         function update() {
           var gx = GOAL_X(), gw = GOAL_W(), kw = goalkeep.w;
           
+          // Spawn magical sparks when idle
+          if (phase === "idle" && fbAttempts > 0) {
+            if (Math.random() < 0.12) {
+              var angle = Math.random() * Math.PI * 2;
+              var radius = ball.r * (0.2 + Math.random() * 0.95);
+              var groundY = H - ball.r - H * 0.04;
+              fbIdleParticles.push({
+                x: ball.x + Math.cos(angle) * radius,
+                y: groundY + (Math.random() - 0.5) * 8,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: -0.4 - Math.random() * 0.7,
+                r: 1.2 + Math.random() * 1.8,
+                alpha: 1,
+                decay: 0.008 + Math.random() * 0.012,
+                color: Math.random() > 0.45 ? "#00ff87" : "#00f0ff"
+              });
+            }
+          }
+          
           if (phase === "flying") {
             // Вратарь плавно следует за мячом по оси X
             var targetX = ball.x - kw / 2;
@@ -8147,8 +8175,8 @@
             ball.y - r < gy + gh && ball.y + r > gy &&
             ball.x > goalLeft + 8 && ball.x < goalRight - 8
           ) {
-            // Вратарь всегда отбивает!
-            var blocked = true;
+            // Вратарь отбивает только если он перекрывает мяч по координате X (с небольшим запасом)
+            var blocked = (ball.x >= kl - r * 0.7 && ball.x <= kr + r * 0.7);
             if (blocked) {
               ball.vx = (ball.x < kl + goalkeep.w/2 ? -1 : 1) * Math.abs(ball.vx || 3) * 1.25;
               ball.vy = Math.abs(ball.vy) * 0.65;
@@ -8268,44 +8296,78 @@
         }
 
         function drawField() {
-          // Grass gradient
+          // Rich grass gradient
           var g = ctx.createLinearGradient(0, 0, 0, H);
-          g.addColorStop(0, "#0e5e2a"); g.addColorStop(1, "#0a4020");
-          ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+          g.addColorStop(0, "#0b3319"); // Darker stadium green
+          g.addColorStop(1, "#071c0e");
+          ctx.fillStyle = g; 
+          ctx.fillRect(0, 0, W, H);
           
           // Perspective grass stripes (wider at the bottom)
-          ctx.globalAlpha = 0.055; ctx.fillStyle = "#fff";
-          for (var i = 0; i < 6; i++) {
-            var y1 = Math.pow(i / 6, 2) * H;
-            var y2 = Math.pow((i + 0.5) / 6, 2) * H;
+          ctx.globalAlpha = 0.04; 
+          ctx.fillStyle = "#ffffff";
+          for (var i = 0; i < 7; i++) {
+            var y1 = Math.pow(i / 7, 2) * H;
+            var y2 = Math.pow((i + 0.5) / 7, 2) * H;
             ctx.fillRect(0, y1, W, y2 - y1);
           }
           ctx.globalAlpha = 1;
           
+          // Field borders in perspective
+          ctx.strokeStyle = "rgba(255,255,255,0.12)"; 
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          // Left side
+          ctx.moveTo(W * 0.04, H);
+          ctx.lineTo(W * 0.12, H * 0.15);
+          // Right side
+          ctx.moveTo(W * 0.96, H);
+          ctx.lineTo(W * 0.88, H * 0.15);
+          ctx.stroke();
+          
           // Flattened center circle (3D perspective ellipse)
           ctx.beginPath();
-          ctx.ellipse(W/2, H * 0.76, W * 0.24, H * 0.08, 0, 0, Math.PI*2);
-          ctx.strokeStyle = "rgba(255,255,255,0.11)"; ctx.lineWidth = 2; ctx.stroke();
+          ctx.ellipse(W/2, H * 0.78, W * 0.22, H * 0.07, 0, 0, Math.PI*2);
+          ctx.strokeStyle = "rgba(255,255,255,0.12)"; 
+          ctx.lineWidth = 2; 
+          ctx.stroke();
           
           // Center line
-          ctx.beginPath(); ctx.moveTo(0, H*0.76); ctx.lineTo(W, H*0.76);
-          ctx.strokeStyle = "rgba(255,255,255,0.08)"; ctx.lineWidth = 1.5; ctx.stroke();
+          ctx.beginPath(); 
+          ctx.moveTo(0, H*0.78); 
+          ctx.lineTo(W, H*0.78);
+          ctx.strokeStyle = "rgba(255,255,255,0.1)"; 
+          ctx.lineWidth = 1.5; 
+          ctx.stroke();
         }
 
         function drawGoal() {
           var gx = GOAL_X(), gy = GOAL_Y(), gw = GOAL_W(), gh = GOAL_H();
           // Net
-          ctx.save(); ctx.beginPath(); ctx.rect(gx, gy, gw, gh); ctx.clip();
-          ctx.strokeStyle = "rgba(255,255,255,0.13)"; ctx.lineWidth = 1;
-          var cw = gw/8, ch = gh/4;
+          ctx.save(); 
+          ctx.beginPath(); 
+          ctx.rect(gx, gy, gw, gh); 
+          ctx.clip();
+          ctx.strokeStyle = "rgba(255,255,255,0.18)"; 
+          ctx.lineWidth = 1.2;
+          var cw = gw/10, ch = gh/5;
           for (var x = gx; x <= gx+gw; x += cw) { ctx.beginPath(); ctx.moveTo(x,gy); ctx.lineTo(x,gy+gh); ctx.stroke(); }
           for (var y = gy; y <= gy+gh; y += ch) { ctx.beginPath(); ctx.moveTo(gx,y); ctx.lineTo(gx+gw,y); ctx.stroke(); }
           ctx.restore();
-          // Posts
+          // Glowing Neon Posts
           ctx.save();
-          ctx.shadowColor = "rgba(255,255,255,0.35)"; ctx.shadowBlur = 10;
-          ctx.strokeStyle = "#e5e7eb"; ctx.lineWidth = 4; ctx.lineJoin = "round";
-          ctx.beginPath(); ctx.moveTo(gx,gy+gh); ctx.lineTo(gx,gy); ctx.lineTo(gx+gw,gy); ctx.lineTo(gx+gw,gy+gh); ctx.stroke();
+          ctx.shadowColor = "#00ff87"; 
+          ctx.shadowBlur = 12;
+          ctx.strokeStyle = "#ffffff"; 
+          ctx.lineWidth = 5; 
+          ctx.lineJoin = "round";
+          ctx.lineCap = "round";
+          ctx.beginPath(); 
+          ctx.moveTo(gx, gy + gh); 
+          ctx.lineTo(gx, gy); 
+          ctx.lineTo(gx + gw, gy); 
+          ctx.lineTo(gx + gw, gy + gh); 
+          ctx.stroke();
           ctx.restore();
         }
 
@@ -8313,29 +8375,39 @@
           var kx = goalkeep.x, ky = goalkeep.y, kw = goalkeep.w, kh = goalkeep.h;
           ctx.save();
           ctx.beginPath();
-          var r6 = 6;
+          var r6 = 8;
           ctx.moveTo(kx+r6, ky); ctx.lineTo(kx+kw-r6, ky); ctx.quadraticCurveTo(kx+kw, ky, kx+kw, ky+r6);
           ctx.lineTo(kx+kw, ky+kh-r6); ctx.quadraticCurveTo(kx+kw, ky+kh, kx+kw-r6, ky+kh);
           ctx.lineTo(kx+r6, ky+kh); ctx.quadraticCurveTo(kx, ky+kh, kx, ky+kh-r6);
           ctx.lineTo(kx, ky+r6); ctx.quadraticCurveTo(kx, ky, kx+r6, ky); ctx.closePath();
-          var kg = ctx.createLinearGradient(kx, ky, kx, ky+kh);
-          kg.addColorStop(0, "#f59e0b"); kg.addColorStop(1, "#d97706");
-          ctx.fillStyle = kg; ctx.fill();
-          ctx.strokeStyle = "rgba(0,0,0,0.3)"; ctx.lineWidth = 1.5; ctx.stroke();
+          
+          // Glossy neon gradient
+          var kg = ctx.createLinearGradient(kx, ky, kx + kw, ky + kh);
+          kg.addColorStop(0, "#ec4899"); // pink
+          kg.addColorStop(1, "#8b5cf6"); // purple
+          ctx.fillStyle = kg; 
+          ctx.fill();
+          
+          ctx.strokeStyle = "#00ffff"; 
+          ctx.lineWidth = 2; 
+          ctx.stroke();
+          
           // Gloves (using custom WEBP image, mirrored for the right hand)
-          var gSize = kw * 0.5;
+          var gSize = kw * 0.55;
           // Left hand
-          ctx.drawImage(glovesImg, kx - kw * 0.1 - gSize / 2, ky + kh * 0.4 - gSize / 2, gSize, gSize);
+          ctx.drawImage(glovesImg, kx - kw * 0.12 - gSize / 2, ky + kh * 0.4 - gSize / 2, gSize, gSize);
           // Right hand (mirrored)
           ctx.save();
-          ctx.translate(kx + kw + kw * 0.1, ky + kh * 0.4);
+          ctx.translate(kx + kw + kw * 0.12, ky + kh * 0.4);
           ctx.scale(-1, 1);
           ctx.drawImage(glovesImg, -gSize / 2, -gSize / 2, gSize, gSize);
           ctx.restore();
-          // Number
-          ctx.fillStyle = "rgba(0,0,0,0.5)";
-          ctx.font = "bold " + Math.round(kw*0.45) + "px sans-serif";
-          ctx.textAlign = "center"; ctx.textBaseline = "middle";
+          
+          // Number with glowing style
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold " + Math.round(kw*0.48) + "px sans-serif";
+          ctx.textAlign = "center"; 
+          ctx.textBaseline = "middle";
           ctx.fillText("1", kx+kw/2, ky+kh*0.5);
           ctx.restore();
         }
@@ -8345,6 +8417,94 @@
           var r    = ball.r * ball.scale;
           var bx   = ball.x, by = ball.y;
           var groundY = H - ball.r - H*0.04;
+          
+          // Premium Atmospheric Glow (only when ball is stationary and attempts are available)
+          if (phase === "idle" && fbAttempts > 0) {
+            ctx.save();
+            var pulse = 1 + 0.12 * Math.sin(Date.now() * 0.004);
+            
+            // 1. Layered Multi-Color Ground Glow Ellipse
+            var glowW = ball.r * 2.6 * pulse;
+            var glowH = ball.r * 0.72 * pulse;
+            var groundGlow = ctx.createRadialGradient(bx, groundY + ball.r*0.3, 0, bx, groundY + ball.r*0.3, glowW);
+            groundGlow.addColorStop(0, "rgba(0, 255, 240, 0.55)");   // vibrant cyan center
+            groundGlow.addColorStop(0.25, "rgba(0, 255, 135, 0.28)"); // bright lime/green
+            groundGlow.addColorStop(0.65, "rgba(139, 92, 246, 0.08)"); // soft purple outer aura
+            groundGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+            
+            ctx.beginPath();
+            ctx.ellipse(bx, groundY + ball.r*0.3, glowW, glowH, 0, 0, Math.PI*2);
+            ctx.fillStyle = groundGlow;
+            ctx.fill();
+
+            // 2. Rotating 3D Neon Ring at base
+            ctx.strokeStyle = "rgba(0, 255, 240, 0.45)";
+            ctx.lineWidth = 1.8;
+            ctx.setLineDash([8, 14]);
+            ctx.lineDashOffset = -Date.now() * 0.035;
+            ctx.shadowColor = "#00f0ff";
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.ellipse(bx, groundY + ball.r*0.3, ball.r * 1.35, ball.r * 0.38, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.shadowBlur = 0; // reset shadow
+            ctx.setLineDash([]); // reset dashes
+            
+            // 3. Volumetric Rotating Light Rays behind ball
+            var numRays = 8;
+            var rayMaxRadius = r * 2.3 * pulse;
+            var angleOffset = Date.now() * 0.0006;
+            for (var i = 0; i < numRays; i++) {
+              var angle = angleOffset + (i * Math.PI * 2) / numRays;
+              var gradRay = ctx.createRadialGradient(bx, by, r * 0.4, bx + Math.cos(angle) * rayMaxRadius, by + Math.sin(angle) * rayMaxRadius, rayMaxRadius);
+              gradRay.addColorStop(0, "rgba(0, 255, 240, 0.16)");
+              gradRay.addColorStop(0.4, "rgba(0, 255, 135, 0.05)");
+              gradRay.addColorStop(1, "rgba(0, 0, 0, 0)");
+              
+              ctx.beginPath();
+              ctx.moveTo(bx, by);
+              ctx.arc(bx, by, rayMaxRadius, angle - 0.12, angle + 0.12);
+              ctx.closePath();
+              ctx.fillStyle = gradRay;
+              ctx.fill();
+            }
+
+            // 4. Soft behind-ball radial glow
+            var ballGlowRadius = r * 1.8 * pulse;
+            var ballGlow = ctx.createRadialGradient(bx, by, r * 0.1, bx, by, ballGlowRadius);
+            ballGlow.addColorStop(0, "rgba(0, 255, 240, 0.35)");
+            ballGlow.addColorStop(0.4, "rgba(0, 255, 135, 0.15)");
+            ballGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+            
+            ctx.beginPath();
+            ctx.arc(bx, by, ballGlowRadius, 0, Math.PI*2);
+            ctx.fillStyle = ballGlow;
+            ctx.fill();
+            
+            ctx.restore();
+          }
+
+          // 5. Draw and update floating magical sparks (idle particles)
+          if (phase === "idle" && fbAttempts > 0) {
+            fbIdleParticles = fbIdleParticles.filter(function(p) { return p.alpha > 0; });
+            fbIdleParticles.forEach(function(p) {
+              p.x += p.vx;
+              p.y += p.vy;
+              p.alpha -= p.decay;
+              
+              ctx.save();
+              ctx.globalAlpha = Math.max(0, p.alpha);
+              ctx.shadowColor = p.color;
+              ctx.shadowBlur = 7;
+              ctx.fillStyle = "#ffffff"; // bright core
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.restore();
+            });
+          } else {
+            fbIdleParticles = [];
+          }
           
           // Shadow
           ctx.save();
