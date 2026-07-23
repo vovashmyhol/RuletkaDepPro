@@ -3887,9 +3887,9 @@
       <div class="page active" id="pageHome">
         
         <!-- STARS BANNER -->
-        <a href="https://t.me/festables" target="_blank" class="starsBanner">
+        <div class="starsBanner" id="btnOpenFootballBanner">
           <img src="IMG_1991.webp" alt="Summer Drop" class="starsBannerPhoto">
-        </a>
+        </div>
 
         <div class="liveFeed" id="liveFeed">
           <div class="liveLabel">
@@ -7343,6 +7343,18 @@
         // data: {url, status: "paid"|"cancelled"|"failed"...}
         // we add stars only if paid AND amount is known by chosen preset:
         const status = data?.status;
+
+        // Check if this is the football invoice
+        const footballLink = "https://t.me/$VgRiVdfC-UquFwAA66QdrJTS08c";
+        if (data?.url && (data.url === footballLink || data.url.includes("VgRiVdfC-UquFwAA66QdrJTS08c"))) {
+          if (status === "paid") {
+            if (typeof window.grantFootballAttempt === "function") {
+              window.grantFootballAttempt();
+            }
+          }
+          return;
+        }
+
         if (pendingQuickPurchase) {
           pendingQuickPurchase = false;
           btnQuickPurchase.disabled = false;
@@ -7741,7 +7753,7 @@
     </div>
     <div class="fbHint" id="fbHint">Swipe the ball toward the goal!</div>
     <div class="fbIntro" id="fbIntro">
-      <img src="Bear.png" alt="Football Bear" class="fbIntroBear">
+      <img src="BearFootball.png" alt="Football Bear" class="fbIntroBear">
       <div class="fbIntroTitle">Score a goal and get the Football Bear!</div>
       <button class="fbIntroBtn" id="fbIntroOkBtn">OK</button>
     </div>
@@ -7815,8 +7827,8 @@
         // Open / Close using delegation to be 100% sure it works
         document.addEventListener("click", function(e) {
           console.log("Click detected on:", e.target, "closest btnOpenFootball:", e.target.closest("#btnOpenFootball"));
-          if (e.target.closest("#btnOpenFootball")) {
-            console.log("Football block clicked (delegated)!");
+          if (e.target.closest("#btnOpenFootball") || e.target.closest("#btnOpenFootballBanner")) {
+            console.log("Football block or banner clicked (delegated)!");
             openGame();
           }
           if (e.target.closest("#fbCloseBtn")) {
@@ -7918,37 +7930,9 @@
           }
         }
 
-        function buyAttempt() {
-          console.log("Buy attempt function called...");
-          
-          const starsValue = document.getElementById("starsValue");
-          if (!starsValue) {
-            console.error("starsValue element not found!");
-            return;
-          }
-          
-          const currentStars = parseInt(starsValue.textContent) || 0;
-          console.log("Current stars:", currentStars);
-          
-          if (currentStars < ATTEMPT_COST) {
-            console.log("Not enough stars! Need 7, have:", currentStars);
-            showToastMsg("Not enough stars! Need 7⭐");
-            return;
-          }
-          
-          // Deduct stars
-          const newStars = currentStars - ATTEMPT_COST;
-          starsValue.textContent = newStars;
-          
-          // Save to localStorage using the correct key
-          localStorage.setItem("gb_final_stars", String(newStars));
-          
-          // Try to update global stars variable if available
-          if (typeof window.stars !== 'undefined') {
-            window.stars = newStars;
-          }
-          
-          // Grant attempt
+        const FOOTBALL_INVOICE_LINK = "https://t.me/$VgRiVdfC-UquFwAA66QdrJTS08c";
+
+        window.grantFootballAttempt = function() {
           fbAttempts++;
           console.log("Attempt purchased! Total attempts:", fbAttempts);
           
@@ -7964,6 +7948,22 @@
           } catch(e) {}
           
           showToastMsg("1 attempt purchased! ⚽");
+        };
+
+        function buyAttempt() {
+          console.log("Buy attempt function called, opening invoice...");
+          showToastMsg("Opening invoice...");
+          
+          try {
+            const tg = window.Telegram?.WebApp;
+            if (tg?.openInvoice) {
+              tg.openInvoice(FOOTBALL_INVOICE_LINK);
+            } else {
+              window.open(FOOTBALL_INVOICE_LINK, "_blank");
+            }
+          } catch (e) {
+            window.open(FOOTBALL_INVOICE_LINK, "_blank");
+          }
         }
 
         function showToastMsg(msg) {
