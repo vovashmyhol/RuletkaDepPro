@@ -3836,7 +3836,7 @@
     <div class="preloaderProgress">
       <div class="preloaderBar"></div>
     </div>
-    <div class="preloaderVersion" id="appVersionText">v1.2.0</div>
+    <div class="preloaderVersion" id="appVersionText">v1.2.1</div>
   </div>
 
 
@@ -3874,7 +3874,7 @@
           <span></span><span></span><span></span>
         </div>
       </div>
-      <div id="ptr-hint">Тяни ещё!</div>
+
     </div>
 
     <div class="content" id="scrollArea">
@@ -9245,6 +9245,7 @@
 
     function onTouchMove(e) {
       if (!pulling) return;
+      if (fired) return;  // уже сработало — не двигаем кружок
       if (getScrollTop() > 0) { pulling = false; resetPTR(); return; }
 
       let touch = findTouch(e.touches);
@@ -9280,6 +9281,11 @@
           if (window.Telegram?.WebApp?.HapticFeedback) {
             Telegram.WebApp.HapticFeedback.impactOccurred('medium');
           }
+          // Автозапуск — не ждём отпускания пальца
+          if (!fired) {
+            fired = true;
+            triggerLuckyPack();
+          }
         }
       } else {
         ptrContainer.classList.remove('ptr-ready');
@@ -9292,19 +9298,10 @@
 
       // Проверяем что именно наш палец отпустили
       const stillActive = findTouch(e.touches);
-      if (stillActive) {
-        // Наш палец ещё на экране — другой отпустили, продолжаем
-        return;
-      }
+      if (stillActive) return;
 
       pulling = false;
-
-      if (currentPull >= FIRE_THRESHOLD && !fired) {
-        fired = true;
-        triggerLuckyPack();
-      } else {
-        resetPTR();
-      }
+      if (!fired) resetPTR();
     }
 
     function onTouchCancel() {
