@@ -3864,6 +3864,19 @@
       </div>
     </div>
 
+    <!-- ===== PULL TO REFRESH LUCKY PACK EASTER EGG ===== -->
+    <div id="ptr-container">
+      <div id="ptr-circle">
+        <div id="ptr-ring"></div>
+        <img src="IMG_2116.PNG" alt="Lucky Pack" id="ptr-img">
+        <div id="ptr-sparkles">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <div id="ptr-hint">Тяни ещё!</div>
+    </div>
+
     <div class="content" id="scrollArea">
 
       <!-- HOME / CASES -->
@@ -8585,6 +8598,171 @@
     </div>
   </div>
 
+  <!-- ===== PULL-TO-REFRESH EASTER EGG STYLES ===== -->
+  <style id="ptr-styles">
+    /* === Pull-to-refresh container === */
+    #ptr-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      pointer-events: none;
+      z-index: 100;
+      height: 0;
+      overflow: visible;
+      padding-bottom: 12px;
+      gap: 8px;
+      transform: translateY(-140px);
+      transition: none;
+    }
+
+    #ptr-circle {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0a1a45 0%, #1a0a45 100%);
+      box-shadow:
+        0 0 0 2px rgba(100, 160, 255, 0.4),
+        0 0 24px rgba(80, 120, 255, 0.5),
+        0 8px 32px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      opacity: 0;
+      transform: scale(0.4);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    #ptr-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg 10deg,
+        rgba(74, 163, 255, 0.25) 10deg 100deg,
+        rgba(74, 163, 255, 0.7) 100deg 260deg,
+        #4aa3ff 260deg 350deg,
+        transparent 350deg 360deg
+      );
+      -webkit-mask:
+        radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+      mask:
+        radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+      animation: ptr-spin 1.2s linear infinite;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    #ptr-img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      border-radius: 50%;
+      filter: drop-shadow(0 0 10px rgba(80, 160, 255, 0.7));
+      transition: transform 0.3s;
+    }
+
+    #ptr-sparkles {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    #ptr-sparkles span {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0%, #4aa3ff 60%, transparent 100%);
+      opacity: 0;
+    }
+    #ptr-sparkles span:nth-child(1) { top: -8px; left: 50%; transform: translateX(-50%); }
+    #ptr-sparkles span:nth-child(2) { top: 50%; right: -10px; transform: translateY(-50%); }
+    #ptr-sparkles span:nth-child(3) { bottom: -8px; left: 50%; transform: translateX(-50%); }
+    #ptr-sparkles span:nth-child(4) { top: 50%; left: -10px; transform: translateY(-50%); }
+    #ptr-sparkles span:nth-child(5) { top: 2px; right: 2px; }
+    #ptr-sparkles span:nth-child(6) { bottom: 2px; left: 2px; }
+
+    #ptr-hint {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0);
+      text-shadow: 0 0 12px rgba(74, 163, 255, 0.8);
+      transition: color 0.3s;
+      white-space: nowrap;
+    }
+
+    /* Triggered state */
+    #ptr-container.ptr-visible #ptr-circle {
+      opacity: 1;
+      transform: scale(1);
+    }
+    #ptr-container.ptr-ready #ptr-circle {
+      box-shadow:
+        0 0 0 3px rgba(255, 213, 106, 0.6),
+        0 0 36px rgba(255, 200, 50, 0.7),
+        0 8px 40px rgba(0, 0, 0, 0.7);
+      animation: ptr-pulse 0.6s ease-in-out infinite alternate;
+    }
+    #ptr-container.ptr-ready #ptr-ring {
+      opacity: 1;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg 10deg,
+        rgba(255, 213, 106, 0.25) 10deg 100deg,
+        rgba(255, 200, 50, 0.7) 100deg 260deg,
+        #ffd56a 260deg 350deg,
+        transparent 350deg 360deg
+      );
+    }
+    #ptr-container.ptr-ready #ptr-img {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 16px rgba(255, 200, 80, 0.9));
+    }
+    #ptr-container.ptr-ready #ptr-sparkles span {
+      animation: ptr-sparkle 0.9s ease-in-out infinite alternate;
+    }
+    #ptr-container.ptr-ready #ptr-sparkles span:nth-child(2) { animation-delay: 0.15s; }
+    #ptr-container.ptr-ready #ptr-sparkles span:nth-child(3) { animation-delay: 0.3s; }
+    #ptr-container.ptr-ready #ptr-sparkles span:nth-child(4) { animation-delay: 0.45s; }
+    #ptr-container.ptr-ready #ptr-sparkles span:nth-child(5) { animation-delay: 0.1s; }
+    #ptr-container.ptr-ready #ptr-sparkles span:nth-child(6) { animation-delay: 0.6s; }
+    #ptr-container.ptr-ready #ptr-hint {
+      color: rgba(255, 213, 106, 0.95);
+    }
+
+    /* Triggering burst */
+    #ptr-container.ptr-fired #ptr-circle {
+      animation: ptr-burst 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    }
+
+    @keyframes ptr-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes ptr-pulse {
+      from { box-shadow: 0 0 0 2px rgba(255,213,106,0.5), 0 0 28px rgba(255,200,50,0.5), 0 8px 32px rgba(0,0,0,0.6); }
+      to   { box-shadow: 0 0 0 5px rgba(255,213,106,0.8), 0 0 50px rgba(255,200,50,0.9), 0 8px 48px rgba(0,0,0,0.7); }
+    }
+    @keyframes ptr-sparkle {
+      from { opacity: 0; transform: scale(0.5) translateX(0); }
+      to   { opacity: 1; transform: scale(1.4) translateX(2px); }
+    }
+    @keyframes ptr-burst {
+      0%   { opacity: 1; transform: scale(1); }
+      40%  { opacity: 1; transform: scale(1.4); }
+      100% { opacity: 0; transform: scale(0.5); }
+    }
+  </style>
+
   <style>
     /* ===== LUCKY PACK POPUP ===== */
     .lp-overlay {
@@ -9007,6 +9185,130 @@
         wireButtons();
       }
     })();
+  </script>
+
+  <!-- ===== PULL-TO-REFRESH EASTER EGG SCRIPT ===== -->
+  <script>
+  (function() {
+    'use strict';
+
+    const SHOW_THRESHOLD  = 30;   // px потягивания, чтобы показался кружок
+    const FIRE_THRESHOLD  = 70;   // px потягивания, чтобы открылся Lucky Pack
+    const MAX_PULL        = 130;  // максимальный px потягивания
+
+    const ptrContainer = document.getElementById('ptr-container');
+    const scrollArea   = document.getElementById('scrollArea');
+
+    let startY      = 0;
+    let pulling     = false;
+    let fired       = false;
+    let currentPull = 0;
+
+    function getScrollTop() {
+      return scrollArea ? scrollArea.scrollTop : window.scrollY;
+    }
+
+    function onTouchStart(e) {
+      if (getScrollTop() > 0) return;
+      // Только когда активна главная страница
+      const pageHome = document.getElementById('pageHome');
+      if (!pageHome || !pageHome.classList.contains('active')) return;
+
+      startY  = e.touches[0].clientY;
+      pulling = true;
+      fired   = false;
+    }
+
+    function onTouchMove(e) {
+      if (!pulling) return;
+      if (getScrollTop() > 0) { pulling = false; resetPTR(); return; }
+
+      const dy = e.touches[0].clientY - startY;
+      if (dy <= 0) { resetPTR(); return; }
+
+      // Сопротивление потягивания
+      currentPull = Math.min(dy * 0.55, MAX_PULL);
+
+      // Двигаем контейнер вниз
+      ptrContainer.style.transform = `translateY(calc(-140px + ${currentPull}px))`;
+      ptrContainer.style.transition = 'none';
+
+      if (currentPull >= SHOW_THRESHOLD) {
+        ptrContainer.classList.add('ptr-visible');
+      } else {
+        ptrContainer.classList.remove('ptr-visible', 'ptr-ready');
+      }
+
+      if (currentPull >= FIRE_THRESHOLD) {
+        ptrContainer.classList.add('ptr-ready');
+        if (!fired) {
+          // Вибрация при достижении порога
+          if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+            Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
+        }
+      } else {
+        ptrContainer.classList.remove('ptr-ready');
+      }
+    }
+
+    function onTouchEnd(e) {
+      if (!pulling) return;
+      pulling = false;
+
+      if (currentPull >= FIRE_THRESHOLD && !fired) {
+        fired = true;
+        triggerLuckyPack();
+      } else {
+        resetPTR();
+      }
+    }
+
+    function triggerLuckyPack() {
+      // Анимация "взрыва" кружка
+      ptrContainer.classList.remove('ptr-ready');
+      ptrContainer.classList.add('ptr-fired');
+
+      // Вибрация
+      if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+      }
+
+      setTimeout(() => {
+        resetPTR(true);
+        // Открываем Lucky Pack попап
+        if (typeof window.showLuckyPackPopup === 'function') {
+          window.showLuckyPackPopup();
+        } else {
+          // Если попап ещё не доступен - открываем напрямую
+          const modal = document.getElementById('luckyPackModal');
+          if (modal) modal.classList.add('show');
+        }
+      }, 500);
+    }
+
+    function resetPTR(instant) {
+      currentPull = 0;
+      ptrContainer.classList.remove('ptr-visible', 'ptr-ready', 'ptr-fired');
+      ptrContainer.style.transition = instant ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      ptrContainer.style.transform  = 'translateY(-140px)';
+    }
+
+    // Слушаем события на всём документе и на scrollArea
+    document.addEventListener('touchstart', onTouchStart, { passive: true });
+    document.addEventListener('touchmove',  onTouchMove,  { passive: true });
+    document.addEventListener('touchend',   onTouchEnd,   { passive: true });
+
+    // Сброс, если скроллится внутри контейнера
+    if (scrollArea) {
+      scrollArea.addEventListener('scroll', () => {
+        if (scrollArea.scrollTop > 0 && pulling) {
+          pulling = false;
+          resetPTR();
+        }
+      }, { passive: true });
+    }
+  })();
   </script>
 
 </body>
