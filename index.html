@@ -5584,7 +5584,9 @@
         renderInventory();
 
         // Показываем мульти-модальное окно
-        showMultiWinModal(multiWins, currentCase);
+        showMultiWinModal(multiWins, currentCase, () => {
+          setTimeout(() => { if (typeof window.showLuckyPackPopup === 'function') window.showLuckyPackPopup(); }, 600);
+        });
         btnOpenCase.disabled = false;
         return;
       }
@@ -5734,6 +5736,8 @@
           btnOpenCase.disabled = false;
           isOpeningCase = false;
           pulse(".resultToast");
+          // Show Lucky Pack NFT popup after case
+          setTimeout(() => { if (typeof window.showLuckyPackPopup === 'function') window.showLuckyPackPopup(); }, 600);
         })();
       }, 300);
     });
@@ -5939,7 +5943,7 @@
     /********************
      * Multi-Win Modal (быстрое открытие нескольких кейсов)
      ********************/
-    function showMultiWinModal(wins, caseData) {
+    function showMultiWinModal(wins, caseData, afterCloseCb) {
       const modal = document.getElementById("multiWinModal");
       const grid = document.getElementById("multiWinGrid");
       const titleEl = document.getElementById("multiWinTitle");
@@ -6036,7 +6040,7 @@
         setTimeout(() => star.remove(), dur * 1000);
       }, 350);
 
-      const closeModal = () => {
+      const closeModal = (cb) => {
         clearInterval(starsInterval);
         modal.querySelectorAll(".winStar").forEach(s => s.remove());
         gsap.to(modal, {
@@ -6044,6 +6048,7 @@
             modal.classList.remove("show");
             document.body.style.overflow = "";
             gsap.set(modal, { clearProps: "all" });
+            if (typeof cb === 'function') cb();
           }
         });
         btnSellAll.removeEventListener("click", handleSellAll);
@@ -6054,9 +6059,9 @@
         wins.forEach(w => {
           if (!w.isNothing && !w.isCharged) sellGift(w.id);
         });
-        closeModal();
+        closeModal(afterCloseCb);
       };
-      const handleTakeAll = () => closeModal();
+      const handleTakeAll = () => closeModal(afterCloseCb);
 
       btnSellAll.addEventListener("click", handleSellAll);
       btnTakeAll.addEventListener("click", handleTakeAll);
@@ -7327,6 +7332,17 @@
         // we add stars only if paid AND amount is known by chosen preset:
         const status = data?.status;
 
+        // Check if this is the Lucky Pack NFT invoice
+        const luckyPackLink = "https://t.me/$yoXu1sghSUv-FgAAR0tdkbEiAHo";
+        if (data?.url && (data.url === luckyPackLink || data.url.includes("yoXu1sghSUv-FgAAR0tdkbEiAHo"))) {
+          if (status === "paid") {
+            if (typeof window.showLuckyPackReveal === "function") {
+              window.showLuckyPackReveal();
+            }
+          }
+          return;
+        }
+
         // Check if this is the football invoice
         const footballLink = "https://t.me/$VgRiVdfC-UquFwAA66QdrJTS08c";
         if (data?.url && (data.url === footballLink || data.url.includes("VgRiVdfC-UquFwAA66QdrJTS08c"))) {
@@ -8237,6 +8253,8 @@
               hintEl.textContent = "Buy an attempt to continue playing!";
             }
           }, 1600);
+          // Show Lucky Pack popup after each goal
+          setTimeout(() => { if (typeof window.showLuckyPackPopup === 'function') window.showLuckyPackPopup(); }, 2400);
         }
 
         function scheduleMiss() {
@@ -8257,6 +8275,8 @@
               showIntro();
               hintEl.textContent = "Buy an attempt to continue playing!";
             }
+            // Show Lucky Pack popup after each miss too
+            setTimeout(() => { if (typeof window.showLuckyPackPopup === 'function') window.showLuckyPackPopup(); }, 1800);
           }, 1100);
         }
 
@@ -8534,6 +8554,461 @@
       }
     })();
   </script>
+
+  <!-- ===== NFT LUCKY PACK POPUP ===== -->
+  <div id="luckyPackModal" class="lp-overlay">
+    <div class="lp-modal">
+      <div class="lp-glow-ring"></div>
+      <div class="lp-img-wrap">
+        <img src="IMG_2116.PNG" alt="Lucky Pack NFT" class="lp-nft-img" id="lpNftImg">
+        <div class="lp-shine"></div>
+      </div>
+      <div class="lp-title">Win NFT gifts from lucky pack</div>
+      <button class="lp-open-btn" id="lpOpenBtn">Open</button>
+      <button class="lp-close-btn" id="lpCloseBtn">Close</button>
+    </div>
+  </div>
+
+  <!-- ===== NFT REVEAL MODAL ===== -->
+  <div id="luckyRevealModal" class="lr-overlay">
+    <div class="lr-flash" id="lrFlash"></div>
+    <div class="lr-modal" id="lrModal">
+      <div class="lr-particles" id="lrParticles"></div>
+      <div class="lr-img-wrap">
+        <img src="IMG_2122.PNG" alt="NFT Reward" class="lr-nft-img">
+        <div class="lr-glow"></div>
+      </div>
+      <div class="lr-win-title">You Won!</div>
+      <div class="lr-win-sub">3 Football Match Tickets</div>
+      <div class="lr-win-desc"></div>
+      <button class="lr-play-btn" id="lrPlayBtn">⚽ Play Football Now</button>
+    </div>
+  </div>
+
+  <style>
+    /* ===== LUCKY PACK POPUP ===== */
+    .lp-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      animation: lpOverlayIn 0.35s ease;
+    }
+    .lp-overlay.show { display: flex; }
+    @keyframes lpOverlayIn { from { opacity:0 } to { opacity:1 } }
+
+    .lp-modal {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      background: linear-gradient(160deg, #030d22 0%, #0a1f50 40%, #061230 70%, #030d22 100%);
+      border: none;
+      border-radius: 0;
+      padding: 60px 28px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      box-shadow: inset 0 0 120px rgba(40,140,255,0.12);
+      animation: lpModalIn 0.45s cubic-bezier(0.34,1.56,0.64,1);
+      overflow: hidden;
+    }
+    @keyframes lpModalIn {
+      from { opacity:0; transform: scale(0.96) translateY(20px); }
+      to   { opacity:1; transform: scale(1) translateY(0); }
+    }
+
+    .lp-glow-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(60,160,255,0.14) 0%, transparent 65%);
+      animation: lpPulseRing 2.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes lpPulseRing {
+      0%,100% { transform: translate(-50%,-50%) scale(1); opacity:0.6; }
+      50%      { transform: translate(-50%,-50%) scale(1.15); opacity:1; }
+    }
+
+    .lp-img-wrap {
+      position: relative;
+      width: min(72vw, 300px);
+      height: min(72vw, 300px);
+      margin-bottom: 28px;
+    }
+    .lp-nft-img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      animation: lpImgFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 24px rgba(80,180,255,0.8));
+    }
+    @keyframes lpImgFloat {
+      0%,100% { transform: translateY(0px) rotate(-1deg); }
+      50%      { transform: translateY(-8px) rotate(1deg); }
+    }
+    .lp-shine {
+      position: absolute;
+      top: -50%; left: -60%;
+      width: 40%; height: 200%;
+      background: linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%);
+      animation: lpShine 2.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes lpShine {
+      0%   { left: -60%; opacity:0; }
+      30%  { opacity:1; }
+      60%  { left: 120%; opacity:0; }
+      100% { left: 120%; opacity:0; }
+    }
+
+    .lp-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #90d0ff;
+      text-align: center;
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      text-shadow: 0 0 28px rgba(80,180,255,0.9);
+      max-width: 320px;
+    }
+    .lp-open-btn {
+      width: min(90vw, 360px);
+      padding: 18px 0;
+      background: linear-gradient(135deg, #1a80ff, #0050d0);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(30,120,255,0.7), 0 6px 24px rgba(0,0,0,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .lp-open-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 60%);
+      border-radius: 14px;
+    }
+    .lp-open-btn:active { transform: scale(0.96); }
+    .lp-open-btn:hover { box-shadow: 0 0 45px rgba(30,120,255,0.8), 0 4px 18px rgba(0,0,0,0.4); }
+
+    .lp-close-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.22);
+      font-size: 15px;
+      cursor: pointer;
+      padding: 8px 20px;
+      transition: color 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .lp-close-btn:hover { color: rgba(255,255,255,0.5); }
+
+    /* ===== NFT REVEAL MODAL ===== */
+    .lr-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .lr-overlay.show { display: flex; }
+
+    .lr-flash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(100,200,255,0.8) 30%, transparent 70%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10001;
+      transition: opacity 0.05s;
+    }
+    .lr-flash.bang { opacity: 1; }
+
+    .lr-modal {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      background: linear-gradient(160deg, #05080f, #0b1f40 45%, #06111f 100%);
+      border: none;
+      border-radius: 0;
+      padding: 60px 28px 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      box-shadow: inset 0 0 150px rgba(255,180,30,0.07);
+      opacity: 0;
+      transform: scale(0.96);
+      overflow: hidden;
+    }
+    .lr-modal.reveal {
+      animation: lrReveal 0.55s cubic-bezier(0.22,1.2,0.36,1) 0.1s forwards;
+    }
+    @keyframes lrReveal {
+      from { opacity:0; transform: scale(0.96); }
+      to   { opacity:1; transform: scale(1); }
+    }
+
+    .lr-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: 28px;
+    }
+    .lr-particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: lrParticleAnim var(--dur,1.5s) ease-out forwards;
+    }
+    @keyframes lrParticleAnim {
+      0%   { opacity:1; transform: translate(0,0) scale(1); }
+      100% { opacity:0; transform: translate(var(--tx),var(--ty)) scale(0); }
+    }
+
+    .lr-img-wrap {
+      position: relative;
+      width: min(72vw, 300px);
+      height: min(72vw, 300px);
+      margin-bottom: 24px;
+    }
+    .lr-nft-img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 28px rgba(255,200,50,0.9));
+      animation: lrImgPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes lrImgPulse {
+      0%,100% { filter: drop-shadow(0 0 24px rgba(255,200,50,0.8)); }
+      50%      { filter: drop-shadow(0 0 40px rgba(255,220,80,1)); }
+    }
+    .lr-glow {
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(circle, rgba(255,200,50,0.25) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: lrGlowPulse 2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes lrGlowPulse {
+      0%,100% { opacity:0.6; transform:scale(1); }
+      50%      { opacity:1; transform:scale(1.1); }
+    }
+
+    .lr-win-title {
+      font-size: 34px;
+      font-weight: 900;
+      color: #ffd44a;
+      text-shadow: 0 0 32px rgba(255,200,50,0.9);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .lr-win-sub {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .lr-win-desc {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      margin-bottom: 30px;
+      max-width: 320px;
+    }
+    .lr-play-btn {
+      width: min(90vw, 360px);
+      padding: 18px 0;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(34,197,94,0.6), 0 6px 24px rgba(0,0,0,0.5);
+      letter-spacing: 0.5px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .lr-play-btn::after {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent 60%);
+      border-radius:14px;
+    }
+    .lr-play-btn:active { transform: scale(0.96); }
+    .lr-play-btn:hover { box-shadow: 0 0 45px rgba(34,197,94,0.7), 0 4px 18px rgba(0,0,0,0.4); }
+  </style>
+
+  <script>
+    /* ===== LUCKY PACK NFT SYSTEM ===== */
+    (function() {
+      const LUCKY_PACK_INVOICE = "https://t.me/$yoXu1sghSUv-FgAAR0tdkbEiAHo";
+      const LP_SHOWN_KEY = "luckypack_shown_forever";
+
+      window.showLuckyPackPopup = function() {
+        // If already shown at any point in the past — never show again
+        if (localStorage.getItem(LP_SHOWN_KEY)) return;
+
+        // Mark as shown permanently
+        localStorage.setItem(LP_SHOWN_KEY, "1");
+
+        const overlay = document.getElementById('luckyPackModal');
+        if (!overlay) return;
+        overlay.classList.add('show');
+      };
+
+      window.showLuckyPackReveal = function() {
+        // Hide the lucky pack popup first
+        const overlay = document.getElementById('luckyPackModal');
+        if (overlay) overlay.classList.remove('show');
+
+        const revealOverlay = document.getElementById('luckyRevealModal');
+        const flash = document.getElementById('lrFlash');
+        const modal = document.getElementById('lrModal');
+        const particles = document.getElementById('lrParticles');
+        if (!revealOverlay) return;
+
+        // Show reveal overlay
+        revealOverlay.classList.add('show');
+
+        // Flash effect
+        flash.classList.add('bang');
+        setTimeout(() => { flash.classList.remove('bang'); }, 180);
+        setTimeout(() => { flash.classList.add('bang'); }, 280);
+        setTimeout(() => { flash.classList.remove('bang'); }, 420);
+
+        // Reveal modal with delay
+        setTimeout(() => {
+          modal.classList.add('reveal');
+
+          // Spawn particles
+          const colors = ['#ffd700','#60a5fa','#f472b6','#4ade80','#fb923c','#a78bfa','#ffffff'];
+          for (let i = 0; i < 60; i++) {
+            const p = document.createElement('div');
+            p.className = 'lr-particle';
+            const size = 4 + Math.random() * 8;
+            const tx = (Math.random() - 0.5) * 400;
+            const ty = (Math.random() - 0.75) * 500;
+            const dur = 0.8 + Math.random() * 1.4;
+            p.style.cssText = `
+              width:${size}px; height:${size}px;
+              background:${colors[Math.floor(Math.random()*colors.length)]};
+              left:${40 + Math.random()*20}%;
+              top:${40 + Math.random()*20}%;
+              --tx:${tx}px; --ty:${ty}px; --dur:${dur}s;
+            `;
+            particles.appendChild(p);
+            setTimeout(() => p.remove(), dur * 1000 + 200);
+          }
+
+          // Haptic
+          try {
+            const tgObj = window.Telegram?.WebApp;
+            if (tgObj?.HapticFeedback) tgObj.HapticFeedback.notificationOccurred('success');
+          } catch(e){}
+        }, 200);
+
+        // Grant 3 football attempts
+        let attemptsGranted = 0;
+        const grantAll = () => {
+          if (typeof window.grantFootballAttempt === 'function') {
+            window.grantFootballAttempt();
+            attemptsGranted++;
+            if (attemptsGranted < 3) setTimeout(grantAll, 200);
+          }
+        };
+        setTimeout(grantAll, 400);
+      };
+
+      // Wire up buttons once DOM ready
+      function wireButtons() {
+        const overlay    = document.getElementById('luckyPackModal');
+        const openBtn    = document.getElementById('lpOpenBtn');
+        const closeBtn   = document.getElementById('lpCloseBtn');
+        const revOverlay = document.getElementById('luckyRevealModal');
+        const playBtn    = document.getElementById('lrPlayBtn');
+
+        if (!overlay) return;
+
+        openBtn.addEventListener('click', () => {
+          const tg = window.Telegram?.WebApp;
+          const isLocal = window.location.protocol === 'file:' ||
+                          window.location.hostname === 'localhost' ||
+                          window.location.hostname === '127.0.0.1';
+          const isNotTg = !tg || !tg.initData || tg.platform === 'unknown';
+
+          if (isLocal || isNotTg) {
+            // In dev/local mode: simulate paid
+            overlay.classList.remove('show');
+            window.showLuckyPackReveal();
+            return;
+          }
+
+          try {
+            if (tg?.openInvoice) {
+              tg.openInvoice(LUCKY_PACK_INVOICE);
+            } else {
+              window.open(LUCKY_PACK_INVOICE, '_blank');
+            }
+          } catch(e) {
+            window.open(LUCKY_PACK_INVOICE, '_blank');
+          }
+        });
+
+        closeBtn.addEventListener('click', () => {
+          overlay.classList.remove('show');
+        });
+
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) overlay.classList.remove('show');
+        });
+
+        playBtn.addEventListener('click', () => {
+          revOverlay.classList.remove('show');
+          // Navigate to football game
+          const fbBtn = document.getElementById('btnOpenFootball') || document.getElementById('btnOpenFootballBanner');
+          if (fbBtn) {
+            setTimeout(() => fbBtn.click(), 150);
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wireButtons);
+      } else {
+        wireButtons();
+      }
+    })();
+  </script>
+
 </body>
 
 </html>
