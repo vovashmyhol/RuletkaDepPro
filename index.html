@@ -3824,6 +3824,321 @@
       width: 18px;
       height: 18px;
     }
+
+    /* ===== QUICK WITHDRAW BANNER & MODAL ===== */
+    .qwBannerWrap {
+      margin-top: 18px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .qwBanner {
+      position: relative;
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: #141722;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 0, 128, 0.15);
+      transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+    }
+
+    .qwBanner:active {
+      transform: scale(0.98);
+    }
+
+    .qwBanner::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 18px;
+      padding: 2px;
+      background: linear-gradient(90deg, #ff007f, #7928ca, #00dfd8, #ff8000, #ff007f);
+      background-size: 300% 100%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: qwRainbowBorder 4s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes qwRainbowBorder {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 300% 0%; }
+    }
+
+    .qwBannerGlow {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(255, 0, 128, 0.12), rgba(0, 223, 216, 0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .qwBannerContent {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .qwBannerLeft {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qwBannerBadge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .qwBannerBadge img {
+      width: 70%;
+      height: 70%;
+      object-fit: contain;
+    }
+
+    .qwBannerText {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .qwBannerTitle {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #ff007f, #00dfd8, #ffbd2e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+
+    .qwBannerSub {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.3;
+    }
+
+    .qwBannerRight {
+      flex-shrink: 0;
+    }
+
+    .qwBannerBtn {
+      background: linear-gradient(135deg, #ff007f, #7928ca);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 0, 128, 0.4);
+    }
+
+    /* Modal styles */
+    .qwModal {
+      max-width: 420px;
+      width: 92%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 0, 128, 0.2);
+    }
+
+    .qwModalScroll {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .qwImageStage {
+      position: relative;
+      width: 100%;
+      min-height: 290px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+    }
+
+    #qwParticleCanvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 480px;
+      height: 380px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .qwImageCard {
+      position: relative;
+      z-index: 2;
+      max-width: 330px;
+      width: 80%;
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 22px rgba(255, 0, 128, 0.35));
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .qwImageCard:hover {
+      transform: scale(1.03);
+    }
+
+    .qwDescBox {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 4px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .qwDescTitle {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .qwDescText {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.45;
+    }
+
+    .qwDescNote {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.4;
+      border-top: none;
+      padding-top: 0;
+      margin-top: 2px;
+    }
+
+    .qwActionWrap {
+      width: 100%;
+    }
+
+    .qwBuyBtn {
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(135deg, #00dfd8, #7928ca, #ff007f);
+      background-size: 200% 100%;
+      animation: qwBtnGradient 4s linear infinite;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 223, 216, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    @keyframes qwBtnGradient {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    .qwBuyBtn:active {
+      transform: scale(0.98);
+    }
+
+    .qwBuyBtn.owned {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35) !important;
+    }
+
+    .starEmojiIcon {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
+
+    /* ===== TON DISCOUNT BADGES ===== */
+    .tonSaleBadge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+      animation: tonBadgePulse 2s infinite ease-in-out;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    @keyframes tonBadgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .optionTonPriceWrap {
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+    }
+
+    .oldTonPrice {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: line-through;
+      font-weight: 600;
+    }
+
+    .discountedTonPrice {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 800;
+      color: #10b981;
+      font-size: 15px;
+    }
+
+    .discountTag {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 6px;
+    }
   </style>
 </head>
 
@@ -3836,7 +4151,7 @@
     <div class="preloaderProgress">
       <div class="preloaderBar"></div>
     </div>
-    <div class="preloaderVersion" id="appVersionText">v1.2.1</div>
+    <div class="preloaderVersion" id="appVersionText">v1.2.3</div>
   </div>
 
 
@@ -4071,6 +4386,27 @@
             <div class="xpFill" id="xpFill"></div>
           </div>
           <div class="xpAboutLink" id="xpAboutLink" role="button" tabindex="0">about level</div>
+        </div>
+
+        <!-- Quick Withdraw Banner -->
+        <div class="qwBannerWrap" id="qwBannerWrap" style="display: none;">
+          <div class="qwBanner" id="btnOpenQuickWithdraw">
+            <div class="qwBannerGlow"></div>
+            <div class="qwBannerContent">
+              <div class="qwBannerLeft">
+                <div class="qwBannerBadge">
+                  <img src="Quick withdraw.PNG" alt="Quick Withdraw">
+                </div>
+                <div class="qwBannerText">
+                  <div class="qwBannerTitle">QUICK WITHDRAW ⚡</div>
+                  <div class="qwBannerSub">Instant gift withdrawals without waiting 21 days</div>
+                </div>
+              </div>
+              <div class="qwBannerRight">
+                <button class="qwBannerBtn">Open</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="sectionTitle" style="margin-top:20px">INVENTORY</div>
@@ -4335,8 +4671,9 @@
             <div class="toggleIcon active" id="toggleStars" title="Stars">
               <img src="stars-DBKMczxe.png" alt="Stars">
             </div>
-            <div class="toggleIcon" id="toggleTon" title="TON">
+            <div class="toggleIcon" id="toggleTon" title="TON" style="position: relative;">
               <img src="Иконка ТОН.webp" alt="TON">
+              <span class="tonSaleBadge">-20%</span>
             </div>
           </div>
           <div class="balanceLabel">Wallet balance</div>
@@ -4377,6 +4714,47 @@
       </div>
       <div class="modalScroll">
         <div class="sheetBody" id="pickerBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Withdraw Modal -->
+  <div class="overlay" id="quickWithdrawModal">
+    <div class="modal qwModal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <div class="h">QUICK WITHDRAW</div>
+        <div class="xbtn" id="closeQuickWithdraw">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+      
+      <div class="modalScroll qwModalScroll">
+        <!-- Image stage with particle canvas -->
+        <div class="qwImageStage">
+          <canvas id="qwParticleCanvas"></canvas>
+          <img src="Quick withdraw.PNG" class="qwImageCard" alt="Quick Withdraw Card">
+        </div>
+
+        <!-- Info box -->
+        <div class="qwDescBox">
+          <div class="qwDescTitle">⚡ Instant Withdrawal</div>
+          <div class="qwDescText">
+            With this card, withdrawal is available <b>instantly</b> — no need to wait 21 days!
+          </div>
+          <div class="qwDescNote">
+            💡 Also, the card is <b>optional</b> — you can still withdraw gifts using the standard method.
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="qwActionWrap">
+          <button class="btn qwBuyBtn" id="btnBuyQuickWithdraw">
+            <span id="qwBuyBtnText">Buy card for 149</span>
+            <img src="Звезда емодзи.webp" class="starEmojiIcon" alt="★">
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -4699,11 +5077,16 @@
     };
 
     function updateBuyButtonValue() {
+      const buyBtnVal = document.getElementById("buyBtnVal");
+      if (!buyBtnVal) return;
       if (isTonMode) {
-        const tonVal = selectedStarsAmount / TON_EXCHANGE_RATE;
-        document.getElementById("buyBtnVal").textContent = tonVal.toFixed(2) + " TON";
+        const baseTon = selectedStarsAmount / TON_EXCHANGE_RATE;
+        const discountedTon = baseTon * 0.80;
+        const baseStr = (Math.round(baseTon * 100) / 100).toString();
+        const discStr = (Math.round(discountedTon * 1000) / 1000).toString();
+        buyBtnVal.innerHTML = `<span style="text-decoration:line-through;opacity:0.5;font-size:13px;margin-right:4px;">${baseStr}</span> ${discStr} TON <span style="background:rgba(16,185,129,0.25);color:#10b981;font-size:11px;padding:2px 6px;border-radius:6px;margin-left:4px;border:1px solid rgba(16,185,129,0.4);">-20%</span>`;
       } else {
-        document.getElementById("buyBtnVal").textContent = selectedStarsAmount;
+        buyBtnVal.textContent = selectedStarsAmount;
       }
     }
 
@@ -6130,6 +6513,8 @@
         });
       }
 
+      renderQuickWithdrawBanner();
+
       invGrid.querySelectorAll("button.btnSmall").forEach(b => {
         b.addEventListener("click", () => {
           const act = b.dataset.act;
@@ -6241,6 +6626,199 @@
     btnCloseWithdraw2.addEventListener("click", () => hideOverlay(withdrawModal));
     withdrawModal.addEventListener("click", (e) => { if (e.target === withdrawModal) hideOverlay(withdrawModal); });
 
+    /********************
+     * Quick Withdraw Feature
+     ********************/
+    const quickWithdrawModal = document.getElementById("quickWithdrawModal");
+    const closeQuickWithdraw = document.getElementById("closeQuickWithdraw");
+    const btnOpenQuickWithdraw = document.getElementById("btnOpenQuickWithdraw");
+    const btnBuyQuickWithdraw = document.getElementById("btnBuyQuickWithdraw");
+
+    let qwParticleAnimId = null;
+    let qwParticles = [];
+
+    function renderQuickWithdrawBanner() {
+      const wrap = document.getElementById("qwBannerWrap");
+      if (!wrap) return;
+      const isUnlocked = localStorage.getItem("quickWithdrawUnlocked") === "true";
+      if (isUnlocked) {
+        if (wrap.style.display === "none" || !wrap.style.display) {
+          wrap.style.display = "block";
+          gsap.fromTo(wrap, { opacity: 0, y: -15, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.4)" });
+        }
+      } else {
+        wrap.style.display = "none";
+      }
+    }
+
+    function openQuickWithdrawModal() {
+      if (!quickWithdrawModal) return;
+      showOverlay(quickWithdrawModal);
+      gsap.fromTo(quickWithdrawModal.querySelector(".modal"), 
+        { y: 30, opacity: 0, scale: 0.9 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.2)" }
+      );
+      updateQuickWithdrawUI();
+      setTimeout(initQwParticles, 60);
+    }
+
+    function updateQuickWithdrawUI() {
+      const isOwned = localStorage.getItem("quickWithdrawCardOwned") === "true";
+      const buyBtn = document.getElementById("btnBuyQuickWithdraw");
+      const btnText = document.getElementById("qwBuyBtnText");
+      const starIcon = buyBtn ? buyBtn.querySelector(".starEmojiIcon") : null;
+
+      if (isOwned && buyBtn) {
+        buyBtn.classList.add("owned");
+        if (btnText) btnText.textContent = "Owned (Active) ✓";
+        if (starIcon) starIcon.style.display = "none";
+      } else if (buyBtn) {
+        buyBtn.classList.remove("owned");
+        if (btnText) btnText.textContent = "Buy card for 149";
+        if (starIcon) starIcon.style.display = "inline-block";
+      }
+    }
+
+    function buyQuickWithdrawCard() {
+      const isOwned = localStorage.getItem("quickWithdrawCardOwned") === "true";
+      if (isOwned) {
+        showToast("Quick Withdraw card is already active!");
+        return;
+      }
+
+      if (stars >= 149) {
+        stars = round1(stars - 149);
+        saveNumber(STORAGE.stars, stars);
+        renderStars();
+        localStorage.setItem("quickWithdrawCardOwned", "true");
+        updateQuickWithdrawUI();
+        showToast("Quick Withdraw card successfully purchased! 🎉");
+      } else {
+        showToast("Not enough stars! Need 149 ⭐️");
+        openAddStarsModal();
+      }
+    }
+
+    function initQwParticles() {
+      const canvas = document.getElementById("qwParticleCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+
+      const stage = canvas.parentElement;
+      canvas.width = stage.clientWidth || 360;
+      canvas.height = stage.clientHeight || 260;
+
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      qwParticles = [];
+      const count = 55;
+      for (let i = 0; i < count; i++) {
+        qwParticles.push(createQwParticle(cx, cy, true));
+      }
+
+      if (qwParticleAnimId) cancelAnimationFrame(qwParticleAnimId);
+
+      function loop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        qwParticles.forEach((p, idx) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.alpha -= p.fade;
+          p.rotation += p.rotSpeed;
+
+          if (p.alpha <= 0) {
+            qwParticles[idx] = createQwParticle(cx, cy, false);
+            return;
+          }
+
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.alpha);
+          ctx.fillStyle = p.color;
+          ctx.shadowColor = p.color;
+          ctx.shadowBlur = p.isStar ? 10 : 5;
+
+          if (p.isStar) {
+            drawStar(ctx, p.x, p.y, 5, p.size * 1.4, p.size * 0.7, p.rotation);
+          } else {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        });
+
+        qwParticleAnimId = requestAnimationFrame(loop);
+      }
+
+      loop();
+    }
+
+    function createQwParticle(cx, cy, randomDist = false) {
+      const angle = Math.random() * Math.PI * 2;
+      const dist = randomDist ? Math.random() * 160 : Math.random() * 30;
+      const speed = 1.2 + Math.random() * 3.8;
+      const colors = ["#ff007f", "#00dfd8", "#a855f7", "#ffd700", "#ff9900", "#ffffff"];
+
+      return {
+        x: cx + Math.cos(angle) * dist,
+        y: cy + Math.sin(angle) * dist,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: 1.5 + Math.random() * 3.5,
+        isStar: Math.random() > 0.55,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 0.5 + Math.random() * 0.5,
+        fade: 0.008 + Math.random() * 0.02,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.12
+      };
+    }
+
+    function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, rotation) {
+      let rot = (Math.PI / 2) * 3 + rotation;
+      let x = cx;
+      let y = cy;
+      const step = Math.PI / spikes;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - outerRadius);
+      for (let i = 0; i < spikes; i++) {
+        x = cx + Math.cos(rot) * outerRadius;
+        y = cy + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+
+        x = cx + Math.cos(rot) * innerRadius;
+        y = cy + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+      }
+      ctx.lineTo(cx, cy - outerRadius);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function stopQwParticles() {
+      if (qwParticleAnimId) {
+        cancelAnimationFrame(qwParticleAnimId);
+        qwParticleAnimId = null;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const cQW = document.getElementById("closeQuickWithdraw");
+      const mQW = document.getElementById("quickWithdrawModal");
+      const bOpenQW = document.getElementById("btnOpenQuickWithdraw");
+      const bBuyQW = document.getElementById("btnBuyQuickWithdraw");
+
+      if (cQW) cQW.addEventListener("click", () => { hideOverlay(mQW); stopQwParticles(); });
+      if (mQW) mQW.addEventListener("click", (e) => { if (e.target === mQW) { hideOverlay(mQW); stopQwParticles(); } });
+      if (bOpenQW) bOpenQW.addEventListener("click", openQuickWithdrawModal);
+      if (bBuyQW) bBuyQW.addEventListener("click", buyQuickWithdrawCard);
+    });
+
     btnCopyCode.addEventListener("click", async () => {
       const txt = withdrawCode.textContent || "";
       if (!withdrawGiftId) return;
@@ -6270,6 +6848,10 @@
 
       // 4️⃣ UX
       showToast("Код скопирован");
+
+      // Show Quick Withdraw banner above inventory
+      localStorage.setItem("quickWithdrawUnlocked", "true");
+      renderQuickWithdrawBanner();
       pulse(".wallet");
 
       withdrawGiftId = null;
@@ -7189,8 +7771,21 @@
 
         let priceHtml = "";
         if (isTonMode) {
-          const tonPrice = amt / TON_EXCHANGE_RATE;
-          priceHtml = `<div class="optionTonPrice">${tonPrice.toFixed(2)} <img src="${TON_ICON}" class="starI" alt="TON"></div>`;
+          const baseTon = amt / TON_EXCHANGE_RATE;
+          const discountedTon = baseTon * 0.80;
+          const baseStr = (Math.round(baseTon * 100) / 100).toString();
+          const discStr = (Math.round(discountedTon * 1000) / 1000).toString();
+          
+          priceHtml = `
+            <div class="optionTonPriceWrap">
+              <span class="oldTonPrice">${baseStr} TON</span>
+              <div class="discountedTonPrice">
+                <span>${discStr}</span>
+                <img src="${TON_ICON}" class="starI" alt="TON">
+                <span class="discountTag">-20%</span>
+              </div>
+            </div>
+          `;
         }
 
         opt.innerHTML = `
@@ -7224,7 +7819,7 @@
           return;
         }
 
-        const tonAmount = selectedStarsAmount / TON_EXCHANGE_RATE;
+        const tonAmount = (selectedStarsAmount / TON_EXCHANGE_RATE) * 0.80;
 
         // Refresh balance before checking
         const address = tonConnectUI.wallet?.account?.address;
