@@ -563,6 +563,58 @@
       z-index: 1;
     }
 
+    /* ===== ELIXIR POTION THEME CASE ===== */
+    .caseCard.elixir {
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 1px;
+      background: #11141a;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 28px rgba(168, 85, 247, 0.35);
+    }
+
+    .caseCard.elixir .caseHero {
+      padding: 2px;
+      background: #11141a;
+    }
+
+    .caseCard.elixir .caseHero::before {
+      content: "";
+      position: absolute;
+      inset: -50%;
+      background: conic-gradient(
+        #a855f7,
+        #ec4899,
+        #c084fc,
+        #8b5cf6,
+        #38bdf8,
+        #d946ef,
+        #7c3aed,
+        #a855f7
+      );
+      animation: elixirCaseBorder 3s linear infinite;
+      z-index: 0;
+    }
+
+    .caseCard.elixir .caseAvatar {
+      position: relative;
+      z-index: 1;
+      border-radius: 26px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.38) 0%, rgba(10, 8, 20, 0.95) 55%, rgba(217, 70, 239, 0.18) 100%);
+      box-shadow: inset 0 0 24px rgba(168, 85, 247, 0.28);
+    }
+
+    @keyframes elixirCaseBorder {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .caseCard.elixir .caseHero,
+    .caseCard.elixir .caseMeta {
+      position: relative;
+      z-index: 1;
+    }
+
     .caseCard.free .caseHero {
       background: transparent;
       box-shadow: none;
@@ -587,6 +639,52 @@
       height: 28px;
       background: url('Звезда емодзи.webp') center/contain no-repeat;
       pointer-events: none;
+    }
+
+    /* ===== OKUP BADGE ===== */
+    .okupBadge {
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(14, 17, 26, 0.88);
+      border: 1.5px solid rgba(255, 215, 0, 0.55);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+      animation: pulseOkup 2.8s infinite ease-in-out;
+    }
+
+    .okupBadge:active {
+      transform: scale(0.86);
+    }
+
+    .okupBadge img {
+      width: 78%;
+      height: 78%;
+      object-fit: contain;
+      pointer-events: none;
+      display: block;
+    }
+
+    @keyframes pulseOkup {
+      0%, 100% {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 8px rgba(255, 215, 0, 0.25);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 16px rgba(255, 215, 0, 0.6);
+        transform: scale(1.06);
+      }
     }
 
 
@@ -3561,13 +3659,13 @@
 
     .bannerSliderTrack {
       display: flex;
-      width: 300%;
+      width: 400%;
       height: 100%;
       transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .bannerSlide {
-      width: 33.333%;
+      width: 25%;
       height: 110px;
       flex-shrink: 0;
       cursor: pointer;
@@ -3783,6 +3881,432 @@
       font-weight: 900;
       color: #4ade80;
       letter-spacing: 0.4px;
+    }
+
+    /* ===== STAKING BANNER BLOCK (EARN TAB) ===== */
+    .stakingCardBlock {
+      margin-top: 18px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #0d1e3d 0%, #16325c 50%, #0a1426 100%);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.15);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+    }
+
+    .stakingCardBlock:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .stakingCardGlow {
+      position: absolute;
+      top: -30px;
+      left: -30px;
+      width: 130px;
+      height: 130px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, transparent 70%);
+      filter: blur(22px);
+      pointer-events: none;
+    }
+
+    .stakingCardInner {
+      position: relative;
+      z-index: 1;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stakingCardIconWrap {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(56, 189, 248, 0.2);
+    }
+
+    .stakingCardIconImg {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+    }
+
+    .stakingCardText {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .stakingCardBadge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 900;
+      color: #38bdf8;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .stakingCardTitle {
+      font-size: 16px;
+      font-weight: 950;
+      color: #fff;
+      margin: 0 0 4px;
+      letter-spacing: 0.3px;
+    }
+
+    .stakingCardSub {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.72);
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    .stakingCardSub b {
+      color: #ffd700;
+      font-weight: 750;
+    }
+
+    .stakingCardArrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.7);
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .stakingCardBlock:hover .stakingCardArrow {
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      transform: translateX(2px);
+    }
+
+    /* ===== FULLSCREEN STAKING MODAL ===== */
+    .stakingModal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: radial-gradient(circle at 50% 15%, #0f244c 0%, #040914 100%);
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: max(20px, var(--safeTop, 20px)) 20px max(24px, var(--safeBottom, 24px));
+      box-sizing: border-box;
+      overflow-y: auto;
+      overflow-x: hidden;
+      font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+      animation: fadeInStakingModal 0.25s ease-out;
+    }
+
+    @keyframes fadeInStakingModal {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .stakingModal.show {
+      display: flex;
+    }
+
+    .stakingModalHeader {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 8px;
+    }
+
+    .stakingModalTitle {
+      font-size: 16px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stakingCloseBtn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.18s ease;
+    }
+
+    .stakingCloseBtn:active {
+      transform: scale(0.9);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .stakingModalContent {
+      width: 100%;
+      max-width: 440px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: auto 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .stakingLogoWrapper {
+      position: relative;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stakingLogoGlowRing {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, rgba(14, 165, 233, 0.1) 50%, transparent 70%);
+      filter: blur(18px);
+      animation: pulseStakingGlow 3.5s ease-in-out infinite;
+    }
+
+    @keyframes pulseStakingGlow {
+      0%, 100% { transform: scale(0.92); opacity: 0.7; }
+      50% { transform: scale(1.18); opacity: 1; }
+    }
+
+    .stakingMainLogo {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 24px rgba(56, 189, 248, 0.45));
+      animation: floatStakingLogo 4s ease-in-out infinite;
+    }
+
+    @keyframes floatStakingLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .stakingHeading {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .stakingDesc {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.75);
+      text-align: center;
+      line-height: 1.45;
+      max-width: 340px;
+      margin-bottom: 20px;
+    }
+
+    .stakingDesc b {
+      color: #ffd700;
+    }
+
+    .stakingFeaturesPill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 16px;
+      padding: 10px 16px;
+      margin-bottom: 18px;
+    }
+
+    .stakingFeatureItem {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #e0f2fe;
+    }
+
+    /* Blue Deposit Step Card (Stars / Dot Grid) */
+    .stakingDepositCard {
+      width: 100%;
+      background: linear-gradient(145deg, #0284c7 0%, #0369a1 45%, #075985 100%);
+      border: 1.5px solid rgba(125, 211, 252, 0.55);
+      border-radius: 24px;
+      padding: 22px 18px;
+      box-sizing: border-box;
+      box-shadow: 0 14px 40px rgba(2, 132, 199, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .stakingStarsPattern {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle, rgba(255, 255, 255, 0.3) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+      background-size: 24px 24px, 12px 12px;
+      background-position: 0 0, 6px 6px;
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    .stakingTransferFlow {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 6px 0;
+    }
+
+    .stakingFlowEntity {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stakingFlowIcon {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.22);
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(10px);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+    }
+
+    .stakingFlowIcon img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+
+    .stakingFlowLabel {
+      font-size: 12px;
+      font-weight: 850;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stakingFlowArrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #fff;
+    }
+
+    .stakingFlowArrowLine {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.3), #fff, rgba(255,255,255,0.3));
+      position: relative;
+    }
+
+    .stakingStepsList {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stakingStepRow {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .stakingStepBadge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #fff;
+      font-weight: 900;
+      font-size: 13px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
+    }
+
+    .stakingStepText {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.88);
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .stakingStepText b {
+      color: #38bdf8;
+    }
+
+    .stakingActionBtn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
+      border: none;
+      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 25px rgba(2, 132, 199, 0.45);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      z-index: 10;
+    }
+
+    .stakingActionBtn:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
     }
 
     /* ===== FRAGILE HEART MODAL ===== */
@@ -4537,7 +5061,7 @@
     <div class="preloaderProgress">
       <div class="preloaderBar"></div>
     </div>
-    <div class="preloaderVersion" id="appVersionText">v1.4.0</div>
+    <div class="preloaderVersion" id="appVersionText">v1.5.0</div>
   </div>
 
 
@@ -4585,17 +5109,21 @@
         
         <!-- BANNER SLIDER -->
         <div class="bannerSlider" id="bannerSlider">
-          <div class="bannerSliderTrack" id="bannerSliderTrack" style="width: 300%;">
-            <!-- Slide 1: Crypto Egg (NEW - FIRST) -->
-            <div class="bannerSlide" id="bannerSlide0" data-action="cryptoEgg" style="width: 33.333%;">
+          <div class="bannerSliderTrack" id="bannerSliderTrack" style="width: 400%;">
+            <!-- Slide 1: NFT Staking (FIRST) -->
+            <div class="bannerSlide" id="bannerSlideStaking" data-action="staking" style="width: 25%;">
+              <img src="StakingBanner.PNG" alt="NFT Staking" class="starsBannerPhoto">
+            </div>
+            <!-- Slide 2: Crypto Egg -->
+            <div class="bannerSlide" id="bannerSlide0" data-action="cryptoEgg" style="width: 25%;">
               <img src="CryptoEggBanner.JPEG" alt="Crypto Egg" class="starsBannerPhoto">
             </div>
-            <!-- Slide 2: Summer Drop (Football) -->
-            <div class="bannerSlide" id="bannerSlide1" data-action="football" style="width: 33.333%;">
+            <!-- Slide 3: Summer Drop (Football) -->
+            <div class="bannerSlide" id="bannerSlide1" data-action="football" style="width: 25%;">
               <img src="IMG_1991.webp" alt="Summer Drop" class="starsBannerPhoto">
             </div>
-            <!-- Slide 3: Fragile Heart -->
-            <div class="bannerSlide" id="bannerSlide2" data-action="fragileHeart" style="width: 33.333%;">
+            <!-- Slide 4: Fragile Heart -->
+            <div class="bannerSlide" id="bannerSlide2" data-action="fragileHeart" style="width: 25%;">
               <img src="IMG_2357.webp" alt="Fragile Heart" class="starsBannerPhoto">
             </div>
           </div>
@@ -4604,6 +5132,7 @@
             <span class="bannerDot active" data-idx="0"></span>
             <span class="bannerDot" data-idx="1"></span>
             <span class="bannerDot" data-idx="2"></span>
+            <span class="bannerDot" data-idx="3"></span>
           </div>
         </div>
 
@@ -4750,16 +5279,19 @@
           </div>
         </div>
 
-        <!-- FOOTBALL MINI-GAME BLOCK -->
-        <div class="miniGameBlock" id="btnOpenFootball">
-          <div class="miniGameBg"></div>
-          <div class="miniGameInner">
-            <div class="miniGameIcon">⚽</div>
-            <div class="miniGameText">
-              <p class="miniGameTitle">Football Kick</p>
-              <p class="miniGameSub">Aim and kick the ball into the goal!</p>
+        <!-- STAKING BANNER BLOCK -->
+        <div class="stakingCardBlock" id="btnOpenStaking">
+          <div class="stakingCardGlow"></div>
+          <div class="stakingCardInner">
+            <div class="stakingCardIconWrap">
+              <img src="StakingLogo.png" alt="Staking" class="stakingCardIconImg">
             </div>
-            <div class="miniGameArrow">
+            <div class="stakingCardText">
+              <div class="stakingCardBadge">PASSIVE INCOME ⚡</div>
+              <p class="stakingCardTitle">NFT STAKING</p>
+              <p class="stakingCardSub">Hold NFT gifts & earn <b>50+ Stars</b> daily!</p>
+            </div>
+            <div class="stakingCardArrow">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
           </div>
@@ -4870,6 +5402,12 @@
                 style="width:16px;height:16px;vertical-align:-2px" alt="★"></b>
             to your balance.
           </div>
+        </div>
+
+        <!-- Profile Footer -->
+        <div class="profileFooter" style="margin-top: 24px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 400; color: rgba(255, 255, 255, 0.22); letter-spacing: 0.3px;">
+          <span>design by</span>
+          <a href="https://t.me/voco_in" target="_blank" rel="noopener noreferrer" onclick="if(window.Telegram?.WebApp?.openTelegramLink){window.Telegram.WebApp.openTelegramLink('https://t.me/voco_in');return false;}" style="color: rgba(255, 255, 255, 0.35); text-decoration: none; font-weight: 500; transition: color 0.2s ease;">@voco_in</a>
         </div>
       </div>
 
@@ -5394,8 +5932,12 @@
     const SELL_TOAST_TEXT = "Sold";
     const RESET_TEXT = "Reset";
     const WIN_TEXT = "WIN!";
-    const QUICK_PURCHASE_CASE_ID = "bday_nothing";
-    const QUICK_PURCHASE_INVOICE_LINK = "https://t.me/$tm1IijFr2Eo-FAAAzvcBryqe1_w";
+    const QUICK_PURCHASE_CASES = {
+      "bday_nothing": "https://t.me/$tm1IijFr2Eo-FAAAzvcBryqe1_w",
+      "nft_elixir_drop": "https://t.me/$IFyCfa-dGEjUFAAAXD9sFGlx2iM"
+    };
+    let pendingQuickPurchaseCaseId = null;
+    const LVL10_CHARGED_GIFTS = ["crystal_ball", "light_sword", "hex_pot", "trapped_heart", "electric_skull", "witch_hat"];
     const CASE_EDGE_LOW_BOOST = 1.22;
     const UPGRADE_EDGE = 0.88;
     const SELL_PAYOUT = 0.80;
@@ -5649,6 +6191,7 @@
         id: "bday_nothing", title: "NFT Summer Drop", price: 125, badge: "NFT", emoji: "🕯️", lottie: "https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/stick_moneygun.json", color: "#ff8a00",
         desc: "NFT-only charged drops.",
         chargedDrops: true,
+        quickInvoiceLink: "https://t.me/$tm1IijFr2Eo-FAAAzvcBryqe1_w",
         pool: [
           { gift: "instant_ramen", w: 1 },
           { gift: "spy_agaric", w: 1 },
@@ -5656,6 +6199,21 @@
           { gift: "evil_eye", w: 1 },
           { gift: "lol_pop", w: 1 },
           { gift: "snoop_dogg", w: 1 }
+        ]
+      },
+      {
+        id: "nft_elixir_drop", title: "NFT Elixir Drop", price: 99, badge: "NFT", emoji: "🧪", lottie: "https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/AgADnGMAAuGPeUk.json", color: "#a855f7",
+        desc: "NFT-only charged drops.",
+        chargedDrops: true,
+        requiredLevel: 10,
+        quickInvoiceLink: "https://t.me/$IFyCfa-dGEjUFAAAXD9sFGlx2iM",
+        pool: [
+          { gift: "crystal_ball", w: 1 },
+          { gift: "light_sword", w: 1 },
+          { gift: "hex_pot", w: 1 },
+          { gift: "trapped_heart", w: 1 },
+          { gift: "electric_skull", w: 1 },
+          { gift: "witch_hat", w: 1 }
         ]
       },
       // --- 45★ Love Potion --- дешёвые + чуть НФТ 600★ ---
@@ -6324,12 +6882,19 @@
         el.className = "caseCard";
         if (c.id === 'free') el.classList.add("free");
         if (c.id === 'bday_nothing') el.classList.add("rainbow");
+        if (c.id === 'nft_elixir_drop') el.classList.add("elixir");
         if (c.color) el.style.setProperty("--c", c.color);
+        const hasOkupBadge = c.id === 'bday_nothing' || c.id === 'nft_elixir_drop';
         el.innerHTML = `
           <div class="caseHero">
             <div class="caseAvatar">
               ${caseVisualHTML(c)}
             </div>
+            ${hasOkupBadge ? `
+              <div class="okupBadge" role="button" tabindex="0" title="100% Payback Guaranteed">
+                <img src="Okup.png" alt="100% Payback">
+              </div>
+            ` : ''}
           </div>
           <div class="caseMeta">
             <div class="priceRow">
@@ -6338,6 +6903,17 @@
             </div>
           </div>
         `;
+
+        if (hasOkupBadge) {
+          const okupBtn = el.querySelector(".okupBadge");
+          if (okupBtn) {
+            okupBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              try { tg?.HapticFeedback?.notificationOccurred("warning"); } catch(e) {}
+              showToast("100% Payback Guaranteed: Every prize is worth more than the case price!");
+            });
+          }
+        }
 
         if (c.id === 'free') {
           const hero = el.querySelector(".caseHero");
@@ -6444,21 +7020,23 @@
     btnShowContents.addEventListener("click", () => openContentsModal(currentCase));
 
     btnQuickPurchase.addEventListener("click", () => {
-      if (currentCase.id !== QUICK_PURCHASE_CASE_ID || pendingQuickPurchase) return;
+      const link = currentCase.quickInvoiceLink || QUICK_PURCHASE_CASES[currentCase.id];
+      if (!link || pendingQuickPurchase) return;
 
       openCount = 1;
       [...countPills.querySelectorAll(".pill")].forEach((p, idx) => p.classList.toggle("active", idx === 0));
       updateModalPrice();
 
       pendingQuickPurchase = true;
+      pendingQuickPurchaseCaseId = currentCase.id;
       btnQuickPurchase.disabled = true;
       showToast("Opening invoice...");
 
       try {
-        if (tg?.openInvoice) tg.openInvoice(QUICK_PURCHASE_INVOICE_LINK);
-        else window.open(QUICK_PURCHASE_INVOICE_LINK, "_blank");
+        if (tg?.openInvoice) tg.openInvoice(link);
+        else window.open(link, "_blank");
       } catch (e) {
-        window.open(QUICK_PURCHASE_INVOICE_LINK, "_blank");
+        window.open(link, "_blank");
       }
     });
 
@@ -6476,7 +7054,7 @@
         }
 
         const totalCost = currentCase.price * openCount;
-        const isPaidQuickOpen = quickPurchaseOpenReady && currentCase.id === QUICK_PURCHASE_CASE_ID && openCount === 1;
+        const isPaidQuickOpen = quickPurchaseOpenReady && (Boolean(currentCase.quickInvoiceLink) || Boolean(QUICK_PURCHASE_CASES[currentCase.id])) && openCount === 1;
         if (!isPaidQuickOpen && stars + 1e-9 < totalCost) {
           showToast("Не хватает ★");
           wiggle(".wallet");
@@ -6528,7 +7106,7 @@
         resultToast.classList.remove("show");
 
         const totalCost = currentCase.price * openCount;
-        const isPaidQuickOpen = quickPurchaseOpenReady && currentCase.id === QUICK_PURCHASE_CASE_ID && openCount === 1;
+        const isPaidQuickOpen = quickPurchaseOpenReady && (Boolean(currentCase.quickInvoiceLink) || Boolean(QUICK_PURCHASE_CASES[currentCase.id])) && openCount === 1;
         if (!isPaidQuickOpen && stars + 1e-9 < totalCost) {
           isOpeningCase = false;
           btnOpenCase.disabled = false;
@@ -6693,7 +7271,8 @@
       document.getElementById("promoSection").style.display = isPromo ? "block" : "none";
       document.getElementById("modalChooser").style.display = isPromo ? "none" : "flex";
       document.getElementById("modalOpenAction").style.display = isPromo ? "none" : "block";
-      btnQuickPurchase.style.display = !isPromo && c.id === QUICK_PURCHASE_CASE_ID ? "flex" : "none";
+      const hasQuickPurchase = Boolean(c.quickInvoiceLink || QUICK_PURCHASE_CASES[c.id]);
+      btnQuickPurchase.style.display = !isPromo && hasQuickPurchase ? "flex" : "none";
       btnQuickPurchase.disabled = pendingQuickPurchase;
 
       if (isPromo) {
@@ -7129,9 +7708,12 @@
       const qty = (charged ? chargedInventory : inventory)[giftId] || 0;
       if (qty <= 0) return;
 
-      if (charged && getLevelInfo(profileXp).level < 8) {
-        showToast("\u041d\u0443\u0436\u0435\u043d \u043c\u0438\u043d\u0438\u043c\u0443\u043c 8 \u0443\u0440\u043e\u0432\u0435\u043d\u044c. \u041f\u043e\u0432\u044b\u0448\u0430\u0439\u0442\u0435 \u0443\u0440\u043e\u0432\u0435\u043d\u044c \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u044f \u043a\u0435\u0439\u0441\u044b \u0438 \u0438\u0433\u0440\u0430\u044f \u0432 \u0438\u0433\u0440\u044b");
-        return;
+      if (charged) {
+        const reqLvl = LVL10_CHARGED_GIFTS.includes(giftId) ? 10 : 8;
+        if (getLevelInfo(profileXp).level < reqLvl) {
+          showToast(`Нужен минимум ${reqLvl} уровень. Повышайте уровень открывая кейсы и играя в игры`);
+          return;
+        }
       }
 
       withdrawGiftId = giftId;
@@ -8511,14 +9093,19 @@
           return;
         }
 
-        if (pendingQuickPurchase) {
+        const isQuickCase1 = data?.url && (data.url === "https://t.me/$tm1IijFr2Eo-FAAAzvcBryqe1_w" || data.url.includes("$tm1IijFr2Eo-FAAAzvcBryqe1_w"));
+        const isQuickCase2 = data?.url && (data.url === "https://t.me/$IFyCfa-dGEjUFAAAXD9sFGlx2iM" || data.url.includes("$IFyCfa-dGEjUFAAAXD9sFGlx2iM"));
+
+        if (pendingQuickPurchase || isQuickCase1 || isQuickCase2) {
+          const targetCaseId = isQuickCase2 ? "nft_elixir_drop" : (isQuickCase1 ? "bday_nothing" : (pendingQuickPurchaseCaseId || "bday_nothing"));
           pendingQuickPurchase = false;
+          pendingQuickPurchaseCaseId = null;
           btnQuickPurchase.disabled = false;
 
           if (status === "paid") {
             quickPurchaseOpenReady = true;
-            if (currentCase.id !== QUICK_PURCHASE_CASE_ID) {
-              currentCase = CASES.find(c => c.id === QUICK_PURCHASE_CASE_ID) || currentCase;
+            if (currentCase.id !== targetCaseId) {
+              currentCase = CASES.find(c => c.id === targetCaseId) || currentCase;
             }
             openCount = 1;
             [...countPills.querySelectorAll(".pill")].forEach((p, idx) => p.classList.toggle("active", idx === 0));
@@ -8973,6 +9560,90 @@
   </div>
 
   
+
+  <!-- FULLSCREEN STAKING MODAL -->
+  <div class="stakingModal" id="stakingModal">
+    <!-- Modal Header -->
+    <div class="stakingModalHeader">
+      <div class="stakingModalTitle">
+        <span>⚡</span> NFT Staking
+      </div>
+      <button class="stakingCloseBtn" id="btnCloseStakingModal" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- View 1: Intro / Overview -->
+    <div class="stakingModalContent" id="stakingViewIntro">
+      <div class="stakingLogoWrapper">
+        <div class="stakingLogoGlowRing"></div>
+        <img src="загрузите лого.png" alt="Staking Logo" class="stakingMainLogo">
+      </div>
+
+      <div class="stakingHeading">Hold & Earn 50+ Stars Daily</div>
+      <div class="stakingDesc">
+        Hold your NFT gifts and earn <b>50+ ★ daily</b>! To start earning, deposit your gifts and they will appear in your Staking Inventory.
+      </div>
+
+      <div class="stakingFeaturesPill">
+        <div class="stakingFeatureItem">⚡ 50+ ★ / Day</div>
+        <div class="stakingFeatureItem">🔒 Safe & Secure</div>
+        <div class="stakingFeatureItem">💎 Instant Credit</div>
+      </div>
+
+      <button class="stakingActionBtn" id="btnStakingDeposit">
+        <span>Deposit Gifts</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <!-- View 2: Deposit / Transfer Steps -->
+    <div class="stakingModalContent" id="stakingViewDeposit" style="display: none;">
+      <!-- Blue Glowing Card with Stars / Dots Texture -->
+      <div class="stakingDepositCard">
+        <div class="stakingStarsPattern"></div>
+        <div class="stakingTransferFlow">
+          <div class="stakingFlowEntity">
+            <div class="stakingFlowIcon">
+              <img src="Gift.png" alt="NFT Gift">
+            </div>
+            <div class="stakingFlowLabel">Your Gift</div>
+          </div>
+          <div class="stakingFlowArrow">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <div class="stakingFlowArrowLine"></div>
+          </div>
+          <div class="stakingFlowEntity">
+            <div class="stakingFlowIcon">
+              <img src="Канал.webp" alt="Bot Logo">
+            </div>
+            <div class="stakingFlowLabel">@ETKSE Bot</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step by step instructions -->
+      <div class="stakingStepsList">
+        <div class="stakingStepRow">
+          <div class="stakingStepBadge">1</div>
+          <div class="stakingStepText">
+            Open chat with the bot and transfer your gifts (no limits on quantity).
+          </div>
+        </div>
+        <div class="stakingStepRow">
+          <div class="stakingStepBadge">2</div>
+          <div class="stakingStepText">
+            Your gifts will automatically appear in your <b>Staking Inventory</b>.
+          </div>
+        </div>
+      </div>
+
+      <button class="stakingActionBtn" id="btnTransferGiftsToBot">
+        <span>Transfer Gifts</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+      </button>
+    </div>
+  </div>
 
   <!-- FRAGILE HEART MODAL -->
   <div class="fhModal" id="fragileHeartModal">
@@ -11127,7 +11798,7 @@
 <script>
   (function initBannerSlider() {
     var currentSlide = 0;
-    var total = 3;
+    var total = 4;
     var autoInterval = null;
 
     var track = document.getElementById('bannerSliderTrack');
@@ -11135,7 +11806,7 @@
 
     function goTo(idx) {
       currentSlide = (idx + total) % total;
-      if (track) track.style.transform = 'translateX(-' + (currentSlide * 33.333) + '%)';
+      if (track) track.style.transform = 'translateX(-' + (currentSlide * 25) + '%)';
       dots.forEach(function(d, i) {
         d.classList.toggle('active', i === currentSlide);
       });
@@ -11173,6 +11844,84 @@
     }
 
     startAuto();
+  })();
+
+  // Staking Modal Controller
+  (function initStakingFeature() {
+    const btnOpenStaking = document.getElementById("btnOpenStaking");
+    const bannerSlideStaking = document.getElementById("bannerSlideStaking");
+    const stakingModal = document.getElementById("stakingModal");
+    const btnCloseStakingModal = document.getElementById("btnCloseStakingModal");
+    const btnStakingDeposit = document.getElementById("btnStakingDeposit");
+    const btnTransferGiftsToBot = document.getElementById("btnTransferGiftsToBot");
+    const stakingViewIntro = document.getElementById("stakingViewIntro");
+    const stakingViewDeposit = document.getElementById("stakingViewDeposit");
+
+    function openModal() {
+      if (!stakingModal) return;
+      stakingViewIntro.style.display = "flex";
+      stakingViewIntro.style.opacity = "1";
+      stakingViewIntro.style.transform = "translateY(0)";
+      stakingViewDeposit.style.display = "none";
+      stakingModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+      try { tg?.HapticFeedback?.impactOccurred("medium"); } catch(e) {}
+    }
+
+    function closeModal() {
+      if (!stakingModal) return;
+      stakingModal.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+
+    if (btnOpenStaking) btnOpenStaking.addEventListener("click", openModal);
+    if (bannerSlideStaking) bannerSlideStaking.addEventListener("click", openModal);
+    if (btnCloseStakingModal) btnCloseStakingModal.addEventListener("click", closeModal);
+
+    // Document-level delegation for 100% reliable opening
+    document.addEventListener("click", function(e) {
+      if (e.target.closest("#bannerSlideStaking") || e.target.closest("[data-action='staking']")) {
+        e.preventDefault();
+        e.stopPropagation();
+        openModal();
+      }
+    });
+
+    if (btnStakingDeposit) {
+      btnStakingDeposit.addEventListener("click", () => {
+        try { tg?.HapticFeedback?.impactOccurred("light"); } catch(e) {}
+        if (window.gsap) {
+          gsap.to(stakingViewIntro, {
+            opacity: 0,
+            y: -15,
+            duration: 0.2,
+            ease: "power2.in",
+            onComplete: () => {
+              stakingViewIntro.style.display = "none";
+              stakingViewDeposit.style.display = "flex";
+              gsap.fromTo(stakingViewDeposit, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25, ease: "back.out(1.2)" });
+            }
+          });
+        } else {
+          stakingViewIntro.style.display = "none";
+          stakingViewDeposit.style.display = "flex";
+        }
+      });
+    }
+
+    if (btnTransferGiftsToBot) {
+      btnTransferGiftsToBot.addEventListener("click", () => {
+        try { tg?.HapticFeedback?.impactOccurred("medium"); } catch(e) {}
+        const botLink = "https://t.me/ETKSE";
+        try {
+          if (tg?.openTelegramLink) tg.openTelegramLink(botLink);
+          else if (tg?.openLink) tg.openLink(botLink);
+          else window.open(botLink, "_blank");
+        } catch(e) {
+          window.open(botLink, "_blank");
+        }
+      });
+    }
   })();
 </script>
 
