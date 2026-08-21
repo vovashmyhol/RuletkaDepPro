@@ -2776,124 +2776,39 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background:
-        radial-gradient(560px 420px at 50% 38%, rgba(184, 135, 75, 0.34), transparent 68%),
-        radial-gradient(760px 520px at 50% 115%, rgba(96, 62, 34, 0.32), transparent 64%),
-        linear-gradient(180deg, #221a13 0%, #15100c 100%);
+      background: radial-gradient(ellipse 120% 60% at 50% 0%, #2264b3 0%, #123d78 28%, #071936 55%, #010610 78%, #000000 100%);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
       overflow: hidden;
-      /* Prevent gift sway from causing overflow */
-    }
-
-    /* Small scattered animated gifts */
-    .preloaderGift {
-      position: absolute;
-      background-image: url("Фон гифт.webp");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      pointer-events: none;
-      z-index: -1;
-      animation: floatGift var(--p-dur, 4s) ease-in-out infinite alternate,
-        fadeGift var(--p-dur2, 5s) ease-in-out infinite alternate;
-      /* Initial state applied via inline styles in JS */
-    }
-
-    @keyframes floatGift {
-      0% {
-        transform: translateY(0px) rotate(-6deg);
-      }
-
-      100% {
-        transform: translateY(-15px) rotate(6deg);
-      }
-    }
-
-    @keyframes fadeGift {
-      0% {
-        opacity: 0.05;
-      }
-
-      100% {
-        opacity: 0.25;
-      }
     }
 
     .preloader.hidden {
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
     }
 
-    .preloaderAvatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      animation: avatarFloat 3s ease-in-out infinite;
-      margin-bottom: 40px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.05);
+    .preloaderLogo {
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      animation: loaderBreathe 2.2s ease-in-out infinite alternate;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
     }
 
-    .preloaderAvatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    @keyframes avatarFloat {
-
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    .preloaderProgress {
-      width: 80px;
-      height: 6px;
-      background: rgba(255, 238, 205, 0.13);
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.45), 0 10px 24px rgba(94, 61, 33, 0.28);
-    }
-
-    .preloaderBar {
-      height: 100%;
-      width: 30%;
-      background: linear-gradient(90deg, #d4944b, #ffd27a);
-      border-radius: 4px;
-      animation: loadProgress 1.6s ease-in-out infinite alternate;
-    }
-
-    .preloaderVersion {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
-      text-align: center;
-      color: rgba(255, 238, 205, 0.58);
-      font-size: 12px;
-      font-weight: 750;
-      letter-spacing: 0;
-    }
-
-    @keyframes loadProgress {
+    @keyframes loaderBreathe {
       0% {
-        transform: translateX(-100%);
+        opacity: 0.35;
+        transform: scale(0.98);
       }
-
       100% {
-        transform: translateX(300%);
+        opacity: 0.75;
+        transform: scale(1.02);
       }
     }
 
@@ -5055,13 +4970,7 @@
 
 <body>
   <div class="preloader" id="appPreloader">
-    <div class="preloaderAvatar">
-      <img src="Ава.webp" alt="Bot">
-    </div>
-    <div class="preloaderProgress">
-      <div class="preloaderBar"></div>
-    </div>
-    <div class="preloaderVersion" id="appVersionText">v1.5.0</div>
+    <img src="LogoLoader.PNG" alt="Loading" class="preloaderLogo">
   </div>
 
 
@@ -5789,59 +5698,7 @@
     <div class="toast-text" id="toastText">Message</div>
   </div>
 
-  <script>
-    // --- Preloader Gifts Script ---
-    (function () {
-      const preloader = document.getElementById('appPreloader');
 
-      // Fixed positions (percentages: x, y) to ensure even distribution and no clumping
-      const positions = [
-        { x: 10, y: 15 }, { x: 40, y: 10 }, { x: 80, y: 20 },
-        { x: 15, y: 45 }, { x: 85, y: 50 },
-        { x: 25, y: 80 }, { x: 50, y: 85 }, { x: 75, y: 75 },
-        { x: 5, y: 70 }, { x: 90, y: 15 }, { x: 60, y: 35 }, { x: 30, y: 30 }
-      ];
-
-      positions.forEach(pos => {
-        const gift = document.createElement('div');
-        gift.className = 'preloaderGift';
-
-        // Random size between 35px and 60px
-        const size = Math.floor(Math.random() * 25) + 35;
-        gift.style.width = size + 'px';
-        gift.style.height = size + 'px';
-
-        // Use fixed positions with a tiny bit of random jitter so it doesn't look too robotic
-        gift.style.left = (pos.x + (Math.random() * 4 - 2)) + '%';
-        gift.style.top = (pos.y + (Math.random() * 4 - 2)) + '%';
-
-        // Random animation durations to make them out of sync
-        gift.style.setProperty('--p-dur', (3 + Math.random() * 3) + 's');
-        gift.style.setProperty('--p-dur2', (4 + Math.random() * 4) + 's');
-
-        // Decrease opacity significantly for a more subtle look
-        gift.style.opacity = '0.02';
-
-        // We override the keyframes with an inline style animation because we want to lower opacity globally
-        const delay = -Math.random() * 10;
-        gift.style.animation = `floatGift var(--p-dur) ease-in-out ${delay}s infinite alternate, fadeGiftSubtle var(--p-dur2) ease-in-out ${delay}s infinite alternate`;
-
-        preloader.appendChild(gift);
-      });
-    })();
-  </script>
-
-  <style>
-    @keyframes fadeGiftSubtle {
-      0% {
-        opacity: 0.02;
-      }
-
-      100% {
-        opacity: 0.08;
-      }
-    }
-  </style>
 
   <script>
     /********************
@@ -6333,7 +6190,8 @@
     const TASKS = [
       { id: "join_channel", title: "Join our channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/voco_in" },
       { id: "open_site", title: "Join our channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/vo2co" },
-      { id: "invite_friend", title: "Join channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/festables" }
+      { id: "invite_friend", title: "Join channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/festables" },
+      { id: "join_giftslearn", title: "Join Gifts Learn", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/GiftsLearn" }
     ];
 
     /********************
