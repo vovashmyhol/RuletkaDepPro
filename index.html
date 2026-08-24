@@ -1331,58 +1331,53 @@
 
     /* ===== INVENTORY (REWORK) ===== */
     /* ===== INVENTORY (PREMIUM) ===== */
+    /* ===== PROFILE (Authentic iOS 26 Clean Cards Style) ===== */
+    .profileCardsList {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-bottom: 30px;
+    }
+
     .profileCard {
+      background: #1c1d22;
+      border-radius: 28px;
+      padding: 20px;
+      box-shadow: none;
+      border: 1px solid rgba(255, 255, 255, 0.04);
       display: flex;
       flex-direction: column;
       gap: 14px;
-      padding: 16px;
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
-      margin-bottom: 20px;
-      backdrop-filter: blur(10px);
     }
 
     .profileMainRow {
       display: flex;
-      flex-direction: column;
-      align-items: stretch;
+      align-items: center;
+      justify-content: space-between;
       gap: 12px;
     }
 
     .profileIdentity {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       min-width: 0;
     }
 
-    .profileLevelSide {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      padding-top: 14px;
-      margin-top: 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
     .ava {
-      width: 60px;
-      height: 60px;
-      border-radius: 20px;
-      background: linear-gradient(180deg, rgba(74, 163, 255, 0.2), rgba(74, 163, 255, 0.05));
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: #15161a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 20px;
+      color: #ffffff;
       overflow: hidden;
       flex-shrink: 0;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
     .ava img {
@@ -1391,67 +1386,54 @@
       object-fit: cover;
     }
 
+    .pmeta {
+      min-width: 0;
+    }
+
     .pname {
-      font-weight: 800;
-      font-size: 16px;
+      font-weight: 700;
+      font-size: 17px;
       margin: 0;
-      color: #fff;
+      color: #ffffff;
+      line-height: 1.25;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .puser {
       margin: 4px 0 0;
-      font-weight: 600;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.4);
+      font-weight: 400;
+      font-size: 13.5px;
+      color: #838896;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .xpPanel {
-      padding: 0;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      margin: 0;
-      backdrop-filter: none;
-    }
-
-    .xpTop {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .xpLevelWrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
+    .xpBadgeWrap {
+      flex-shrink: 0;
     }
 
     .xpBadge {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-weight: 900;
-      font-size: 14px;
-      letter-spacing: 0;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 24px rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       flex-shrink: 0;
       padding: 8px;
       box-sizing: border-box;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.15s ease;
     }
 
-    .xpBadge:hover {
-      transform: translateY(-2px);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 14px 28px rgba(0, 0, 0, 0.32);
+    .xpBadge:active {
+      transform: scale(0.92);
     }
 
     .xpBadge .levelIcon {
@@ -1460,39 +1442,100 @@
       display: block;
       object-fit: contain;
       color: inherit;
-      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
     }
 
-    .xpBadge.bronze {
-      background: linear-gradient(145deg, #9a5b32, #e49b54);
-      color: #ffe2bc;
+    .xpBadge.bronze { background: #9a5b32; color: #ffe2bc; }
+    .xpBadge.silver { background: #5c6773; color: #f3f8ff; }
+    .xpBadge.blue { background: #1d5cff; color: #dffcff; }
+    .xpBadge.purple { background: #7a35ff; color: #ffe1fb; }
+    .xpBadge.gold { background: #c68200; color: #fff3bf; }
+
+    /* Level Progress Box inside Card */
+    .profileLevelBox {
+      background: #292a2fad;
+      border-radius: 18px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-top-color: rgba(255, 255, 255, 0.15);
+      border-bottom-color: rgba(255, 255, 255, 0.03);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.25);
     }
 
-    .xpBadge.silver {
-      background: linear-gradient(145deg, #7e8b9b, #dce6f0);
-      color: #f3f8ff;
+    .xpLevelHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    .xpBadge.blue {
-      background: linear-gradient(145deg, #1d5cff, #39d5ff);
-      color: #dffcff;
+    .xpTitle {
+      font-size: 15px;
+      font-weight: 650;
+      color: #ffffff;
+      margin: 0;
+      letter-spacing: -0.2px;
     }
 
-    .xpBadge.purple {
-      background: linear-gradient(145deg, #7a35ff, #ff4fd8);
-      color: #ffe1fb;
+    .xpSub {
+      font-size: 13px;
+      font-weight: 500;
+      color: #838896;
+      margin: 0;
     }
 
-    .xpBadge.gold {
-      background: linear-gradient(145deg, #c68200, #ffe36a);
-      color: #fff3bf;
+    .xpBar.profileBar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 10px 0 8px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
+    .xpFill {
+      height: 100%;
+      background: #2b82fe;
+      border-radius: 99px;
+      transition: width 0.35s ease;
+    }
+
+    .xpNeedText {
+      font-size: 12px;
+      color: #838896;
+      font-weight: 400;
+    }
+
+    /* About Level Button */
+    .profileAboutBtn {
+      width: 100%;
+      height: 48px;
+      border-radius: 28px;
+      background: #2b82fe;
+      border: none;
+      box-shadow: none;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+      user-select: none;
+    }
+
+    .profileAboutBtn:active {
+      transform: scale(0.985);
+      background: #2374e6;
+    }
+
+    /* Level Info Overlay */
     .levelInfoOverlay {
       position: fixed;
       inset: 0;
-      background: rgba(3, 6, 12, 0.82);
-      backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -1504,154 +1547,258 @@
       display: flex;
     }
 
+    /* ===== LEVEL INFO (RATING) MODAL (iOS 26 Theme) ===== */
     .levelInfoCard {
-      width: min(500px, 100%);
-      max-height: min(80vh, 480px);
-      border-radius: 24px;
-      padding: 18px;
+      width: min(440px, 94%);
+      max-height: min(88vh, 620px);
+      border-radius: 32px;
+      padding: 20px 22px 24px;
       color: #fff;
-      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
-      border: 1px solid rgba(255,255,255,0.16);
-      box-shadow: 0 24px 72px rgba(0,0,0,0.42);
+      background: #191b20;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.7);
       transform: translateY(16px) scale(0.97);
       opacity: 0;
       box-sizing: border-box;
-    }
-
-    .levelInfoHeader {
+      overflow-y: auto;
       display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
+      flex-direction: column;
     }
 
-    .levelInfoBadge {
-      width: 50px;
-      height: 50px;
-      border-radius: 16px;
+    .levelInfoTopBar {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px;
-      box-sizing: border-box;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 12px 24px rgba(0,0,0,0.24);
-      flex-shrink: 0;
-      color: #fff;
+      position: relative;
+      padding-bottom: 20px;
     }
 
-    .levelInfoBadge .levelIcon {
-      width: 100%;
-      height: 100%;
-      display: block;
-      color: inherit;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
-    }
-
-    .levelInfoBadge.bronze {
-      background: linear-gradient(145deg, #9a5b32, #e49b54);
-      color: #ffe2bc;
-    }
-
-    .levelInfoBadge.silver {
-      background: linear-gradient(145deg, #7e8b9b, #dce6f0);
-      color: #f3f8ff;
-    }
-
-    .levelInfoBadge.blue {
-      background: linear-gradient(145deg, #1d5cff, #39d5ff);
-      color: #dffcff;
-    }
-
-    .levelInfoBadge.purple {
-      background: linear-gradient(145deg, #7a35ff, #ff4fd8);
-      color: #ffe1fb;
-    }
-
-    .levelInfoBadge.gold {
-      background: linear-gradient(145deg, #c68200, #ffe36a);
-      color: #fff3bf;
-    }
-
-    .levelInfoTitle {
-      font-size: 18px;
-      font-weight: 900;
-      margin: 0 0 3px;
-    }
-
-    .levelInfoSubtitle {
-      font-size: 13px;
-      color: rgba(255,255,255,0.72);
-      font-weight: 700;
-    }
-
-    .levelInfoProgress {
-      margin-bottom: 12px;
-    }
-
-    .levelInfoProgressBar {
-      height: 11px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      margin-bottom: 8px;
-    }
-
-    .levelInfoProgressFill {
-      height: 100%;
-      width: 0%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #35d6ff, #7d5cff 50%, #ffcc3d);
-      transition: width 0.7s ease;
-    }
-
-    .levelInfoProgressText {
-      font-size: 12px;
-      color: rgba(255,255,255,0.7);
-      font-weight: 700;
-    }
-
-    .levelInfoBody {
-      border-radius: 18px;
-      padding: 12px 14px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 12px;
-    }
-
-    .levelInfoLabel {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.1px;
-      color: rgba(255,255,255,0.56);
-      margin-bottom: 8px;
-      font-weight: 800;
-    }
-
-    .levelInfoValue {
-      font-size: 18px;
-      font-weight: 900;
-      margin-bottom: 6px;
-    }
-
-    .levelInfoHint {
-      font-size: 13px;
-      color: rgba(255,255,255,0.72);
-      line-height: 1.45;
-    }
-
-    .levelInfoCloseBtn {
-      width: 100%;
+    .levelInfoCloseIconBtn {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #24272f;
       border: none;
-      border-radius: 14px;
-      padding: 11px 14px;
-      font-size: 14px;
-      font-weight: 900;
       color: #fff;
-      background: linear-gradient(90deg, #35d6ff, #7d5cff 55%, #ffcc3d);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .levelInfoCloseIconBtn:active {
+      transform: scale(0.92);
+      background: #2d313b;
+    }
+
+    .levelInfoHeading {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+      letter-spacing: -0.3px;
+    }
+
+    /* Floating Crown Badge with Pointer */
+    .levelInfoBadgeWrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .levelInfoScoreBadge {
+      background: #2b82fe;
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-size: 19px;
+      font-weight: 750;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      position: relative;
+      box-shadow: 0 4px 16px rgba(43, 131, 254, 0);
+      letter-spacing: -0.3px;
+    }
+
+    .levelInfoScoreBadge svg {
+      width: 20px;
+      height: 20px;
+      fill: #ffffff;
+    }
+
+    .levelInfoScoreBadge::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid #2b82fe;
+    }
+
+    /* Segmented Track */
+    .levelInfoTrackContainer {
+      margin-top: 4px;
+      margin-bottom: 22px;
+    }
+
+    .levelInfoTrack {
+      display: flex;
+      height: 38px;
+      border-radius: 99px;
+      background: #282a32;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .levelInfoTrackFill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background: #2b82fe;
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      z-index: 1;
+    }
+
+    .levelInfoTrackSegment {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      font-size: 14px;
+      font-weight: 650;
+      color: #ffffff;
+      user-select: none;
+    }
+
+    .levelInfoTrackSegment.next {
+      color: #d1d5db;
+    }
+
+    /* Subtitle Explanation */
+    .levelInfoDescription {
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #e4e7ec;
+      margin-bottom: 22px;
+      padding: 0 10px;
+      font-weight: 400;
+    }
+
+    /* Feature Rule Items List */
+    .levelInfoRulesList {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .levelInfoRuleRow {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .levelInfoRuleIcon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #2b82fe;
+    }
+
+    .levelInfoRuleIcon svg {
+      width: 24px;
+      height: 24px;
+      stroke: #2b82fe;
+    }
+
+    .levelInfoRuleContent {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .levelInfoRuleTitle {
+      font-size: 15.5px;
+      font-weight: 650;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .levelInfoRuleDesc {
+      font-size: 13.5px;
+      color: #8c92a2;
+      line-height: 1.35;
+    }
+
+    .levelTagPlus {
+      display: inline-block;
+      background: #2b82fe;
+      color: #ffffff;
+      font-size: 10.5px;
+      font-weight: 750;
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-right: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      vertical-align: 1px;
+    }
+
+    .levelTagMinus {
+      display: inline-block;
+      background: #2e313c;
+      color: #8c92a2;
+      font-size: 10.5px;
+      font-weight: 750;
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-right: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      vertical-align: 1px;
+    }
+
+    /* Bottom OK Button */
+    .levelInfoOkBtn {
+      width: 100%;
+      height: 52px;
+      border-radius: 28px;
+      border: none;
+      background: #2b82fe;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 650;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s ease, background 0.15s ease;
+      box-shadow: none;
+      margin-top: auto;
+    }
+
+    .levelInfoOkBtn:active {
+      transform: scale(0.985);
+      background: #2374e6;
     }
 
     .xpTitle {
@@ -1717,184 +1864,324 @@
       transition: width 0.35s ease;
     }
 
+    .profileInvCard {
+      background: #1c1d22;
+      border-radius: 28px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
     .invGrid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
 
-    /* ===== INVENTORY CARD (REWORK) ===== */
-
+    /* ===== INVENTORY CARD (Authentic iOS 26 Clean Cards Style) ===== */
     .giftCard {
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: #15161a;
+      box-shadow: none;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       position: relative;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      padding: 14px 12px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease, background 0.15s ease;
     }
 
     .giftCard:active {
-      transform: scale(0.98);
+      transform: scale(0.96);
+      background: #191b21;
     }
 
     .giftTop {
-      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
+      margin-bottom: 4px;
     }
 
     .giftQty {
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 8px;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.05);
       color: #fff;
-      font-size: 12px;
+      font-size: 11.5px;
     }
 
     .giftImg {
-      margin: 0 14px 12px;
-      height: 100px;
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.2);
+      height: 90px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      margin: 4px 0 8px;
     }
 
     .giftImg img {
-      width: 80%;
-      height: 80%;
+      width: 76px;
+      height: 76px;
       object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+      transition: transform 0.2s ease;
+    }
+
+    .giftCard:hover .giftImg img {
+      transform: scale(1.05);
     }
 
     .giftMeta {
-      padding: 0 14px;
       text-align: center;
-      margin-bottom: 12px;
     }
 
     .giftName {
-      font-weight: 700;
-      font-size: 13px;
-      color: #fff;
+      font-weight: 650;
+      font-size: 14px;
+      color: #ffffff;
       margin-bottom: 4px;
       display: -webkit-box;
       -webkit-line-clamp: 1;
       line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      letter-spacing: -0.2px;
     }
 
     .giftValue {
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.5);
+      font-size: 13.5px;
+      font-weight: 750;
+      color: #2b82fe;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-    }
-
-    .giftActions {
-      padding: 0 12px 12px;
-      display: flex;
-      gap: 8px;
+      gap: 3px;
     }
 
     .chargeBadge {
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, rgba(53, 214, 255, 0.22), rgba(255, 204, 61, 0.2));
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: #fff;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(43, 130, 254, 0.15);
+      border: 1px solid rgba(43, 130, 254, 0.3);
+      color: #2b82fe;
       font-size: 10px;
-      font-weight: 900;
-      text-transform: uppercase;
-      box-shadow: 0 8px 18px rgba(53, 214, 255, 0.15);
+      font-weight: 800;
     }
 
-    .btnSmall:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      box-shadow: none;
+    /* ===== GIFT ACTION SHEET (iOS 26 Bottom Sheet) ===== */
+    .giftSheetOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 2200;
     }
 
-    .btnSmall {
-      flex: 1;
-      height: 36px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      cursor: pointer;
+    .giftSheetOverlay.show {
+      display: flex;
+    }
+
+    .giftSheetCard {
+      width: min(500px, 100%);
+      background: #1c1d22;
+      border-radius: 32px 32px 0 0;
+      padding: 16px 20px 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+      transform: translateY(100%);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .giftSheetHandle {
+      width: 38px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+
+    .giftSheetImgWrap {
+      width: 110px;
+      height: 110px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s ease;
+      margin-bottom: 12px;
+    }
+
+    .giftSheetImgWrap img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+    }
+
+    .giftSheetTitle {
+      font-size: 20px;
+      font-weight: 750;
+      color: #ffffff;
+      margin: 0 0 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .giftSheetMeta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #2b82fe;
+      margin-bottom: 22px;
+    }
+
+    .giftSheetActions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .giftSheetBtnWithdraw {
+      width: 100%;
+      height: 52px;
+      border-radius: 28px;
+      border: none;
+      background: #2b82fe;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .giftSheetBtnWithdraw:active {
+      transform: scale(0.985);
+      background: #2374e6;
+    }
+
+    .giftSheetBtnSell {
+      width: 100%;
+      height: 52px;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: #24262d;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .giftSheetBtnSell:active {
+      transform: scale(0.985);
+      background: #2c2f38;
+    }
+
+    .giftSheetBtnSell:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
 
     .btnSmall.primary {
-      background: linear-gradient(180deg, #3b82f6, #2563eb);
-      border: none;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+      background: #2b82fe;
+      color: #ffffff;
+    }
+
+    .btnSmall.primary:active {
+      background: #2374e6;
+    }
+
+    .sellAllBtn {
+      background: #24262d;
+      color: #ffffff;
+      height: 48px;
+      border-radius: 16px;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .sellAllBtn:active {
+      background: #2b2e38;
     }
 
 
-    /* ===== UPGRADE (NEW REDESIGN) ===== */
+    /* ===== UPGRADE (iOS 26 Modern Dark Palette) ===== */
     .upWrap {
+      background: #1c1d22;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 20px 16px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      padding: 10px 4px;
+      gap: 16px;
     }
 
-    /* --- TOP CARDS --- */
     .upgradeRow {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
     }
 
     .upgradeCard {
       flex: 1;
-      background: linear-gradient(180deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8));
-      border: 2px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 16px 12px;
+      min-height: 150px;
+      background: #15161a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 24px;
+      padding: 16px 10px 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transition: all 0.2s ease;
-      min-height: 140px;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.18s ease;
+      box-sizing: border-box;
+    }
+
+    .upgradeCard:active {
+      transform: scale(0.97);
     }
 
     .upgradeCard.active {
-      background: linear-gradient(180deg, rgba(40, 55, 80, 0.7), rgba(20, 30, 50, 0.9));
-      border-color: rgba(74, 163, 255, 0.3);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(74, 163, 255, 0.05);
+      border-color: rgba(43, 130, 254, 0.45);
+      background: #181a20;
     }
 
     /* Icon in empty state */
     .ucIcon {
-      font-size: 24px;
-      opacity: 0.6;
-      margin-bottom: 4px;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .ucInfo {
@@ -1908,31 +2195,38 @@
     .ucLabel {
       font-size: 11px;
       font-weight: 700;
-      color: rgba(255, 255, 255, 0.5);
+      color: #838896;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     .ucSub {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
-      color: #fff;
+      color: #ffffff;
     }
 
     .btnSelect {
       margin-top: auto;
-      width: 90%;
-      padding: 10px 0;
-      border-radius: 16px;
-      background: linear-gradient(180deg, #3e87ff, #3e87ff);
-      border: none;
+      width: 92%;
+      height: 36px;
+      border-radius: 18px;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.35);
+      border-left: 1.2px solid rgba(255, 255, 255, 0.16);
+      border-right: 0.8px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.03);
+      background: linear-gradient(180deg, #2f86fe 0%, #257bf8 100%);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), inset 1px 0 0.5px rgba(255, 255, 255, 0.15), inset 0 -1px 1px rgba(0, 0, 0, 0.15);
       color: #fff;
-      font-weight: 800;
-      font-size: 11px;
+      font-weight: 700;
+      font-size: 11.5px;
       letter-spacing: 0.5px;
       cursor: pointer;
-      /* box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); */
       text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.12s ease;
     }
 
     .btnSelect:active {
@@ -1943,66 +2237,77 @@
     .ucPreview {
       position: absolute;
       inset: 0;
-      background: #111827;
+      background: #15161a;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 10;
-      padding: 10px;
+      padding: 12px 8px;
+      border-radius: 24px;
+      box-sizing: border-box;
     }
 
     .ucPreview .pImg {
-      width: 64px;
-      height: 64px;
-      margin-bottom: 8px;
+      width: 58px;
+      height: 58px;
+      margin-bottom: 6px;
     }
 
     .ucPreview .pImg img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
     }
 
     .ucPreview .pName {
-      font-size: 13px;
-      font-weight: 800;
+      font-size: 13.5px;
+      font-weight: 750;
       text-align: center;
       line-height: 1.2;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     .ucPreview .pVal {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-top: 2px;
-    }
-
-    /* Remove/Change overlay on hover? For now just visual */
-
-    .upgradeArrow {
+      font-size: 12px;
+      font-weight: 600;
+      color: #838896;
+      margin-top: 4px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      opacity: 0.5;
+      gap: 3px;
+    }
+
+    .upgradeArrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
     }
 
     .upgradeArrow svg {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
     }
-
 
     /* --- CENTER CIRCLE --- */
     .upgradeCenter {
       display: flex;
       justify-content: center;
-      padding: 10px 0;
+      padding: 12px 0;
     }
 
     .circleBox {
-      width: 220px;
-      height: 220px;
+      width: 210px;
+      height: 210px;
       position: relative;
       display: grid;
       place-items: center;
@@ -2015,18 +2320,18 @@
     .circleBox::before {
       content: "";
       position: absolute;
-      inset: 20px;
+      inset: 16px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(20, 30, 50, 0.8) 0%, rgba(10, 15, 25, 1) 70%);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(0, 0, 0, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: #15161a;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .progressTrack {
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      border: 12px solid rgba(30, 45, 70, 0.4);
+      border: 12px solid #111216;
     }
 
     .progressFill {
@@ -2034,56 +2339,43 @@
       inset: 0;
       border-radius: 50%;
       border: 12px solid transparent;
-      /* The conic gradient will be applied via mask in inline style or JS, 
-           but here we can use a simple border trick depending on implementation.
-           For this specific "arc" look, let's stick to the previous mask-image approach but robust. */
-      background: conic-gradient(#3b82f6 0%, #2563eb 100%);
+      background: conic-gradient(from 0deg, #2b82fe 0%, #38bdf8 100%);
       -webkit-mask: radial-gradient(transparent 63%, black 64%);
       mask: radial-gradient(transparent 63%, black 64%);
-      /* rotation controlled by JS? or just static for now? 
-           User wants "chance". usually it's static arc representing %?
-           Let's behave like a progress bar wrap */
       opacity: 0;
-      /* Hidden until set */
       transition: opacity 0.3s;
     }
 
-    /* We used 'winArc' before with a specific border/mask. Let's adapt. */
     #winArc {
-      /* We'll override the previous #winArc style */
       border: none;
-      background: conic-gradient(from 0deg, #3b82f6 0%, #60a5fa 100%);
+      background: conic-gradient(from 0deg, #2b82fe 0%, #38bdf8 100%);
       -webkit-mask: radial-gradient(transparent 58%, #000 59%);
       mask: radial-gradient(transparent 58%, #000 59%);
-      /* We will cut it with clip-path or conic-gradient in JS */
     }
 
     .spinOrbit {
       position: absolute;
       inset: 0;
-      /* animation: spinSlow 10s linear infinite; REMOVED per request */
       pointer-events: none;
     }
 
     .spinArrow {
       position: absolute;
       top: -3px;
-      /* Adjust to point inwards from track */
       left: 50%;
       transform: translateX(-50%);
       width: 0;
       height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 18px solid #fff;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-top: 16px solid #fff;
       z-index: 5;
     }
 
     /* Glow states for the circle */
     .circleBox.win {
       border-color: #4ade80;
-      box-shadow: 0 0 35px rgba(34, 197, 94, 0.7);
-      /* background: transparent; */
+      box-shadow: 0 0 35px rgba(34, 197, 94, 0.6);
     }
 
     .circleBox.win .spinArrow {
@@ -2093,8 +2385,7 @@
 
     .circleBox.lose {
       border-color: #f87171;
-      box-shadow: 0 0 35px rgba(239, 68, 68, 0.7);
-      /* background: transparent; */
+      box-shadow: 0 0 35px rgba(239, 68, 68, 0.6);
     }
 
     .circleBox.lose .spinArrow {
@@ -2109,37 +2400,36 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .chanceVal {
       font-size: 32px;
       font-weight: 800;
       color: #fff;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      letter-spacing: -0.5px;
     }
 
     .chanceLabel {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 2px;
+      color: #838896;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
     }
-
 
     /* --- BOTTOM --- */
     .upgradeBottom {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
-      margin-top: 10px;
+      gap: 14px;
+      margin-top: 6px;
     }
 
     .statusText {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.6);
+      font-size: 13.5px;
+      color: #838896;
       text-align: center;
     }
 
@@ -2148,43 +2438,82 @@
     }
 
     .btnBig {
+      position: relative;
+      overflow: hidden;
       width: 100%;
-      height: 56px;
+      height: 54px;
       border-radius: 28px;
-      background: linear-gradient(180deg, #3b82f6, #2563eb);
-      border: none;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.38);
+      border-left: 1.2px solid rgba(255, 255, 255, 0.18);
+      border-right: 0.8px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.03);
+      background: linear-gradient(180deg, #2f86fe 0%, #257bf8 100%);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), inset 1px 0 0.5px rgba(255, 255, 255, 0.15), inset 0 -1px 1px rgba(0, 0, 0, 0.15);
       color: #fff;
       font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 1px;
+      font-weight: 650;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: transform 0.1s;
+      transition: transform 0.15s ease, background 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .btnBig::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -120%;
+      width: 60%;
+      height: 200%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.06) 25%,
+        rgba(255, 255, 255, 0.32) 50%,
+        rgba(255, 255, 255, 0.06) 75%,
+        transparent 100%
+      );
+      transform: rotate(25deg);
+      animation: ceBtnShimmer 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      pointer-events: none;
     }
 
     .btnBig:active {
-      transform: scale(0.98);
+      transform: scale(0.985);
+      background: #2374e6;
     }
 
     .btnBig:disabled {
-      background: #1e293b;
-      color: rgba(255, 255, 255, 0.2);
+      background: #24262d;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.3);
       box-shadow: none;
       cursor: not-allowed;
     }
 
-    .btnText {
-      background: none;
-      border: none;
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
+    .btnBig:disabled::after {
+      display: none;
     }
 
-    .btnText:hover {
-      color: rgba(255, 255, 255, 0.7);
+    .btnText {
+      background: #1c1d22;
+      border: 1px solid rgb(28 29 34);
+      border-radius: 20px;
+      padding: 8px 24px;
+      color: #838896;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btnText:hover, .btnText:active {
+      color: #ffffff;
+      background: #1c1d22;
     }
 
     .note {
@@ -2418,174 +2747,399 @@
       cursor: pointer;
     }
 
-    .tasksList {
+    /* ===== EARN TAB (Authentic iOS 26 Clean Cards Style) ===== */
+    .earnPageHeader {
+      padding: 16px 4px 18px;
+    }
+
+    .earnMainTitle {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .earnCardsList {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
+      padding-bottom: 30px;
     }
 
-    .taskCard {
-      background: linear-gradient(180deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8));
-      border: 2px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 14px;
+    .earnTaskCard {
+      background: #1c1d22;
+      border-radius: 28px;
+      padding: 20px 20px 18px;
+      box-shadow: none;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: transform 0.16s ease;
+    }
+
+    .earnCardTop {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transition: all 0.2s ease;
+      align-items: flex-start;
+      gap: 14px;
     }
 
-    .taskCard:active {
-      transform: scale(0.98);
-      background: linear-gradient(180deg, rgba(40, 55, 80, 0.7), rgba(20, 30, 50, 0.9));
+    .earnCardIcon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: transparent;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      font-size: 24px;
     }
 
-    .taskLeft {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .earnCardIcon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .earnCardBody {
+      flex: 1;
       min-width: 0;
     }
 
-    .taskIcon {
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: grid;
-      place-items: center;
-      font-size: 24px;
-      flex: 0 0 auto;
-      overflow: hidden;
-    }
-
-    .taskIcon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .taskMeta {
-      min-width: 0
-    }
-
-    .taskTitle {
+    .earnCardTitle {
+      font-size: 16.5px;
+      font-weight: 600;
+      color: #ffffff;
       margin: 0;
-      font-weight: 950;
+      line-height: 1.28;
+      letter-spacing: -0.2px;
+    }
+
+    .earnCardDesc {
       font-size: 13.5px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: #838896;
+      margin: 5px 0 0;
+      line-height: 1.36;
+      font-weight: 400;
     }
 
-    .taskSub {
-      margin: 3px 0 0;
-      font-weight: 900;
-      font-size: 12px;
-      color: rgb(255 255 255);
+    .earnCardReward {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 2px;
+      color: #2b82fe;
+      font-size: 18px;
+      font-weight: 700;
+      flex-shrink: 0;
+      padding-left: 6px;
+      letter-spacing: -0.2px;
     }
 
-    .taskBtn {
-      height: 33px;
-      padding: 0 18px;
-      border-radius: 20px;
-      border: 1px solid rgb(255 255 255 / 12%);
-      background: rgb(238 243 249 / 14%);
-      color: rgba(255, 255, 255, .95);
-      font-weight: 950;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 0 0 auto;
-      user-select: none;
-      white-space: nowrap;
+    .earnCardReward svg {
+      width: 18px;
+      height: 18px;
+      fill: #2b82fe;
     }
 
-    .taskBtn.done {
-      background: rgb(18 127 72 / 36%);
-      border-color: rgba(37, 227, 154, .18);
-      color: rgb(96 255 168);
-      cursor: default;
+    .earnStarIcon {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      /* tint white SVG to blue #2b82fe */
+      filter: invert(45%) sepia(90%) saturate(600%) hue-rotate(196deg) brightness(105%);
     }
 
-    /* Picker sheet */
-    .sheetBody {
-      padding: 12px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .pickCard {
+    /* Ref Link Box */
+    .earnRefBox {
+      margin-top: 18px;
+      margin-bottom: 14px;
+      background: #15161a;
       border-radius: 18px;
-      border: 1px solid rgba(255, 255, 255, .10);
-      background: rgba(0, 0, 0, .18);
-      padding: 12px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-height: 120px;
-    }
-
-    .pickCard .row {
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px
+      gap: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
     }
 
-    .pickCard .pImg {
-      width: 40px;
-      height: 40px;
-      border-radius: 14px;
-      background: rgba(0, 0, 0, .18);
+    .earnRefText {
+      font-size: 15px;
+      color: #d1d5db;
+      white-space: nowrap;
       overflow: hidden;
-      display: grid;
-      place-items: center;
+      text-overflow: ellipsis;
+      user-select: all;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    .pickCard .pImg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .pickCard .pImg .fallback {
-      font-size: 22px
-    }
-
-    .pickCard .nm {
-      font-weight: 950;
-      font-size: 12px;
-      line-height: 1.1;
-      color: rgba(255, 255, 255, .92)
-    }
-
-    .pickCard .pr {
-      font-weight: 950;
-      font-size: 12px;
-      color: rgba(255, 255, 255, .80);
+    .earnRefCopyBtn {
+      background: none;
+      border: none;
+      color: #2b82fe;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px
+      padding: 2px;
+      flex-shrink: 0;
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    .pickCard .sub {
+    .earnRefCopyBtn:active {
+      transform: scale(0.88);
+      opacity: 0.75;
+    }
+
+    /* Full-width CTA Button */
+    .earnActionBtn {
+      width: 100%;
+      height: 52px;
+      border-radius: 28px;
+      margin-top: 14px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      background: #2b82fe;
+      color: #ffffff;
+      box-shadow: none;
+      transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), background 0.15s ease;
+      user-select: none;
+    }
+
+    .earnActionBtn:active {
+      transform: scale(0.985);
+      background: #2374e6;
+    }
+
+    .earnActionBtn.done {
+      background: #26272e;
+      color: #4ade80;
+      box-shadow: none;
+      cursor: default;
+    }
+
+    /* ===== MODERN UPGRADE GIFT PICKER SHEET (iOS 26 Style) ===== */
+    .upPickerOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .upPickerOverlay.show {
+      display: flex;
+    }
+
+    .upPickerCard {
+      width: 100%;
+      max-width: 480px;
+      max-height: 85vh;
+      background: #0f1015;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-left: 1px solid rgba(255, 255, 255, 0.04);
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      overflow: hidden;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+      animation: slideUpUpPicker 0.28s ease-out;
+    }
+
+    @keyframes slideUpUpPicker {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .upPickerHandle {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 10px auto 4px;
+      flex-shrink: 0;
+    }
+
+    .upPickerHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px 12px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .upPickerTitle {
+      font-size: 18px;
+      font-weight: 750;
+      color: #ffffff;
+      margin: 0 auto;
+      letter-spacing: -0.3px;
+    }
+
+    .upPickerClose {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .upPickerClose:active {
+      transform: translateY(-50%) scale(0.9);
+    }
+
+    /* Segmented filter tabs (Сначала дешёвые / Сначала дорогие) */
+    .upPickerTabs {
+      display: flex;
+      background: #15161a;
+      border-radius: 22px;
+      padding: 3px;
+      margin: 0 16px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      flex-shrink: 0;
+      gap: 4px;
+    }
+
+    .upPickerTab {
+      flex: 1;
+      height: 36px;
+      border-radius: 18px;
+      border: none;
+      background: transparent;
+      color: #838896;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upPickerTab.active {
+      background: #2b82fe;
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(43, 130, 254, 0.35);
+    }
+
+    .upPickerScroll {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 4px 16px 28px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .upPickerGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    /* Individual Item Card in Picker */
+    .upItemCard {
+      background: #1c1d22;
+      border: 1.5px solid rgba(255, 255, 255, 0.04);
+      border-radius: 22px;
+      padding: 10px 6px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      min-height: 110px;
+      box-sizing: border-box;
+      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .upItemCard:active {
+      transform: scale(0.95);
+      background: #24262d;
+    }
+
+    .upItemCard.selected {
+      border-color: #ffffff;
+      background: #22242c;
+    }
+
+    .upItemBadge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 8px;
+      padding: 2px 5px;
       font-size: 11px;
-      color: rgba(255, 255, 255, .60)
+      font-weight: 700;
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      z-index: 2;
     }
 
-    .pickCard:active {
-      transform: translateY(1px)
+    .upItemBadge .starI {
+      width: 12px;
+      height: 12px;
+      object-fit: contain;
+    }
+
+    .upItemQty {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(43, 130, 254, 0.25);
+      border: 1px solid rgba(43, 130, 254, 0.35);
+      border-radius: 8px;
+      padding: 1px 5px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #70c5ff;
+      z-index: 2;
+    }
+
+    .upItemImg {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      margin: 8px 0 4px;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+      transition: transform 0.15s ease;
+    }
+
+    .upItemCard:hover .upItemImg {
+      transform: scale(1.05);
+    }
+
+    .upItemChance {
+      font-size: 11px;
+      font-weight: 600;
+      color: #838896;
+      text-align: center;
+      margin-top: 2px;
     }
 
     /* Contents modal list */
@@ -2701,18 +3255,97 @@
       font-size: 14px;
     }
 
-    /* Withdraw modal */
-    .codeBox {
-      margin: 12px 14px 0;
-      border-radius: 18px;
-      border: 1px solid rgba(255, 255, 255, .12);
-      background: rgba(0, 0, 0, .18);
-      padding: 12px;
-      font-weight: 950;
-      letter-spacing: .6px;
-      word-break: break-all;
-      color: rgba(255, 255, 255, .92);
+    /* Withdraw Sheet (iOS 26) */
+    .withdrawSheetCard {
+      padding-bottom: calc(24px + var(--safeBottom, 0px)) !important;
     }
+    .withdrawSheetPreview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px 20px 0;
+    }
+    .withdrawSheetImgWrap {
+      width: 96px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.04);
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 2px;
+    }
+    .withdrawSheetHint {
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.48);
+      text-align: center;
+      margin: 4px 0 18px;
+      padding: 0 8px;
+      line-height: 1.4;
+    }
+    .withdrawSheetCodeWrap {
+      margin: 0 16px 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top-color: rgba(255,255,255,0.13);
+      border-radius: 28px;
+      padding: 16px 18px 10px;
+    }
+    .withdrawSheetCodeLabel {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 8px;
+    }
+    .withdrawSheetCode {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      word-break: break-all;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.45;
+      margin-bottom: 12px;
+      font-family: 'SF Mono', 'Menlo', monospace;
+    }
+    .withdrawSheetCopyBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 52px;
+      background: #2b82fe;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 28px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: opacity 0.15s;
+    }
+    .withdrawSheetCopyBtn:active { opacity: 0.75; }
+    .withdrawSheetCopyBtn.copied {
+      background: #26a869;
+    }
+    .withdrawSheetCloseBtn {
+      display: block;
+      width: calc(100% - 32px);
+      margin: 0 16px 8px;
+      height: 52px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, background 0.15s;
+    }
+    .withdrawSheetCloseBtn:active { opacity: 0.75; }
 
     .smallHint {
       margin: 10px 14px 14px;
@@ -3620,100 +4253,170 @@
       transform: scale(1.25);
     }
 
-    /* ===== GAMES PAGE GRID & CARDS ===== */
+    /* ===== GAMES PAGE GRID & CARDS (iOS 26 Modern Dark Palette) ===== */
     .gamesGrid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 10px;
+      gap: 14px;
+      margin-top: 6px;
+      padding-bottom: 30px;
     }
 
     .gameCard {
       position: relative;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
+      background: #1c1d22;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 28px;
       overflow: hidden;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px 12px 14px;
-      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-      backdrop-filter: blur(10px);
+      padding: 16px 14px 14px;
+      transition: transform 0.15s ease, background 0.15s ease;
+      box-sizing: border-box;
     }
 
     .gameCard:not(.inactive):active {
-      transform: scale(0.96);
-      background: rgba(255, 255, 255, 0.07);
+      transform: scale(0.965);
+      background: #22232a;
     }
 
     .gameCard.inactive {
       cursor: not-allowed;
-      opacity: 0.6;
-      border-color: rgba(255, 255, 255, 0.04);
+      opacity: 0.55;
     }
 
     .gameBadge {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 3px 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      font-size: 10px;
+      top: 12px;
+      right: 12px;
+      padding: 3px 9px;
+      background: rgba(43, 130, 254, 0.12);
+      border: 1px solid rgba(43, 130, 254, 0.25);
+      border-radius: 12px;
+      font-size: 10.5px;
       font-weight: 700;
-      color: rgba(255, 255, 255, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      z-index: 2;
+      color: #70c5ff;
+      letter-spacing: 0.2px;
+      z-index: 3;
     }
 
     .gameLottieWrap {
+      position: relative;
       width: 100%;
-      height: 110px;
+      height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 8px;
     }
 
+    .gameCardGlow {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(43, 130, 254, 0.2) 0%, transparent 70%);
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
     .gameLottie {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .gameCardImg {
+      width: 76px;
+      height: 76px;
+      object-fit: contain;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.2s ease;
     }
 
     .gameMeta {
       width: 100%;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
     }
 
     .gameTitle {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 6px;
+      font-size: 15px;
+      font-weight: 750;
+      color: #ffffff;
+      margin: 0;
+      letter-spacing: -0.2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      max-width: 100%;
     }
 
-    .gameStatus {
-      font-size: 11px;
-      font-weight: 600;
-      border-radius: 12px;
-      padding: 4px 10px;
-      display: inline-block;
+    .gameSub {
+      font-size: 11.5px;
+      color: #838896;
+      font-weight: 500;
+      margin-bottom: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
-    .gameStatus.active {
-      color: #4ade80;
-      background: rgba(74, 222, 128, 0.12);
+    .gameActionBtn {
+      width: 100%;
+      height: 38px;
+      border-radius: 20px;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.35);
+      border-left: 1.2px solid rgba(255, 255, 255, 0.16);
+      border-right: 0.8px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.03);
+      background: linear-gradient(180deg, #2f86fe 0%, #257bf8 100%);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), inset 1px 0 0.5px rgba(255, 255, 255, 0.15), inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.12s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
     }
 
-    .gameStatus.inactive {
-      color: #9ca3af;
-      background: rgba(156, 163, 175, 0.1);
+    .gameActionBtn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -120%;
+      width: 60%;
+      height: 200%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.06) 25%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0.06) 75%,
+        transparent 100%
+      );
+      transform: rotate(25deg);
+      animation: ceBtnShimmer 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+
+    .gameCard:active .gameActionBtn {
+      transform: scale(0.98);
+      background: #2374e6;
     }
 
     /* ===== FOOTBALL MINI-GAME BLOCK ===== */
@@ -4224,134 +4927,239 @@
       box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
     }
 
-    /* ===== FRAGILE HEART MODAL ===== */
+    /* ===== FRAGILE HEART MODAL (iOS 26 Modern Dark Palette) ===== */
     .fhModal {
       position: fixed;
       inset: 0;
       z-index: 10000;
-      background: radial-gradient(circle at 50% 35%, #0f244c 0%, #030a1a 100%);
-      display: flex;
+      background: radial-gradient(circle at 50% 20%, #151824 0%, #0c0d12 100%);
+      display: none;
       flex-direction: column;
-      align-items: center;
       justify-content: space-between;
-      padding: max(20px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+      align-items: center;
+      padding: max(20px, var(--safeTop, 20px)) 20px max(24px, var(--safeBottom, 24px));
       box-sizing: border-box;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.28s ease;
+      overflow-y: auto;
+      overflow-x: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      animation: fadeInFhModal 0.25s ease-out;
       color: #fff;
       user-select: none;
       touch-action: manipulation;
     }
+
+    @keyframes fadeInFhModal {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
     .fhModal.show {
-      opacity: 1;
-      pointer-events: auto;
+      display: flex;
     }
-    .fhIceBg {
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 0);
-      background-size: 28px 28px;
-      pointer-events: none;
+
+    .fhModalHeader {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 8px;
     }
+
+    .fhModalTitle {
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fhCloseBtn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.18s ease;
+    }
+
+    .fhCloseBtn:active {
+      transform: scale(0.9);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .fhCenterStage {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0;
+      z-index: 5;
+    }
+
     .fhHeartWrap {
       position: relative;
-      z-index: 2;
-      flex: 1;
       width: 100%;
+      flex: 1;
+      min-height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: transform 0.08s ease;
     }
+
+    .fhHeartGlowRing {
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(43, 130, 254, 0.3) 0%, rgba(43, 130, 254, 0.06) 55%, transparent 70%);
+      filter: blur(20px);
+      animation: pulseFhGlow 3.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseFhGlow {
+      0%, 100% { transform: scale(0.94); opacity: 0.7; }
+      50% { transform: scale(1.18); opacity: 1; }
+    }
+
     .fhHeartWrap:active {
       transform: scale(0.92);
     }
+
     .fhHeartLottie {
-      width: min(70vw, 260px);
-      height: min(70vw, 260px);
+      width: min(70vw, 240px);
+      height: min(70vw, 240px);
       pointer-events: none;
-      filter: drop-shadow(0 15px 35px rgba(56, 189, 248, 0.35));
-    }
-    .fhHpWrap {
-      width: 100%;
       position: relative;
       z-index: 2;
-      background: rgba(15, 28, 63, 0.65);
-      border: 1px solid rgba(147, 197, 253, 0.25);
-      border-radius: 22px;
-      padding: 14px 16px;
-      backdrop-filter: blur(12px);
-      margin-bottom: 12px;
-      box-sizing: border-box;
+      filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 25px rgba(43, 130, 254, 0.35));
     }
+
+    .fhHpWrap {
+      width: 100%;
+      background: #1c1d22;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 28px;
+      padding: 16px 20px;
+      box-sizing: border-box;
+      margin-top: auto;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
     .fhHpLabel {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
-      color: #e0f2fe;
-      margin-bottom: 8px;
+      color: #ffffff;
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
+
     .fhHpTrack {
-      height: 14px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
+      height: 12px;
+      background: #15161a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 99px;
       overflow: hidden;
       position: relative;
     }
+
     .fhHpFill {
       height: 100%;
-      background: linear-gradient(90deg, #38bdf8 0%, #0284c7 70%, #f43f5e 100%);
-      border-radius: 10px;
+      background: linear-gradient(90deg, #2b82fe 0%, #38bdf8 100%);
+      border-radius: 99px;
       transition: width 0.1s linear;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
     }
+
     .fhTapHint {
-      position: relative;
-      z-index: 2;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      color: #838896;
       text-align: center;
-      margin-top: 6px;
+      line-height: 1.4;
+      margin-top: 2px;
     }
+
     .fhPlayBar {
       position: relative;
-      z-index: 2;
+      z-index: 10;
+      width: 100%;
+      max-width: 440px;
+      margin-top: 10px;
+      margin-bottom: 2px;
       display: flex;
       gap: 10px;
-      width: 100%;
     }
+
     .fhBuyBtn, .fhStartBtn {
-      flex: 1;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
       height: 54px;
-      border-radius: 20px;
-      border: none;
-      font-size: 15px;
-      font-weight: 850;
-      cursor: pointer;
+      border-radius: 28px;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.38);
+      border-left: 1.2px solid rgba(255, 255, 255, 0.18);
+      border-right: 0.8px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.03);
+      background: linear-gradient(180deg, #2f86fe 0%, #257bf8 100%);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), inset 1px 0 0.5px rgba(255, 255, 255, 0.15), inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 650;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    .fhBuyBtn {
-      background: linear-gradient(135deg, #007aff 0%, #0056b3 100%);
-      color: #fff;
-      box-shadow: 0 6px 20px rgba(0, 122, 255, 0.35);
-    }
-    .fhStartBtn {
-      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-      color: #fff;
-      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
-    }
-    .fhBuyBtn:active, .fhStartBtn:active {
-      transform: scale(0.97);
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+      user-select: none;
     }
 
-    /* FULLSCREEN INTRO LIKE FOOTBALL */
+    /* Light Glare / Shimmer passing smoothly across the button */
+    .fhBuyBtn::after, .fhStartBtn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -120%;
+      width: 60%;
+      height: 200%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.06) 25%,
+        rgba(255, 255, 255, 0.32) 50%,
+        rgba(255, 255, 255, 0.06) 75%,
+        transparent 100%
+      );
+      transform: rotate(25deg);
+      animation: ceBtnShimmer 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+
+    .fhBuyBtn:active, .fhStartBtn:active {
+      transform: scale(0.985);
+      background: #2374e6;
+      box-shadow: inset 0 1px 1.5px rgba(0, 0, 0, 0.25);
+    }
+
+    /* FULLSCREEN INTRO */
     .fhIntro {
       position: absolute;
       inset: 0;
@@ -4360,95 +5168,105 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 18px;
+      gap: 16px;
       padding: 40px 24px;
       box-sizing: border-box;
-      background:
-        radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.25), transparent 50%),
-        linear-gradient(180deg, #0a1936 0%, #030a1a 100%);
+      background: rgba(12, 13, 18, 0.88);
       text-align: center;
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       transition: opacity 0.25s ease;
     }
+
     .fhIntro.hidden {
       display: none;
     }
+
     .fhIntroLottie {
-      width: min(60vw, 220px);
-      height: min(60vw, 220px);
-      filter: drop-shadow(0 12px 28px rgba(56, 189, 248, 0.4));
+      width: min(60vw, 200px);
+      height: min(60vw, 200px);
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 25px rgba(43, 130, 254, 0.35));
     }
+
     .fhIntroTitle {
       max-width: 320px;
-      font-size: 22px;
+      font-size: 20px;
       line-height: 1.3;
-      font-weight: 850;
+      font-weight: 750;
       color: #fff;
-      text-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
+
     .fhIntroSub {
-      font-size: 14px;
-      font-weight: 600;
-      color: #60a5fa;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #838896;
       margin-top: -6px;
     }
+
     .fhIntroBtn {
       width: min(100%, 280px);
-      border: 0;
-      border-radius: 18px;
-      min-height: 54px;
-      padding: 0 24px;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      height: 52px;
+      border-radius: 28px;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.38);
+      border-left: 1.2px solid rgba(255, 255, 255, 0.18);
+      border-right: 0.8px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.03);
+      background: linear-gradient(180deg, #2f86fe 0%, #257bf8 100%);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), inset 1px 0 0.5px rgba(255, 255, 255, 0.15), inset 0 -1px 1px rgba(0, 0, 0, 0.15);
       color: #fff;
       font-size: 16px;
-      font-weight: 850;
-      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+      font-weight: 650;
       cursor: pointer;
-      transition: all 0.25s ease;
-      margin-top: 10px;
+      transition: transform 0.15s ease, background 0.15s ease;
+      margin-top: 8px;
     }
+
     .fhIntroBtn:active {
-      transform: translateY(1px) scale(0.97);
+      transform: scale(0.985);
+      background: #2374e6;
     }
 
     .fhResultOverlay {
       position: absolute;
       inset: 0;
       z-index: 10000;
-      background: rgba(3, 8, 20, 0.85);
-      backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
+      box-sizing: border-box;
       transition: opacity 0.25s ease;
     }
+
     .fhResultCard {
       width: 100%;
-      max-width: 320px;
-      background: linear-gradient(180deg, rgba(15, 28, 63, 0.9) 0%, rgba(7, 16, 38, 0.95) 100%);
-      border: 1.5px solid rgba(147, 197, 253, 0.3);
+      max-width: 340px;
+      background: #1c1d22;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 28px;
-      padding: 28px 20px;
+      padding: 24px 20px 20px;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
       align-items: center;
+      box-sizing: border-box;
     }
+
     .fhResultTitle {
       font-size: 20px;
-      font-weight: 900;
+      font-weight: 750;
       color: #fff;
       margin-bottom: 8px;
-      text-shadow: 0 0 10px rgba(147, 197, 253, 0.5);
     }
+
     .fhResultDesc {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.8);
-      line-height: 1.4;
-      margin-bottom: 20px;
+      font-size: 13.5px;
+      color: #838896;
+      line-height: 1.5;
+      margin-bottom: 18px;
     }
 
     /* ===== FOOTBALL FULLSCREEN MODAL ===== */
@@ -4650,156 +5468,148 @@
       height: 18px;
     }
 
-    /* ===== QUICK WITHDRAW BANNER & MODAL ===== */
+    /* ===== QUICK WITHDRAW BANNER (iOS 26 Clean Cards Style) ===== */
     .qwBannerWrap {
-      margin-top: 18px;
-      margin-bottom: 12px;
+      margin-top: 0;
+      margin-bottom: 0;
       width: 100%;
     }
 
     .qwBanner {
       position: relative;
-      border-radius: 16px;
-      padding: 14px 16px;
-      background: #141722;
-      overflow: hidden;
+      border-radius: 28px;
+      padding: 20px;
+      background: #1c1d22;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 0, 128, 0.15);
-      transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+      box-shadow: none;
+      transition: transform 0.15s ease;
     }
 
     .qwBanner:active {
-      transform: scale(0.98);
-    }
-
-    .qwBanner::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: 18px;
-      padding: 2px;
-      background: linear-gradient(90deg, #ff007f, #7928ca, #00dfd8, #ff8000, #ff007f);
-      background-size: 300% 100%;
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      animation: qwRainbowBorder 4s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes qwRainbowBorder {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 300% 0%; }
-    }
-
-    .qwBannerGlow {
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 30% 50%, rgba(255, 0, 128, 0.12), rgba(0, 223, 216, 0.08), transparent 70%);
-      pointer-events: none;
-    }
-
-    .qwBannerContent {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      transform: scale(0.985);
     }
 
     .qwBannerLeft {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      align-items: flex-start;
+      gap: 14px;
     }
 
     .qwBannerBadge {
       width: 44px;
       height: 44px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      background: #15161a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     .qwBannerBadge img {
-      width: 70%;
-      height: 70%;
+      width: 48px;
+      height: 48px;
       object-fit: contain;
     }
 
     .qwBannerText {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+      flex: 1;
+      min-width: 0;
     }
 
     .qwBannerTitle {
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      background: linear-gradient(90deg, #ff007f, #00dfd8, #ffbd2e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
+      font-size: 16.5px;
+      font-weight: 650;
+      color: #ffffff;
+      margin: 0;
+      line-height: 1.28;
+      letter-spacing: -0.2px;
     }
 
     .qwBannerSub {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.75);
-      line-height: 1.3;
-    }
-
-    .qwBannerRight {
-      flex-shrink: 0;
+      font-size: 13.5px;
+      color: #838896;
+      margin-top: 4px;
+      line-height: 1.35;
+      font-weight: 400;
     }
 
     .qwBannerBtn {
-      background: linear-gradient(135deg, #ff007f, #7928ca);
-      color: #fff;
+      width: 100%;
+      height: 48px;
+      border-radius: 28px;
       border: none;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 700;
+      background: #2b82fe;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(255, 0, 128, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, background 0.15s ease;
+      box-shadow: none;
     }
 
-    /* Modal styles */
-    .qwModal {
-      max-width: 420px;
-      width: 92%;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 0, 128, 0.2);
+    .qwBannerBtn:active {
+      transform: scale(0.985);
+      background: #2374e6;
     }
 
-    .qwModalScroll {
-      padding: 16px;
+    /* ===== QUICK WITHDRAW MODAL (New Bottom Sheet Style) ===== */
+    .qwSheetOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 2200;
+    }
+
+    .qwSheetOverlay.show {
+      display: flex;
+    }
+
+    .qwSheetCard {
+      width: min(500px, 100%);
+      background: #1c1d22;
+      border-radius: 32px 32px 0 0;
+      padding: 16px 20px 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+      transform: translateY(100%);
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      text-align: center;
+    }
+
+    .qwSheetHandle {
+      width: 38px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 99px;
+      margin-bottom: 20px;
     }
 
     .qwImageStage {
       position: relative;
       width: 100%;
-      min-height: 290px;
+      min-height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: visible;
+      margin-bottom: 4px;
     }
 
     #qwParticleCanvas {
@@ -4808,7 +5618,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       width: 480px;
-      height: 380px;
+      height: 300px;
       pointer-events: none;
       z-index: 1;
     }
@@ -4816,9 +5626,9 @@
     .qwImageCard {
       position: relative;
       z-index: 2;
-      max-width: 330px;
-      width: 80%;
-      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 22px rgba(255, 0, 128, 0.35));
+      max-width: 180px;
+      width: 55%;
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.6));
       object-fit: contain;
       transition: transform 0.3s ease;
     }
@@ -4829,84 +5639,96 @@
 
     .qwDescBox {
       width: 100%;
-      background: transparent;
-      border: none;
       padding: 4px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       gap: 8px;
+      margin-bottom: 8px;
     }
 
     .qwDescTitle {
-      font-size: 17px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      font-size: 20px;
+      font-weight: 750;
+      color: #ffffff;
+      margin: 0 0 4px;
+      letter-spacing: -0.3px;
     }
 
     .qwDescText {
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.9);
-      line-height: 1.45;
+      color: #838896;
+      line-height: 1.5;
     }
 
     .qwDescNote {
-      font-size: 12.5px;
-      color: rgba(255, 255, 255, 0.6);
-      line-height: 1.4;
-      border-top: none;
-      padding-top: 0;
-      margin-top: 2px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 1.45;
+      margin-top: 0;
     }
 
     .qwActionWrap {
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .qwBuyBtn {
       width: 100%;
-      height: 48px;
-      background: linear-gradient(135deg, #00dfd8, #7928ca, #ff007f);
-      background-size: 200% 100%;
-      animation: qwBtnGradient 4s linear infinite;
+      height: 52px;
+      border-radius: 28px;
       border: none;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 800;
+      background: #2b82fe;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 650;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(0, 223, 216, 0.35);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    @keyframes qwBtnGradient {
-      0% { background-position: 0% 0%; }
-      50% { background-position: 100% 0%; }
-      100% { background-position: 0% 0%; }
+      transition: transform 0.15s ease, background 0.15s ease;
     }
 
     .qwBuyBtn:active {
-      transform: scale(0.98);
+      transform: scale(0.985);
+      background: #2374e6;
     }
 
     .qwBuyBtn.owned {
-      background: linear-gradient(135deg, #10b981, #059669) !important;
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35) !important;
+      background: #24262d !important;
+      color: #4ade80 !important;
+      cursor: default;
     }
 
     .starEmojiIcon {
       width: 20px;
       height: 20px;
       vertical-align: middle;
+    }
+
+    .qwCloseBtn {
+      width: 100%;
+      height: 52px;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: #24262d;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .qwCloseBtn:active {
+      transform: scale(0.985);
+      background: #2c2f38;
     }
 
     /* ===== TON DISCOUNT BADGES ===== */
@@ -4963,6 +5785,380 @@
       font-weight: 800;
       padding: 1px 5px;
       border-radius: 6px;
+    }
+
+    /* ===== CRYPTO EGG MODAL (iOS 26 Modern Dark Palette) ===== */
+    .cryptoEggModal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: radial-gradient(circle at 50% 20%, #151824 0%, #0c0d12 100%);
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: max(20px, var(--safeTop, 20px)) 20px max(24px, var(--safeBottom, 24px));
+      box-sizing: border-box;
+      overflow-y: auto;
+      overflow-x: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      animation: fadeInCeModal 0.25s ease-out;
+    }
+
+    @keyframes fadeInCeModal {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .cryptoEggModal.show {
+      display: flex;
+    }
+
+    .ceModalHeader {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 8px;
+    }
+
+    .ceModalTitle {
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ceCloseBtn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.18s ease;
+    }
+
+    .ceCloseBtn:active {
+      transform: scale(0.9);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .ceCenterStage {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0;
+      z-index: 5;
+    }
+
+    .ceEggGlowWrapper {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ceGlowRing {
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(43, 130, 254, 0.3) 0%, rgba(43, 130, 254, 0.06) 55%, transparent 70%);
+      filter: blur(20px);
+      animation: pulseCeGlow 3.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseCeGlow {
+      0%, 100% { transform: scale(0.94); opacity: 0.7; }
+      50% { transform: scale(1.18); opacity: 1; }
+    }
+
+    .ceParticlesCanvas {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .ceEggImg {
+      width: 175px;
+      height: 175px;
+      object-fit: contain;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 25px rgba(43, 130, 254, 0.35));
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: cePulseFloat 3.5s ease-in-out infinite;
+    }
+
+    .ceEggImg:active {
+      transform: scale(0.92);
+    }
+
+    @keyframes cePulseFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-8px) scale(1.03); }
+    }
+
+    .ceInfoCard {
+      width: 100%;
+      background: #1c1d22;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 28px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 6px;
+      box-sizing: border-box;
+      margin-top: auto;
+      margin-bottom: 0;
+    }
+
+    .ceCardTitle {
+      font-size: 19px;
+      font-weight: 750;
+      color: #ffffff;
+      margin: 0;
+      letter-spacing: -0.3px;
+    }
+
+    .ceCardSub {
+      font-size: 13px;
+      color: #838896;
+      line-height: 1.4;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .ceWhatIsBtn {
+      background: #15161a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #2b82fe;
+      font-weight: 600;
+      font-size: 13.5px;
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s ease, background 0.15s ease;
+      margin-top: 2px;
+    }
+
+    .ceWhatIsBtn:active {
+      transform: scale(0.96);
+      background: rgba(43, 130, 254, 0.1);
+    }
+
+    .ceBottomWrap {
+      width: 100%;
+      max-width: 440px;
+      z-index: 10;
+      margin-top: 10px;
+      margin-bottom: 2px;
+    }
+
+    .ceBuyBtn {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 54px;
+      border-radius: 28px;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.38);
+      border-left: 1.2px solid rgba(255, 255, 255, 0.18);
+      border-right: 0.8px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.03);
+      background: linear-gradient(180deg, #2f86fe 0%, #257bf8 100%);
+      box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.35), inset 1px 0 0.5px rgba(255, 255, 255, 0.15), inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+      user-select: none;
+    }
+
+    /* Light Glare / Shimmer passing smoothly across the button */
+    .ceBuyBtn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -120%;
+      width: 60%;
+      height: 200%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.06) 25%,
+        rgba(255, 255, 255, 0.32) 50%,
+        rgba(255, 255, 255, 0.06) 75%,
+        transparent 100%
+      );
+      transform: rotate(25deg);
+      animation: ceBtnShimmer 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+
+    @keyframes ceBtnShimmer {
+      0%, 45% {
+        left: -120%;
+      }
+      75%, 100% {
+        left: 220%;
+      }
+    }
+
+    .ceBuyBtn:active {
+      transform: scale(0.985);
+      background: #2374e6;
+      box-shadow: inset 0 1px 1.5px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Info Overlay - modern card style */
+    .ceOverlayWrap {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      z-index: 100000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .ceOverlayModal {
+      background: #1c1d22;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      padding: 22px 20px 20px;
+      max-width: 360px;
+      width: 100%;
+      color: #fff;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      position: relative;
+      animation: cePopupIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    @keyframes cePopupIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .ceOverlayHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .ceOverlayTitle {
+      font-size: 18px;
+      font-weight: 750;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ceOverlayClose {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .ceOverlayClose:active {
+      transform: scale(0.9);
+    }
+
+    .ceOverlayText {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #838896;
+      margin-bottom: 16px;
+    }
+
+    .ceGuaranteeBanner {
+      background: #15161a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ceGuaranteeBanner img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .ceGuaranteeText {
+      font-size: 13px;
+      line-height: 1.45;
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .ceOverlayOkBtn {
+      width: 100%;
+      height: 48px;
+      border-radius: 28px;
+      border: none;
+      background: #2b82fe;
+      color: #ffffff;
+      font-weight: 650;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .ceOverlayOkBtn:active {
+      transform: scale(0.985);
+      background: #2374e6;
     }
   </style>
 </head>
@@ -5057,7 +6253,9 @@
 
       <!-- UPGRADE -->
       <div class="page" id="pageUpgrade">
-        <div class="sectionTitle">UPGRADE</div>
+        <div class="earnPageHeader">
+          <h1 class="earnMainTitle">Апгрейд</h1>
+        </div>
         <div class="panel">
           <div class="upWrap">
             <!-- Top Cards -->
@@ -5069,10 +6267,10 @@
                     style="width:54px; height:54px; object-fit:contain; display:block;">
                 </div>
                 <div class="ucInfo">
-                  <div class="ucLabel">Select</div>
-                  <div class="ucSub">a gift</div>
+                  <div class="ucLabel">Выберите</div>
+                  <div class="ucSub">подарок</div>
                 </div>
-                <button class="btnSelect" id="pickFromBtn">SELECT</button>
+                <button class="btnSelect" id="pickFromBtn" type="button">ВЫБРАТЬ</button>
 
                 <!-- Hidden when empty, shown when selected -->
                 <div class="ucPreview" id="fromPick" style="display:none"></div>
@@ -5080,7 +6278,7 @@
 
               <div class="upgradeArrow">
                 <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M9 18l6-6-6-6" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"
+                  <path d="M9 18l6-6-6-6" stroke="rgba(255,255,255,0.45)" stroke-width="2.2" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg>
               </div>
@@ -5092,10 +6290,10 @@
                     style="width:54px; height:54px; object-fit:contain; display:block;">
                 </div>
                 <div class="ucInfo">
-                  <div class="ucLabel">Select</div>
-                  <div class="ucSub">target</div>
+                  <div class="ucLabel">Выберите</div>
+                  <div class="ucSub">цель</div>
                 </div>
-                <button class="btnSelect" id="pickToBtn">SELECT</button>
+                <button class="btnSelect" id="pickToBtn" type="button">ВЫБРАТЬ</button>
 
                 <!-- Hidden when empty, shown when selected -->
                 <div class="ucPreview" id="toPick" style="display:none"></div>
@@ -5114,16 +6312,16 @@
 
                 <div class="circleContent">
                   <div class="chanceVal" id="chanceText">0%</div>
-                  <div class="chanceLabel">CHANCE</div>
+                  <div class="chanceLabel">ШАНС</div>
                 </div>
               </div>
             </div>
 
             <!-- Bottom Actions -->
             <div class="upgradeBottom">
-              <div class="statusText" id="upgradeHint">Select a <b>gift</b> and a <b>target</b></div>
-              <button class="btnBig" id="btnUpgrade" disabled>UPGRADE</button>
-              <button class="btnText" id="btnResetUpgrade">Reset</button>
+              <div class="statusText" id="upgradeHint">Выберите <b>подарок</b> и <b>цель</b></div>
+              <button class="btnBig" id="btnUpgrade" type="button" disabled>АПГРЕЙД</button>
+              <button class="btnText" id="btnResetUpgrade" type="button">Сбросить</button>
             </div>
 
             <div class="note" id="upgradeResultNote"></div>
@@ -5133,78 +6331,65 @@
 
       <!-- GAMES -->
       <div class="page" id="pageGames">
-        <div class="sectionTitle">MINI GAMES</div>
+        <div class="earnPageHeader">
+          <h1 class="earnMainTitle">Мини-игры</h1>
+        </div>
 
         <div class="gamesGrid">
-          <!-- FOOTBALL GAME CARD (Active) -->
+          <!-- FOOTBALL GAME CARD -->
           <div class="gameCard" id="btnOpenFootballGamesCard">
             <div class="gameLottieWrap">
+              <div class="gameCardGlow"></div>
               <div class="gameLottie" data-lottie="https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/%D1%84%D1%83%D1%82%D0%B1%D0%BE%D0%BB.json"></div>
             </div>
             <div class="gameMeta">
               <div class="gameTitle">Football Game</div>
-              <div class="gameStatus active">Play ⚽</div>
+              <div class="gameSub">Приз: Football Bear</div>
+              <button class="gameActionBtn" type="button">
+                <span>Играть</span>
+              </button>
             </div>
           </div>
 
-          <!-- CRYPTO EGG CARD (Active) -->
+          <!-- CRYPTO EGG CARD -->
           <div class="gameCard" id="btnOpenCryptoEgg">
-            <div class="gameLottieWrap" style="display:flex; align-items:center; justify-content:center; position:relative;">
-              <img src="crypto_egg.png" alt="Crypto Egg" style="width: 76px; height: 76px; object-fit: contain; filter: drop-shadow(0 0 12px rgba(0, 198, 255, 0.7)); animation: cePulseFloat 3s ease-in-out infinite;">
+            <div class="gameLottieWrap">
+              <div class="gameCardGlow"></div>
+              <img src="crypto_egg.png" alt="Crypto Egg" class="gameCardImg" style="animation: cePulseFloat 3.5s ease-in-out infinite;">
             </div>
             <div class="gameMeta">
               <div class="gameTitle">Crypto Egg</div>
-              <div class="gameStatus active">Open 🥚</div>
+              <div class="gameSub">Выкуп от 50 ★</div>
+              <button class="gameActionBtn" type="button">
+                <span>Открыть</span>
+              </button>
             </div>
           </div>
 
-          <!-- FRAGILE HEART CARD (Active) -->
+          <!-- FRAGILE HEART CARD -->
           <div class="gameCard" id="btnOpenFragileHeart">
             <div class="gameLottieWrap">
+              <div class="gameCardGlow"></div>
               <div class="gameLottie" data-lottie="https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/%D1%81%D0%B5%D1%80%D1%86%D0%B5%20%D0%BB%D0%B5%D0%B4.json"></div>
             </div>
             <div class="gameMeta">
               <div class="gameTitle">Fragile Heart</div>
-              <div class="gameStatus active">Play ❄️</div>
+              <div class="gameSub">Приз: Cookie Heart</div>
+              <button class="gameActionBtn" type="button">
+                <span>Играть</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- EARN -->
+      <!-- EARN (Modern Telegram/iOS Cards Style) -->
       <div class="page" id="pageCrafts">
-        <div class="invHeader">
-          <img src="Tasks.webp" alt="Earn Header">
-        </div>
-        <div class="sectionTitle">EARN</div>
-
-        <div class="panel">
-          <div class="tasksList" id="tasksList"></div>
-          <div class="sep"></div>
-          <div class="upHint" style="text-align:left">
-            Complete a task and earn <b>5<img src="Звезда емодзи.webp" class="emojiI"
-                style="width:16px;height:16px;vertical-align:-2px" alt="в…"></b>
-            to your balance.
-          </div>
+        <div class="earnPageHeader">
+          <h1 class="earnMainTitle">Заработать Stars</h1>
         </div>
 
-        <!-- STAKING BANNER BLOCK -->
-        <div class="stakingCardBlock" id="btnOpenStaking">
-          <div class="stakingCardGlow"></div>
-          <div class="stakingCardInner">
-            <div class="stakingCardIconWrap">
-              <img src="StakingLogo.png" alt="Staking" class="stakingCardIconImg">
-            </div>
-            <div class="stakingCardText">
-              <div class="stakingCardBadge">PASSIVE INCOME ⚡</div>
-              <p class="stakingCardTitle">NFT STAKING</p>
-              <p class="stakingCardSub">Hold NFT gifts & earn <b>50+ Stars</b> daily!</p>
-            </div>
-            <div class="stakingCardArrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </div>
-          </div>
-        </div>
+        <div class="earnCardsList" id="earnCardsList"></div>
 
         <div class="crafts-container" style="display:none">
           <div class="crafts-grid" id="craftsGrid">
@@ -5235,88 +6420,82 @@
         </div>
       </div>
 
-      <!-- PROFILE -->
+      <!-- PROFILE (Authentic iOS 26 Clean Cards Style) -->
       <div class="page" id="pageProfile">
-        <div class="invHeader">
-          <img src="Инвентарь.webp" alt="Profile Header">
+        <div class="earnPageHeader">
+          <h1 class="earnMainTitle">Профиль</h1>
         </div>
-        <div class="sectionTitle">PROFILE</div>
 
-        <div class="profileCard">
-          <div class="profileMainRow">
-            <div class="profileIdentity">
-              <div class="ava" id="ava"></div>
-              <div class="pmeta">
-                <p class="pname" id="pname">User</p>
-                <p class="puser" id="puser">@username</p>
+        <div class="profileCardsList">
+          <!-- Profile Card -->
+          <div class="profileCard">
+            <div class="profileMainRow">
+              <div class="profileIdentity">
+                <div class="ava" id="ava"></div>
+                <div class="pmeta">
+                  <p class="pname" id="pname">User</p>
+                  <p class="puser" id="puser">@username</p>
+                </div>
               </div>
-            </div>
 
-            <div class="profileLevelSide">
-              <div class="xpLevelWrap">
+              <div class="xpBadgeWrap">
                 <div class="xpBadge bronze" id="xpBadge">
                   <svg class="levelIcon" viewBox="0 0 24 24" aria-hidden="true">
                     <path fill="currentColor" d="M16.445 3h-8.89c-.345 0-.666.178-.849.47L3.25 9h17.5l-3.456-5.53a1.003 1.003 0 0 0-.849-.47zM11.26 21.186a1 1 0 0 0 1.48 0L22 11H2l9.26 10.186z"></path>
                   </svg>
                 </div>
-                <div>
-                  <p class="xpTitle" id="xpTitle">Level 1</p>
-                  <p class="xpSub" id="xpSub">0 / 100 XP</p>
-                </div>
               </div>
-              <div class="xpNeed" id="xpNeed">100 XP left</div>
             </div>
+
+            <div class="profileLevelBox">
+              <div class="xpLevelHeader">
+                <span class="xpTitle" id="xpTitle">Level 1</span>
+                <span class="xpSub" id="xpSub">0 / 100 XP</span>
+              </div>
+              <div class="xpBar profileBar">
+                <div class="xpFill" id="xpFill"></div>
+              </div>
+              <div class="xpNeedText" id="xpNeed">100 XP left</div>
+            </div>
+
+            <button class="profileAboutBtn" id="xpAboutLink" type="button">
+              <span>О системе уровней</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
           </div>
 
-          <div class="xpBar profileBar">
-            <div class="xpFill" id="xpFill"></div>
-          </div>
-          <div class="xpAboutLink" id="xpAboutLink" role="button" tabindex="0">about level</div>
-        </div>
-
-        <!-- Quick Withdraw Banner -->
-        <div class="qwBannerWrap" id="qwBannerWrap" style="display: none;">
-          <div class="qwBanner" id="btnOpenQuickWithdraw">
-            <div class="qwBannerGlow"></div>
-            <div class="qwBannerContent">
+          <!-- Quick Withdraw Banner -->
+          <div class="qwBannerWrap" id="qwBannerWrap" style="display: none;">
+            <div class="qwBanner" id="btnOpenQuickWithdraw">
               <div class="qwBannerLeft">
                 <div class="qwBannerBadge">
-                  <img src="Quick withdraw.PNG" alt="Quick Withdraw">
+                  <img src="Quick withdraw Logo.svg" alt="Quick Withdraw">
                 </div>
                 <div class="qwBannerText">
-                  <div class="qwBannerTitle">QUICK WITHDRAW ⚡</div>
-                  <div class="qwBannerSub">Instant gift withdrawals without waiting 21 days</div>
+                  <div class="qwBannerTitle">Быстрый вывод ⚡</div>
+                  <div class="qwBannerSub">Мгновенный вывод подарков без ожидания 21 дня</div>
                 </div>
               </div>
-              <div class="qwBannerRight">
-                <button class="qwBannerBtn">Open</button>
-              </div>
+              <button class="qwBannerBtn" type="button">Открыть вывод</button>
             </div>
           </div>
-        </div>
 
-        <div class="sectionTitle" style="margin-top:20px">INVENTORY</div>
-        <div class="panel">
-          <div class="invGrid" id="invGrid"></div>
-          <div class="sep"></div>
-          <button class="btn ghost" id="btnSellAll">Sell all</button>
-        </div>
-
-        <div class="sectionTitle" style="margin-top:20px; display:none">TASKS & BONUS</div>
-        <div class="panel" style="display:none">
-          <div class="tasksList"></div>
-          <div class="sep"></div>
-          <div class="upHint" style="text-align:left">
-            Complete a task and earn <b>5<img src="Звезда емодзи.webp" class="emojiI"
-                style="width:16px;height:16px;vertical-align:-2px" alt="★"></b>
-            to your balance.
+          <!-- Inventory Section -->
+          <div class="profileInvSection">
+            <div class="earnPageHeader" style="padding: 10px 4px 12px;">
+              <h2 class="earnMainTitle" style="font-size: 20px;">Инвентарь</h2>
+            </div>
+            <div class="profileInvCard">
+              <div class="invGrid" id="invGrid"></div>
+              <button class="earnActionBtn sellAllBtn" id="btnSellAll" type="button">Продать все подарки</button>
+            </div>
           </div>
-        </div>
 
-        <!-- Profile Footer -->
-        <div class="profileFooter" style="margin-top: 24px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 400; color: rgba(255, 255, 255, 0.22); letter-spacing: 0.3px;">
-          <span>design by</span>
-          <a href="https://t.me/voco_in" target="_blank" rel="noopener noreferrer" onclick="if(window.Telegram?.WebApp?.openTelegramLink){window.Telegram.WebApp.openTelegramLink('https://t.me/voco_in');return false;}" style="color: rgba(255, 255, 255, 0.35); text-decoration: none; font-weight: 500; transition: color 0.2s ease;">@voco_in</a>
+          <!-- Profile Footer -->
+          <div class="profileFooter" style="margin-top: 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 400; color: rgba(255, 255, 255, 0.25);">
+            <span>design by</span>
+            <a href="https://t.me/voco_in" target="_blank" rel="noopener noreferrer" onclick="if(window.Telegram?.WebApp?.openTelegramLink){window.Telegram.WebApp.openTelegramLink('https://t.me/voco_in');return false;}" style="color: rgba(255, 255, 255, 0.45); text-decoration: none; font-weight: 500;">@voco_in</a>
+          </div>
         </div>
       </div>
 
@@ -5324,34 +6503,110 @@
 
     <div class="levelInfoOverlay" id="levelInfoOverlay">
       <div class="levelInfoCard" id="levelInfoCard">
-        <div class="levelInfoHeader">
-          <div class="levelInfoBadge bronze" id="levelInfoBadge">
-            <svg class="levelIcon" viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor" d="M16.445 3h-8.89c-.345 0-.666.178-.849.47L3.25 9h17.5l-3.456-5.53a1.003 1.003 0 0 0-.849-.47zM11.26 21.186a1 1 0 0 0 1.48 0L22 11H2l9.26 10.186z"></path>
+        <!-- Top Bar with X button and Title -->
+        <div class="levelInfoTopBar">
+          <button class="levelInfoCloseIconBtn" id="btnLevelInfoClose" type="button" aria-label="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
+          </button>
+          <h3 class="levelInfoHeading">Рейтинг</h3>
+        </div>
+
+        <!-- Floating Score Badge with Crown & Pointer -->
+        <div class="levelInfoBadgeWrap">
+          <div class="levelInfoScoreBadge" id="levelInfoScoreBadge">
+            <svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+            <span id="levelInfoProgressText">0 / 100</span>
           </div>
-          <div>
-            <p class="levelInfoTitle" id="levelInfoTitle">Level 1</p>
-            <p class="levelInfoSubtitle" id="levelInfoSubtitle">Bronze stage</p>
+        </div>
+
+        <!-- Segmented Progress Track -->
+        <div class="levelInfoTrackContainer">
+          <div class="levelInfoTrack">
+            <div class="levelInfoTrackFill" id="levelInfoProgressFill"></div>
+            <div class="levelInfoTrackSegment" id="levelInfoCurrentSeg">Уровень 1</div>
+            <div class="levelInfoTrackSegment next" id="levelInfoNextSeg">Уровень 2</div>
           </div>
         </div>
-        <div class="levelInfoProgress">
-          <div class="levelInfoProgressBar">
-            <div class="levelInfoProgressFill" id="levelInfoProgressFill"></div>
+
+        <!-- Description -->
+        <div class="levelInfoDescription">
+          Рейтинг отражает Вашу активность в Gifts Battle. На него влияют:
+        </div>
+
+        <!-- Rules / Activities List -->
+        <div class="levelInfoRulesList">
+          <div class="levelInfoRuleRow">
+            <div class="levelInfoRuleIcon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+            </div>
+            <div class="levelInfoRuleContent">
+              <div class="levelInfoRuleTitle">Подарки и кейсы</div>
+              <div class="levelInfoRuleDesc">
+                <span class="levelTagPlus">плюс</span> 100% звёзд, потраченных на открытие кейсов и улучшение подарков
+              </div>
+            </div>
           </div>
-          <div class="levelInfoProgressText" id="levelInfoProgressText">0 / 100 XP</div>
+
+          <div class="levelInfoRuleRow">
+            <div class="levelInfoRuleIcon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <div class="levelInfoRuleContent">
+              <div class="levelInfoRuleTitle">Задания и друзья</div>
+              <div class="levelInfoRuleDesc">
+                <span class="levelTagPlus">плюс</span> 20% звёзд за выполнение заданий и приглашение друзей
+              </div>
+            </div>
+          </div>
+
+          <div class="levelInfoRuleRow">
+            <div class="levelInfoRuleIcon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 12 8"></polygon><line x1="16" y1="12" x2="12" y2="12"></line></svg>
+            </div>
+            <div class="levelInfoRuleContent">
+              <div class="levelInfoRuleTitle">Бонусы уровней</div>
+              <div class="levelInfoRuleDesc" id="levelInfoHint2">
+                С 3-го уровня открывается поиск секретных NFT подарков в приложении
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="levelInfoBody">
-          <div class="levelInfoLabel">Next stage</div>
-          <div class="levelInfoValue" id="levelInfoValue">Need 100 XP for level 2</div>
-          <div class="levelInfoHint" id="levelInfoHint">Earn 100 more XP to unlock the next badge.</div>
+
+        <!-- OK Button -->
+        <button class="levelInfoOkBtn" id="btnLevelInfoOk" type="button">
+          <span>👌 OK</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- GIFT ACTION SHEET (iOS 26 Bottom Sheet) -->
+    <div class="giftSheetOverlay" id="giftSheetOverlay">
+      <div class="giftSheetCard" id="giftSheetCard">
+        <div class="giftSheetHandle"></div>
+        <div class="giftSheetImgWrap" id="giftSheetImgWrap">
+          <img src="" alt="Gift" id="giftSheetImg">
         </div>
-        <div class="levelInfoBody">
-          <div class="levelInfoLabel">Special feature</div>
-          <div class="levelInfoValue" id="levelInfoValue2">Find NFT gifts in random places in the mini app. To do this, you need at least level 3.</div>
-          <div class="levelInfoHint" id="levelInfoHint2">Keep progressing to reach level 3 and unlock it.</div>
+        <h3 class="giftSheetTitle" id="giftSheetTitle">Подарок</h3>
+        <div class="giftSheetMeta">
+          <span id="giftSheetQty">Количество: 1</span>
+          <span>•</span>
+          <img class="earnStarIcon" src="StarIconSvg.svg" alt="★" style="width:16px;height:16px">
+          <span id="giftSheetValue">0 ★</span>
         </div>
-        <button class="levelInfoCloseBtn" id="btnLevelInfoClose">Got it</button>
+        <div class="giftSheetActions">
+          <button class="giftSheetBtnWithdraw" id="btnGiftSheetWithdraw" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            <span>Вывести в Telegram</span>
+          </button>
+          <button class="giftSheetBtnSell" id="btnGiftSheetSell" type="button">
+            <span>Продать за</span>
+            <img class="earnStarIcon" src="StarIconSvg.svg" alt="★" style="width:15px;height:15px">
+            <span id="giftSheetSellValue">0 ★</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -5603,86 +6858,91 @@
     </div>
   </div>
 
-  <!-- Picker Sheet -->
-  <div class="overlay" id="pickerOverlay">
-    <div class="modal">
-      <div class="modalHead">
-        <div class="h" id="pickerTitle">Select a gift</div>
-        <div class="xbtn" id="pickerClose">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
-          </svg>
-        </div>
+  <!-- Modern Gift Picker Sheet (iOS 26) -->
+  <div class="upPickerOverlay" id="pickerOverlay">
+    <div class="upPickerCard" id="upPickerCard" role="dialog" aria-modal="true">
+      <div class="upPickerHandle"></div>
+      
+      <div class="upPickerHeader">
+        <div class="upPickerTitle" id="pickerTitle">Желаемый подарок</div>
+        <button class="upPickerClose" id="pickerClose" aria-label="Close" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
       </div>
-      <div class="modalScroll">
-        <div class="sheetBody" id="pickerBody"></div>
+
+      <!-- Sort Tabs: Сначала дешёвые / Сначала дорогие -->
+      <div class="upPickerTabs" id="upPickerTabs">
+        <button class="upPickerTab active" id="tabSortCheap" type="button">Сначала дешёвые</button>
+        <button class="upPickerTab" id="tabSortExpensive" type="button">Сначала дорогие</button>
+      </div>
+
+      <!-- 3-column Gifts Grid -->
+      <div class="upPickerScroll">
+        <div class="upPickerGrid" id="pickerBody"></div>
       </div>
     </div>
   </div>
 
   <!-- Quick Withdraw Modal -->
-  <div class="overlay" id="quickWithdrawModal">
-    <div class="modal qwModal" role="dialog" aria-modal="true">
-      <div class="modalHead">
-        <div class="h">QUICK WITHDRAW</div>
-        <div class="xbtn" id="closeQuickWithdraw">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
-          </svg>
+  <div class="qwSheetOverlay" id="quickWithdrawModal">
+    <div class="qwSheetCard" id="qwSheetCard" role="dialog" aria-modal="true">
+      <div class="qwSheetHandle"></div>
+
+      <!-- Image stage with particle canvas -->
+      <div class="qwImageStage">
+        <canvas id="qwParticleCanvas"></canvas>
+        <img src="Quick withdraw.PNG" class="qwImageCard" alt="Quick Withdraw Card">
+      </div>
+
+      <!-- Info box -->
+      <div class="qwDescBox">
+        <div class="qwDescTitle">⚡ Быстрый вывод</div>
+        <div class="qwDescText">
+          С этой картой вывод доступен <b>мгновенно</b> — без ожидания 21 дня!
         </div>
       </div>
-      
-      <div class="modalScroll qwModalScroll">
-        <!-- Image stage with particle canvas -->
-        <div class="qwImageStage">
-          <canvas id="qwParticleCanvas"></canvas>
-          <img src="Quick withdraw.PNG" class="qwImageCard" alt="Quick Withdraw Card">
-        </div>
 
-        <!-- Info box -->
-        <div class="qwDescBox">
-          <div class="qwDescTitle">⚡ Instant Withdrawal</div>
-          <div class="qwDescText">
-            With this card, withdrawal is available <b>instantly</b> — no need to wait 21 days!
-          </div>
-          <div class="qwDescNote">
-            💡 Also, the card is <b>optional</b> — you can still withdraw gifts using the standard method.
-          </div>
-        </div>
-
-        <!-- Action Button -->
-        <div class="qwActionWrap">
-          <button class="btn qwBuyBtn" id="btnBuyQuickWithdraw">
-            <span id="qwBuyBtnText">Buy card for 149</span>
-            <img src="Звезда емодзи.webp" class="starEmojiIcon" alt="★">
-          </button>
-        </div>
+      <!-- Action Buttons -->
+      <div class="qwActionWrap">
+        <button class="qwBuyBtn" id="btnBuyQuickWithdraw" type="button">
+          <span id="qwBuyBtnText">Купить карту за 149</span>
+          <img src="Звезда емодзи.webp" class="starEmojiIcon" alt="★">
+        </button>
+        <button class="qwCloseBtn" id="closeQuickWithdraw" type="button">Закрыть</button>
       </div>
     </div>
   </div>
 
-  <!-- Withdraw Modal -->
-  <div class="overlay" id="withdrawModal">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modalHead">
-        <div class="h" id="withdrawTitle">WITHDRAW</div>
-        <div class="xbtn" id="closeWithdraw">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M7 7l10 10M17 7 7 17" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" />
-          </svg>
+  <!-- Withdraw Sheet (iOS 26 Bottom Sheet) -->
+  <div class="giftSheetOverlay" id="withdrawModal">
+    <div class="giftSheetCard withdrawSheetCard" id="withdrawSheetCard" role="dialog" aria-modal="true">
+      <div class="giftSheetHandle"></div>
+
+      <!-- Gift preview area -->
+      <div class="withdrawSheetPreview">
+        <div class="withdrawSheetImgWrap">
+          <img src="" alt="" id="withdrawSheetImg" style="width:88px;height:88px;object-fit:contain;display:none;">
+          <div id="withdrawSheetEmoji" style="font-size:56px;line-height:1;display:none;">🎁</div>
         </div>
+        <h3 class="giftSheetTitle" id="withdrawTitle" style="margin-top:14px;">Вывод</h3>
+        <p class="withdrawSheetHint" id="withdrawDesc">Скопируй код и отправь боту в чат.</p>
       </div>
-      <div class="modalScroll">
-        <div class="smallHint" id="withdrawDesc" style="margin-top:12px">
-          Copy the code and send it to the bot in chat.
-        </div>
-        <div class="codeBox" id="withdrawCode">CODE</div>
-        <div style="padding: 12px 14px 14px;">
-          <button class="btn" id="btnCopyCode">Copy code</button>
-          <div class="sep"></div>
-          <button class="btn ghost" id="btnCloseWithdraw2">Close</button>
-        </div>
+
+      <!-- Code box -->
+      <div class="withdrawSheetCodeWrap">
+        <div class="withdrawSheetCodeLabel">Код для вывода</div>
+        <div class="withdrawSheetCode" id="withdrawCode">—</div>
+        <button class="withdrawSheetCopyBtn" id="btnCopyCode" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span>Скопировать код</span>
+        </button>
       </div>
+
+      <!-- Close button -->
+      <button class="withdrawSheetCloseBtn" id="btnCloseWithdraw2" type="button">Закрыть</button>
+
+      <!-- Hidden elements for JS compatibility -->
+      <div id="closeWithdraw" style="display:none;"></div>
     </div>
   </div>
 
@@ -6188,10 +7448,51 @@
      * Tasks (edit links)
      ********************/
     const TASKS = [
-      { id: "join_channel", title: "Join our channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/voco_in" },
-      { id: "open_site", title: "Join our channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/vo2co" },
-      { id: "invite_friend", title: "Join channel", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/festables" },
-      { id: "join_giftslearn", title: "Join Gifts Learn", icon: "Канал.webp", reward: `<img src="Звезда емодзи.webp" class="emojiI" style="width:14px;height:14px;vertical-align:-2px" alt="★">+5`, url: "https://t.me/GiftsLearn" }
+      { 
+        id: "invite_friends", 
+        title: "Приглашайте друзей", 
+        desc: "Получайте награду за каждого друга, который перейдёт по Вашей ссылке", 
+        reward: "+10", 
+        icon: "👥", 
+        isReferral: true,
+        btnText: "Пригласить друзей"
+      },
+      { 
+        id: "join_giftslearn", 
+        title: "Подпишитесь на Gifts Learn", 
+        desc: "Официальный канал проекта, обучающие гайды и новости", 
+        reward: "+5", 
+        icon: "Канал.webp", 
+        url: "https://t.me/GiftsLearn",
+        btnText: "Подписаться на канал"
+      },
+      { 
+        id: "join_channel", 
+        title: "Подпишитесь на VOCO", 
+        desc: "Секретные промокоды, дропы и обновления", 
+        reward: "+5", 
+        icon: "Канал.webp", 
+        url: "https://t.me/voco_in",
+        btnText: "Подписаться на канал"
+      },
+      { 
+        id: "nft_staking", 
+        title: "NFT Стейкинг", 
+        desc: "Держите NFT подарки и получайте ежедневный доход от 50+ Stars", 
+        reward: "50+", 
+        icon: "StakingLogo.png", 
+        isStaking: true,
+        btnText: "Открыть стейкинг"
+      },
+      { 
+        id: "festables_channel", 
+        title: "Канал Festables", 
+        desc: "Розыгрыши и анонсы праздничных мероприятий", 
+        reward: "+5", 
+        icon: "Канал.webp", 
+        url: "https://t.me/festables",
+        btnText: "Подписаться на канал"
+      }
     ];
 
     /********************
@@ -6342,11 +7643,11 @@
     const levelInfoSubtitle = document.getElementById("levelInfoSubtitle");
     const levelInfoProgressFill = document.getElementById("levelInfoProgressFill");
     const levelInfoProgressText = document.getElementById("levelInfoProgressText");
-    const levelInfoValue = document.getElementById("levelInfoValue");
-    const levelInfoHint = document.getElementById("levelInfoHint");
-    const levelInfoValue2 = document.getElementById("levelInfoValue2");
+    const levelInfoCurrentSeg = document.getElementById("levelInfoCurrentSeg");
+    const levelInfoNextSeg = document.getElementById("levelInfoNextSeg");
     const levelInfoHint2 = document.getElementById("levelInfoHint2");
     const btnLevelInfoClose = document.getElementById("btnLevelInfoClose");
+    const btnLevelInfoOk = document.getElementById("btnLevelInfoOk");
     const btnSellAll = document.getElementById("btnSellAll");
 
     // Tasks
@@ -6429,10 +7730,13 @@
         }
       });
     }
-    btnLevelInfoClose.addEventListener("click", closeLevelInfoModal);
-    levelInfoOverlay.addEventListener("click", (e) => {
-      if (e.target === levelInfoOverlay) closeLevelInfoModal();
-    });
+    if (btnLevelInfoClose) btnLevelInfoClose.addEventListener("click", closeLevelInfoModal);
+    if (btnLevelInfoOk) btnLevelInfoOk.addEventListener("click", closeLevelInfoModal);
+    if (levelInfoOverlay) {
+      levelInfoOverlay.addEventListener("click", (e) => {
+        if (e.target === levelInfoOverlay) closeLevelInfoModal();
+      });
+    }
 
     applyTelegramProfile();
     renderStars();
@@ -6468,6 +7772,7 @@
 
       pname.textContent = full;
       puser.textContent = uname;
+
 
       if (u?.photo_url) {
         ava.innerHTML = `<img src="${u.photo_url}" alt="Avatar">`;
@@ -7444,12 +8749,15 @@
         .sort((a, b) => b.value - a.value);
 
       if (entries.length === 0) {
-        invGrid.innerHTML = `<div class="upHint" style="grid-column: span 2; opacity: 0.5;">Your inventory is empty</div>`;
+        invGrid.innerHTML = `<div style="grid-column: span 2; text-align: center; padding: 28px 12px; color: #838896; font-size: 14px;">Инвентарь пуст</div>`;
       } else {
         invGrid.innerHTML = "";
         entries.forEach(it => {
           const el = document.createElement("div");
           el.className = "giftCard";
+          el.setAttribute("data-id", it.id);
+          el.setAttribute("data-charged", it.charged ? "1" : "0");
+
           el.innerHTML = `
             <div class="giftTop">
               <div class="giftQty">x${it.qty}</div>
@@ -7463,31 +8771,108 @@
             <div class="giftMeta">
               <div class="giftName">${escapeHtml(it.name)}</div>
               <div class="giftValue">
-                <img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">
+                <img class="earnStarIcon" src="StarIconSvg.svg" alt="★" style="width:14px;height:14px">
                 <span>${formatStars(it.value)}</span>
               </div>
             </div>
-
-            <div class="giftActions">
-              <button class="btnSmall" data-act="sell" data-id="${escapeAttr(it.id)}" data-charged="${it.charged ? "1" : "0"}"${it.charged ? " disabled" : ""}>Sell</button>
-              ${it.noWithdraw ? "" : `<button class="btnSmall primary" data-act="withdraw" data-id="${escapeAttr(it.id)}" data-charged="${it.charged ? "1" : "0"}">Withdraw</button>`}
-            </div>
           `;
+
+          el.addEventListener("click", () => {
+            openGiftActionSheet(it);
+          });
+
           invGrid.appendChild(el);
         });
       }
 
       renderQuickWithdrawBanner();
+    }
 
-      invGrid.querySelectorAll("button.btnSmall").forEach(b => {
-        b.addEventListener("click", () => {
-          const act = b.dataset.act;
-          const id = b.dataset.id;
-          const charged = b.dataset.charged === "1";
-          if (!id) return;
-          if (act === "sell") sellGift(id, charged);
-          if (act === "withdraw") openWithdrawModal(id, charged);
-        });
+    // Gift Action Sheet Logic
+    let currentSheetGift = null;
+    const giftSheetOverlay = document.getElementById("giftSheetOverlay");
+    const giftSheetCard = document.getElementById("giftSheetCard");
+    const giftSheetImg = document.getElementById("giftSheetImg");
+    const giftSheetTitle = document.getElementById("giftSheetTitle");
+    const giftSheetQty = document.getElementById("giftSheetQty");
+    const giftSheetValue = document.getElementById("giftSheetValue");
+    const giftSheetSellValue = document.getElementById("giftSheetSellValue");
+    const btnGiftSheetWithdraw = document.getElementById("btnGiftSheetWithdraw");
+    const btnGiftSheetSell = document.getElementById("btnGiftSheetSell");
+
+    function openGiftActionSheet(giftItem) {
+      if (!giftSheetOverlay || !giftSheetCard) return;
+      currentSheetGift = giftItem;
+
+      if (giftItem.img) {
+        giftSheetImg.src = giftItem.img;
+        giftSheetImg.style.display = "block";
+      } else {
+        giftSheetImg.style.display = "none";
+      }
+
+      giftSheetTitle.textContent = giftItem.name || "Подарок";
+      giftSheetQty.textContent = `В наличии: ${giftItem.qty} шт.`;
+      giftSheetValue.textContent = `${formatStars(giftItem.value)} ★`;
+
+      const sellAmount = round1(giftItem.value * SELL_PAYOUT);
+      giftSheetSellValue.textContent = `${formatStars(sellAmount)} ★`;
+
+      if (giftItem.charged) {
+        btnGiftSheetSell.disabled = true;
+        btnGiftSheetSell.textContent = "Заряженный (нельзя продать)";
+      } else {
+        btnGiftSheetSell.disabled = false;
+        btnGiftSheetSell.innerHTML = `<span>Продать за</span> <img class="earnStarIcon" src="StarIconSvg.svg" alt="★" style="width:15px;height:15px"> <span>${formatStars(sellAmount)} ★</span>`;
+      }
+
+      btnGiftSheetWithdraw.style.display = giftItem.noWithdraw ? "none" : "flex";
+
+      giftSheetOverlay.classList.add("show");
+      document.body.style.overflow = "hidden";
+      try { tg?.HapticFeedback?.impactOccurred("light"); } catch(e) {}
+      gsap.fromTo(giftSheetCard, { y: "100%" }, { y: "0%", duration: 0.28, ease: "power3.out" });
+    }
+
+    function closeGiftActionSheet() {
+      if (!giftSheetOverlay || !giftSheetCard) return;
+      gsap.to(giftSheetCard, {
+        y: "100%",
+        duration: 0.22,
+        ease: "power3.in",
+        onComplete: () => {
+          giftSheetOverlay.classList.remove("show");
+          document.body.style.overflow = "";
+          currentSheetGift = null;
+        }
+      });
+    }
+
+    if (giftSheetOverlay) {
+      giftSheetOverlay.addEventListener("click", (e) => {
+        if (e.target === giftSheetOverlay) closeGiftActionSheet();
+      });
+    }
+
+    if (btnGiftSheetWithdraw) {
+      btnGiftSheetWithdraw.addEventListener("click", () => {
+        if (!currentSheetGift) return;
+        const g = currentSheetGift;
+        closeGiftActionSheet();
+        setTimeout(() => {
+          openWithdrawModal(g.id, g.charged);
+        }, 240);
+      });
+    }
+
+    if (btnGiftSheetSell) {
+      btnGiftSheetSell.addEventListener("click", () => {
+        if (!currentSheetGift) return;
+        const g = currentSheetGift;
+        closeGiftActionSheet();
+        setTimeout(() => {
+          sellGift(g.id, g.charged);
+        }, 150);
       });
     }
 
@@ -7560,8 +8945,12 @@
     }
 
     /********************
-     * Withdraw modal (generate code)
+     * Withdraw Sheet (iOS 26)
      ********************/
+    const withdrawSheetCard = document.getElementById("withdrawSheetCard");
+    const withdrawSheetImg = document.getElementById("withdrawSheetImg");
+    const withdrawSheetEmoji = document.getElementById("withdrawSheetEmoji");
+
     function openWithdrawModal(giftId, charged = false) {
       const qty = (charged ? chargedInventory : inventory)[giftId] || 0;
       if (qty <= 0) return;
@@ -7581,17 +8970,53 @@
       const prefix = WITHDRAW_PREFIX[giftId] || "XX";
       const code = `${prefix}-${randCode(26)}-${randCode(10)}`;
 
-      withdrawTitle.textContent = `WITHDRAW • ${g.name}`.toUpperCase();
-      withdrawDesc.innerHTML = `Скопируй код и отправь боту в чат.<br>Подарок: <b>${escapeHtml(g.name)}</b>`;
+      // Populate sheet
+      withdrawTitle.textContent = g.name;
+      withdrawDesc.innerHTML = `Скопируй код и отправь боту <b>@randomnygiftsbot</b> в чат.`;
       withdrawCode.textContent = code;
 
-      showOverlay(withdrawModal);
-      gsap.fromTo(withdrawModal.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+      // Reset copy button state
+      if (btnCopyCode) {
+        btnCopyCode.classList.remove("copied");
+        btnCopyCode.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Скопировать код</span>`;
+      }
+
+      // Show gift image or emoji
+      if (g.img) {
+        withdrawSheetImg.src = g.img;
+        withdrawSheetImg.style.display = "block";
+        if (withdrawSheetEmoji) withdrawSheetEmoji.style.display = "none";
+      } else {
+        if (withdrawSheetImg) withdrawSheetImg.style.display = "none";
+        if (withdrawSheetEmoji) {
+          withdrawSheetEmoji.textContent = g.emoji || "🎁";
+          withdrawSheetEmoji.style.display = "block";
+        }
+      }
+
+      // Open sheet
+      withdrawModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+      try { tg?.HapticFeedback?.impactOccurred("light"); } catch(e) {}
+      gsap.fromTo(withdrawSheetCard, { y: "100%" }, { y: "0%", duration: 0.28, ease: "power3.out" });
     }
 
-    closeWithdraw.addEventListener("click", () => hideOverlay(withdrawModal));
-    btnCloseWithdraw2.addEventListener("click", () => hideOverlay(withdrawModal));
-    withdrawModal.addEventListener("click", (e) => { if (e.target === withdrawModal) hideOverlay(withdrawModal); });
+    function closeWithdrawSheet() {
+      if (!withdrawSheetCard) return;
+      gsap.to(withdrawSheetCard, {
+        y: "100%",
+        duration: 0.22,
+        ease: "power3.in",
+        onComplete: () => {
+          withdrawModal.classList.remove("show");
+          document.body.style.overflow = "";
+        }
+      });
+    }
+
+    // Bind close handlers for new sheet
+    if (btnCloseWithdraw2) btnCloseWithdraw2.addEventListener("click", closeWithdrawSheet);
+    withdrawModal.addEventListener("click", (e) => { if (e.target === withdrawModal) closeWithdrawSheet(); });
 
     /********************
      * Quick Withdraw Feature
@@ -7620,13 +9045,34 @@
 
     function openQuickWithdrawModal() {
       if (!quickWithdrawModal) return;
-      showOverlay(quickWithdrawModal);
-      gsap.fromTo(quickWithdrawModal.querySelector(".modal"), 
-        { y: 30, opacity: 0, scale: 0.9 }, 
-        { y: 0, opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.2)" }
-      );
+      const card = document.getElementById("qwSheetCard");
+      quickWithdrawModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+      try { tg?.HapticFeedback?.impactOccurred("light"); } catch(e) {}
+      if (card) gsap.fromTo(card, { y: "100%" }, { y: "0%", duration: 0.28, ease: "power3.out" });
       updateQuickWithdrawUI();
       setTimeout(initQwParticles, 60);
+    }
+
+    function closeQuickWithdrawModal() {
+      if (!quickWithdrawModal) return;
+      const card = document.getElementById("qwSheetCard");
+      if (card) {
+        gsap.to(card, {
+          y: "100%",
+          duration: 0.22,
+          ease: "power3.in",
+          onComplete: () => {
+            quickWithdrawModal.classList.remove("show");
+            document.body.style.overflow = "";
+            stopQwParticles();
+          }
+        });
+      } else {
+        quickWithdrawModal.classList.remove("show");
+        document.body.style.overflow = "";
+        stopQwParticles();
+      }
     }
 
     function updateQuickWithdrawUI() {
@@ -7637,11 +9083,11 @@
 
       if (isOwned && buyBtn) {
         buyBtn.classList.add("owned");
-        if (btnText) btnText.textContent = "Owned (Active) ✓";
+        if (btnText) btnText.textContent = "Активна ✓";
         if (starIcon) starIcon.style.display = "none";
       } else if (buyBtn) {
         buyBtn.classList.remove("owned");
-        if (btnText) btnText.textContent = "Buy card for 149";
+        if (btnText) btnText.textContent = "Купить карту за 149";
         if (starIcon) starIcon.style.display = "inline-block";
       }
     }
@@ -7649,7 +9095,7 @@
     function buyQuickWithdrawCard() {
       const isOwned = localStorage.getItem("quickWithdrawCardOwned") === "true";
       if (isOwned) {
-        showToast("Quick Withdraw card is already active!");
+        showToast("Карта быстрого вывода уже активна!");
         return;
       }
 
@@ -7659,9 +9105,9 @@
         renderStars();
         localStorage.setItem("quickWithdrawCardOwned", "true");
         updateQuickWithdrawUI();
-        showToast("Quick Withdraw card successfully purchased! 🎉");
+        showToast("Карта быстрого вывода успешно куплена! 🎉");
       } else {
-        showToast("Not enough stars! Need 149 ⭐️");
+        showToast("Недостаточно звёзд! Нужно 149 ⭐️");
         openAddStarsModal();
       }
     }
@@ -7780,8 +9226,8 @@
       const bOpenQW = document.getElementById("btnOpenQuickWithdraw");
       const bBuyQW = document.getElementById("btnBuyQuickWithdraw");
 
-      if (cQW) cQW.addEventListener("click", () => { hideOverlay(mQW); stopQwParticles(); });
-      if (mQW) mQW.addEventListener("click", (e) => { if (e.target === mQW) { hideOverlay(mQW); stopQwParticles(); } });
+      if (cQW) cQW.addEventListener("click", closeQuickWithdrawModal);
+      if (mQW) mQW.addEventListener("click", (e) => { if (e.target === mQW) closeQuickWithdrawModal(); });
       if (bOpenQW) bOpenQW.addEventListener("click", openQuickWithdrawModal);
       if (bBuyQW) bBuyQW.addEventListener("click", buyQuickWithdrawCard);
     });
@@ -7797,7 +9243,13 @@
         return;
       }
 
-      // 1️⃣ УДАЛЯЕМ 1 ПОДАРОК ИЗ ИНВЕНТАРЯ
+      // 1️⃣ Visual feedback on button
+      if (btnCopyCode) {
+        btnCopyCode.classList.add("copied");
+        btnCopyCode.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Скопировано ✓</span>`;
+      }
+
+      // 2️⃣ УДАЛЯЕМ 1 ПОДАРОК ИЗ ИНВЕНТАРЯ
       removeFromInv(withdrawGiftId, 1, withdrawGiftCharged);
 
       // если подарков 0 — очищаем выбор апгрейда
@@ -7806,15 +9258,12 @@
         if (upgradeTo === withdrawGiftId) upgradeTo = null;
       }
 
-      // 2️⃣ ПЕРЕРИСОВКА
+      // 3️⃣ ПЕРЕРИСОВКА
       renderInventory();
       renderUpgrade();
 
-      // 3️⃣ ЗАКРЫВАЕМ МОДАЛКУ
-      hideOverlay(withdrawModal);
-
       // 4️⃣ UX
-      showToast("Код скопирован");
+      showToast("Код скопирован ✓");
 
       // Show Quick Withdraw banner above inventory
       localStorage.setItem("quickWithdrawUnlocked", "true");
@@ -7823,6 +9272,9 @@
 
       withdrawGiftId = null;
       withdrawGiftCharged = false;
+
+      // 5️⃣ Close sheet with delay so user sees "copied" state
+      setTimeout(closeWithdrawSheet, 900);
     });
 
     /********************
@@ -8533,109 +9985,307 @@
     /********************
      * Picker
      ********************/
+    /********************
+     * Modern Upgrade Picker
+     ********************/
+    let pickerMode = "to"; // "from" | "to"
+    let pickerSort = "cheap"; // "cheap" | "expensive"
+    const upPickerCard = document.getElementById("upPickerCard");
+    const tabSortCheap = document.getElementById("tabSortCheap");
+    const tabSortExpensive = document.getElementById("tabSortExpensive");
+
     function openPickerFromInventory() {
       const list = Object.entries(inventory).filter(([id, qty]) => qty > 0);
       if (list.length === 0) {
-        showToast("Инвентарь пуст");
+        showToast("Инвентарь пуст — откройте кейсы!");
         setTab("home", 0);
         return;
       }
+      pickerMode = "from";
+      pickerTitle.textContent = "Выберите подарок";
+      openPicker();
+    }
 
-      pickerTitle.textContent = "Выбери FROM";
+    function openPickerFromCatalog() {
+      pickerMode = "to";
+      pickerTitle.textContent = "Желаемый подарок";
+      openPicker();
+    }
+
+    function openPicker() {
+      if (!pickerOverlay || !upPickerCard) return;
+      updatePickerTabs();
+      renderPickerItems();
+
+      pickerOverlay.classList.add("show");
+      document.body.style.overflow = "hidden";
+      try { tg?.HapticFeedback?.impactOccurred("light"); } catch(e) {}
+      gsap.fromTo(upPickerCard, { y: "100%" }, { y: "0%", duration: 0.28, ease: "power3.out" });
+
+      try {
+        const tg = window.Telegram?.WebApp;
+        if (tg && tg.BackButton) {
+          tg.BackButton.show();
+          tg.BackButton.onClick(closePicker);
+        }
+      } catch(e) {}
+    }
+
+    function closePicker() {
+      if (!pickerOverlay || !upPickerCard) return;
+      gsap.to(upPickerCard, {
+        y: "100%",
+        duration: 0.22,
+        ease: "power3.in",
+        onComplete: () => {
+          pickerOverlay.classList.remove("show");
+          document.body.style.overflow = "";
+        }
+      });
+
+      try {
+        const tg = window.Telegram?.WebApp;
+        if (tg && tg.BackButton) {
+          tg.BackButton.hide();
+          tg.BackButton.offClick(closePicker);
+        }
+      } catch(e) {}
+    }
+
+    function updatePickerTabs() {
+      if (tabSortCheap) tabSortCheap.classList.toggle("active", pickerSort === "cheap");
+      if (tabSortExpensive) tabSortExpensive.classList.toggle("active", pickerSort === "expensive");
+    }
+
+    if (tabSortCheap) {
+      tabSortCheap.addEventListener("click", () => {
+        if (pickerSort === "cheap") return;
+        pickerSort = "cheap";
+        updatePickerTabs();
+        renderPickerItems();
+        try { tg?.HapticFeedback?.selectionChanged(); } catch(e) {}
+      });
+    }
+
+    if (tabSortExpensive) {
+      tabSortExpensive.addEventListener("click", () => {
+        if (pickerSort === "expensive") return;
+        pickerSort = "expensive";
+        updatePickerTabs();
+        renderPickerItems();
+        try { tg?.HapticFeedback?.selectionChanged(); } catch(e) {}
+      });
+    }
+
+    function renderPickerItems() {
       pickerBody.innerHTML = "";
-      list
-        .map(([id, qty]) => ({ ...getGift(id), qty }))
-        .sort((a, b) => b.value - a.value)
-        .forEach(g => {
-          const el = document.createElement("div");
-          el.className = "pickCard";
-          el.innerHTML = `
-            <div class="row">
-              <div class="pImg">${giftThumbHTML(g, 40)}</div>
-              <div class="pr">x${g.qty}</div>
-            </div>
-            <div class="nm">${escapeHtml(g.name)}</div>
-            <div class="sub"><img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">${formatStars(g.value)}</div>
-          `;
-          el.addEventListener("click", () => {
+
+      let items = [];
+      if (pickerMode === "from") {
+        items = Object.entries(inventory)
+          .filter(([id, qty]) => qty > 0)
+          .map(([id, qty]) => ({ ...getGift(id), qty }));
+      } else {
+        items = GIFTS
+          .slice()
+          .filter(g => isRealGift(g) && !g.noTargetInUpgrade)
+          .map(g => ({ ...g }));
+      }
+
+      // Sort
+      if (pickerSort === "cheap") {
+        items.sort((a, b) => a.value - b.value);
+      } else {
+        items.sort((a, b) => b.value - a.value);
+      }
+
+      if (items.length === 0) {
+        pickerBody.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px 10px; color: #838896; font-size: 14px;">Подарки не найдены</div>`;
+        return;
+      }
+
+      const fromGiftVal = upgradeFrom ? (getGift(upgradeFrom)?.value || 0) : 0;
+
+      items.forEach(g => {
+        const card = document.createElement("div");
+        card.className = "upItemCard";
+
+        const isSelected = (pickerMode === "from" && g.id === upgradeFrom) || (pickerMode === "to" && g.id === upgradeTo);
+        if (isSelected) card.classList.add("selected");
+
+        // Calculate chance percentage
+        let chanceStr = "";
+        if (pickerMode === "to") {
+          if (fromGiftVal > 0 && g.value > 0) {
+            let raw = (fromGiftVal / g.value) * 100 * UPGRADE_EDGE;
+            raw = clamp(raw, 1.2, 95);
+            if (fromGiftVal >= g.value) {
+              raw = clamp(88 + (fromGiftVal - g.value) / g.value * 8, 88, 97);
+            }
+            chanceStr = `${raw.toFixed(1)}%`;
+          } else {
+            chanceStr = `—%`;
+          }
+        } else {
+          chanceStr = `${formatStars(g.value)} ★`;
+        }
+
+        card.innerHTML = `
+          <div class="upItemBadge">
+            <img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">
+            <span>${formatStars(g.value)}</span>
+          </div>
+          ${g.qty && g.qty > 1 ? `<div class="upItemQty">x${g.qty}</div>` : ""}
+          <img class="upItemImg" src="${escapeAttr(g.img)}" alt="${escapeAttr(g.name)}">
+          <div class="upItemChance">${chanceStr}</div>
+        `;
+
+        card.addEventListener("click", () => {
+          if (pickerMode === "from") {
             upgradeFrom = g.id;
             closePicker();
             renderUpgrade();
             pulse("#slotFrom");
-          });
-          pickerBody.appendChild(el);
-        });
-
-      showOverlay(pickerOverlay);
-      gsap.fromTo(pickerOverlay.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
-    }
-
-    function openPickerFromCatalog() {
-      pickerTitle.textContent = "Выбери TO";
-      pickerBody.innerHTML = "";
-      GIFTS
-        .slice()
-        .filter(g => isRealGift(g) && !g.noTargetInUpgrade)
-        .sort((a, b) => b.value - a.value)
-        .forEach(g => {
-          const el = document.createElement("div");
-          el.className = "pickCard";
-          el.innerHTML = `
-            <div class="row">
-              <div class="pImg">${giftThumbHTML(g, 40)}</div>
-              <div class="pr"><img class="starI" src="${escapeAttr(STAR_PNG)}" alt="★">${formatStars(g.value)}</div>
-            </div>
-            <div class="nm">${escapeHtml(g.name)}</div>
-            <div class="sub">id: ${escapeHtml(g.id)}</div>
-          `;
-          el.addEventListener("click", () => {
+          } else {
             upgradeTo = g.id;
             closePicker();
             renderUpgrade();
             pulse("#slotTo");
-          });
-          pickerBody.appendChild(el);
+          }
+          try { tg?.HapticFeedback?.selectionChanged(); } catch(e) {}
         });
 
-      showOverlay(pickerOverlay);
-      gsap.fromTo(pickerOverlay.querySelector(".modal"), { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: .20, ease: "power2.out" });
+        pickerBody.appendChild(card);
+      });
     }
 
-    function closePicker() { hideOverlay(pickerOverlay); }
-    pickerClose.addEventListener("click", closePicker);
-    pickerOverlay.addEventListener("click", (e) => { if (e.target === pickerOverlay) closePicker(); });
+    if (pickerClose) pickerClose.addEventListener("click", closePicker);
+    if (pickerOverlay) {
+      pickerOverlay.addEventListener("click", (e) => {
+        if (e.target === pickerOverlay) closePicker();
+      });
+    }
+
+    // Allow clicking on the whole slotFrom or slotTo cards to open picker
+    if (slotFrom) {
+      slotFrom.addEventListener("click", (e) => {
+        if (!e.target.closest("#pickFromBtn")) openPickerFromInventory();
+      });
+    }
+    if (slotTo) {
+      slotTo.addEventListener("click", (e) => {
+        if (!e.target.closest("#pickToBtn")) openPickerFromCatalog();
+      });
+    }
 
     /********************
      * Tasks
      ********************/
     function renderTasks() {
-      tasksList.innerHTML = "";
+      const container = document.getElementById("earnCardsList");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      const tgUser = tg?.initDataUnsafe?.user || window.Telegram?.WebApp?.initDataUnsafe?.user;
+      const userId = (tgUser && tgUser.id) ? String(tgUser.id) : "7455532203";
+      const refLinkShort = `t.me/randomnygiftsbot?start=ref_${userId}`;
+      const refLinkFull = `https://${refLinkShort}`;
+
       TASKS.forEach(t => {
         const done = !!tasksDone[t.id];
         const isIconImage = t.icon.endsWith(".webp") || t.icon.endsWith(".png") || t.icon.endsWith(".jpg") || t.icon.endsWith(".JPEG") || t.icon.endsWith(".PNG");
 
-        const el = document.createElement("div");
-        el.className = "taskCard";
-        el.innerHTML = `
-          <div class="taskLeft">
-            <div class="taskIcon">
-              ${isIconImage ? `<img src="${escapeAttr(t.icon)}" alt="icon">` : escapeHtml(t.icon)}
+        const card = document.createElement("div");
+        card.className = "earnTaskCard";
+        card.setAttribute("data-id", t.id);
+
+        let iconHtml = isIconImage ? `<img src="${escapeAttr(t.icon)}" alt="icon">` : (t.isReferral ? `<svg width="34" height="34" viewBox="0 0 24 24" fill="#6ba3ff"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>` : `<span>${escapeHtml(t.icon)}</span>`);
+
+        let refBoxHtml = "";
+        if (t.isReferral) {
+          refBoxHtml = `
+            <div class="earnRefBox">
+              <span class="earnRefText">${refLinkShort}</span>
+              <button class="earnRefCopyBtn" title="Копировать">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
             </div>
-            <div class="taskMeta">
-              <p class="taskTitle">${escapeHtml(t.title)}</p>
-              <p class="taskSub"><span>${t.reward}</span><span style="opacity:.6">
+          `;
+        }
+
+        let btnLabel = done ? "✓ Выполнено" : escapeHtml(t.btnText || "Выполнить");
+
+        card.innerHTML = `
+          <div class="earnCardTop">
+            <div class="earnCardIcon">
+              ${iconHtml}
+            </div>
+            <div class="earnCardBody">
+              <h3 class="earnCardTitle">${escapeHtml(t.title)}</h3>
+              <p class="earnCardDesc">${escapeHtml(t.desc)}</p>
+            </div>
+            <div class="earnCardReward">
+              <span>${t.reward}</span>
+              <img src="StarIconSvg.svg" class="earnStarIcon" alt="★">
             </div>
           </div>
-          <button class="taskBtn ${done ? "done" : ""}" data-id="${escapeAttr(t.id)}">
-            ${done ? "Done" : "Start"}
+          ${refBoxHtml}
+          <button class="earnActionBtn ${done ? "done" : ""}">
+            ${t.isReferral && !done ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>` : ""}
+            <span>${btnLabel}</span>
           </button>
         `;
-        const btn = el.querySelector(".taskBtn");
-        btn.addEventListener("click", () => {
-          if (tasksDone[t.id]) return;
-          startTask(t.id, t.url);
+
+        // Handle Ref Copy click
+        if (t.isReferral) {
+          const copyBtn = card.querySelector(".earnRefCopyBtn");
+          if (copyBtn) {
+            copyBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(refLinkFull);
+              }
+              showToast("Ссылка скопирована! 📋");
+              try { tg?.HapticFeedback?.notificationOccurred("success"); } catch(e) {}
+            });
+          }
+        }
+
+        // Handle Action button click
+        const actionBtn = card.querySelector(".earnActionBtn");
+        actionBtn.addEventListener("click", () => {
+          if (done) {
+            showToast("Задание уже выполнено! ✓");
+            return;
+          }
+
+          if (t.isReferral) {
+            const shareText = "Пригласи друга и получи бесплатного мишку🧸";
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLinkFull)}&text=${encodeURIComponent(shareText)}`;
+            try {
+              if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+              else window.open(shareUrl, "_blank");
+            } catch (e) {
+              window.open(shareUrl, "_blank");
+            }
+            return;
+          }
+
+          if (t.isStaking) {
+            if (typeof window.openStakingModal === "function") window.openStakingModal();
+            return;
+          }
+
+          if (t.url) {
+            startTask(t.id, t.url);
+          }
         });
-        tasksList.appendChild(el);
+
+        container.appendChild(card);
       });
     }
 
@@ -9094,15 +10744,9 @@
         ? "You are already at the maximum level. No further progress is needed."
         : `Earn ${formatStars(left)} more XP to unlock the next badge.`;
 
-      levelInfoBadge.className = `levelInfoBadge ${rank.cls}`;
-      levelInfoBadge.innerHTML = getLevelIconMarkup();
-      levelInfoTitle.textContent = `Level ${info.level}`;
-      levelInfoSubtitle.textContent = `${rank.name} stage`;
-      levelInfoProgressText.textContent = `${formatStars(info.current)} / ${formatStars(info.need)} XP`;
-      levelInfoValue.textContent = levelText;
-      levelInfoHint.textContent = levelHint;
-      levelInfoValue2.textContent = nftUnlockText;
-      levelInfoHint2.textContent = nftHintText;
+      if (levelInfoCurrentSeg) levelInfoCurrentSeg.textContent = `Уровень ${info.level}`;
+      if (levelInfoNextSeg) levelInfoNextSeg.textContent = info.level >= 100 ? "Max" : `Уровень ${nextLevel}`;
+      if (levelInfoProgressText) levelInfoProgressText.textContent = `${formatStars(info.current)} / ${formatStars(info.need)}`;
 
       levelInfoOverlay.classList.add("show");
       document.body.style.overflow = "hidden";
@@ -9364,56 +11008,69 @@
   </div>
 
   <!-- CRYPTO EGG MODAL -->
-  <div class="fhModal" id="cryptoEggModal" style="display:none; background: radial-gradient(circle at center, #0e1e38 0%, #050b18 100%); flex-direction: column; justify-content: space-between; align-items: center; padding: 20px; box-sizing: border-box; overflow: hidden; position: fixed; inset: 0; z-index: 9999;">
-    
-    <!-- Center Section with Canvas & Egg -->
-    <div style="position: relative; width: 100%; height: 320px; display: flex; align-items: center; justify-content: center; margin: auto 0;">
-      <canvas id="ceParticlesCanvas" width="340" height="340" style="position: absolute; pointer-events: none; z-index: 1;"></canvas>
-      <img id="ceEggImg" src="crypto_egg.png" alt="Crypto Egg" style="width: 180px; height: 180px; object-fit: contain; position: relative; z-index: 2; filter: drop-shadow(0 0 25px rgba(0, 180, 255, 0.8)); cursor: pointer; transition: transform 0.2s ease; animation: cePulseFloat 3s ease-in-out infinite;">
-    </div>
-
-    <!-- Title & Subtitle & "Что это такое?" Block -->
-    <div style="text-align: center; margin-bottom: 20px; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 6px;">
-      <div style="font-size: 26px; font-weight: 800; color: #ffffff; text-shadow: 0 0 20px rgba(0, 180, 255, 0.6); letter-spacing: 0.5px;">Crypto Egg 🥚</div>
-      <div style="font-size: 13px; color: #70c5ff; font-weight: 500; opacity: 0.9;">Таинственное лимитированное яйцо</div>
-
-      <!-- "Что это такое?" Block (Moved much lower) -->
-      <button id="ceWhatIsThisBtn" style="margin-top: 14px; background: rgba(0, 160, 255, 0.15); border: 1px solid rgba(0, 200, 255, 0.4); color: #70c5ff; font-weight: 600; font-size: 14px; padding: 10px 22px; border-radius: 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; backdrop-filter: blur(10px); transition: all 0.2s; box-shadow: 0 0 15px rgba(0, 160, 255, 0.2);">
-        <span>❓</span> Что это такое?
+  <div class="cryptoEggModal" id="cryptoEggModal">
+    <!-- Header -->
+    <div class="ceModalHeader">
+      <div class="ceModalTitle">
+        <span>🥚</span> Crypto Egg
+      </div>
+      <button class="ceCloseBtn" id="closeCryptoEggBtn" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
 
-    <!-- Bottom Purchase Button -->
-    <div style="width: 100%; z-index: 10; margin-bottom: 10px;">
-      <button id="ceBuyBtn" style="width: 100%; padding: 16px; border-radius: 18px; border: none; background: linear-gradient(135deg, #0066ff 0%, #00d2ff 100%); color: #fff; font-size: 17px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 30px rgba(0, 150, 255, 0.45); display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.15s, box-shadow 0.15s;">
-        <span>Купить за 26</span><img src="Звезда емодзи.webp" alt="★" style="width: 22px; height: 22px; object-fit: contain; vertical-align: middle;">
-      </button>
+    <!-- Center Stage -->
+    <div class="ceCenterStage">
+      <div class="ceEggGlowWrapper">
+        <div class="ceGlowRing"></div>
+        <canvas id="ceParticlesCanvas" width="340" height="340" class="ceParticlesCanvas"></canvas>
+        <img id="ceEggImg" src="crypto_egg.png" alt="Crypto Egg" class="ceEggImg">
+      </div>
+
+      <div class="ceInfoCard">
+        <h3 class="ceCardTitle">Crypto Egg 🥚</h3>
+        <p class="ceCardSub">Таинственное лимитированное яйцо</p>
+        <button class="ceWhatIsBtn" id="ceWhatIsThisBtn" type="button">
+          <span>❓</span> Что это такое?
+        </button>
+      </div>
     </div>
 
+    <!-- Bottom Action Button -->
+    <div class="ceBottomWrap">
+      <button class="ceBuyBtn" id="ceBuyBtn" type="button">
+        <span>Купить за 26</span>
+        <img src="Звезда емодзи.webp" class="starEmojiIcon" alt="★">
+      </button>
+    </div>
   </div>
 
   <!-- INFO POPUP / OVERLAY FOR "Что это такое?" -->
-  <div id="ceInfoOverlay" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(12px); z-index: 100000; align-items: center; justify-content: center; padding: 20px;">
-    <div style="background: linear-gradient(145deg, #121c33, #091021); border: 1px solid rgba(0, 180, 255, 0.35); border-radius: 24px; padding: 24px; max-width: 320px; width: 100%; color: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.7); position: relative; animation: cePopupIn 0.25s ease-out;">
-      <button id="closeCeInfoOverlay" style="position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; font-size: 14px; cursor: pointer;">✕</button>
-      <div style="font-size: 20px; font-weight: 700; margin-bottom: 14px; color: #70c5ff; display: flex; align-items: center; gap: 8px;">
-        <span>🥚</span> Таинственное яйцо
-      </div>
-      <div style="font-size: 14px; line-height: 1.6; color: #d1d5db; white-space: pre-line; margin-bottom: 16px;">
-Пока никто не знает, что скрывается внутри…
-Яйцо можно купить, продать или апгрейднуть и попытаться получить более ценный подарок.
-Каждое яйцо уникальное и имеет свой номер, тираж яиц ограниченный.
+  <div class="ceOverlayWrap" id="ceInfoOverlay">
+    <div class="ceOverlayModal" role="dialog" aria-modal="true">
+      <div class="ceOverlayHeader">
+        <div class="ceOverlayTitle">
+          <span>🥚</span> Таинственное яйцо
+        </div>
+        <button class="ceOverlayClose" id="closeCeInfoOverlay" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
       </div>
 
-      <!-- PROMINENT GUARANTEE BLOCK WITH LIGHT BULB EMOJI WEBP -->
-      <div style="background: linear-gradient(135deg, rgba(255, 190, 0, 0.15) 0%, rgba(255, 140, 0, 0.25) 100%); border: 1px solid rgba(255, 200, 0, 0.5); border-radius: 16px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 0 20px rgba(255, 180, 0, 0.2);">
-        <img src="Лампочка емодзи.webp" alt="Лампочка" style="width: 32px; height: 32px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8)); margin-top: 2px;">
-        <div style="font-size: 13px; line-height: 1.5; color: #fff7ed; font-weight: 600;">
-          После того как яйцо можно будет открыть, мы гарантируем обратный выкуп минимум за 50зв!
+      <div class="ceOverlayText">
+        Пока никто не знает, что скрывается внутри…
+        <br><br>
+        Яйцо можно купить, продать или улучшить и попытаться получить более ценный подарок. Каждое яйцо уникальное и имеет свой номер, тираж яиц ограничен.
+      </div>
+
+      <div class="ceGuaranteeBanner">
+        <img src="Лампочка емодзи.webp" alt="Лампочка">
+        <div class="ceGuaranteeText">
+          После открытия мы гарантируем обратный выкуп минимум за <b>50 звёзд</b>!
         </div>
       </div>
 
-      <button id="ceInfoOkBtn" style="width: 100%; padding: 12px; border-radius: 14px; border: 1px solid rgba(0, 180, 255, 0.4); background: rgba(0, 150, 255, 0.2); color: #60a5fa; font-weight: 600; font-size: 15px; cursor: pointer;">Понятно</button>
+      <button class="ceOverlayOkBtn" id="ceInfoOkBtn" type="button">Понятно</button>
     </div>
   </div>
 
@@ -9475,7 +11132,7 @@
             <div class="stakingFlowIcon">
               <img src="Канал.webp" alt="Bot Logo">
             </div>
-            <div class="stakingFlowLabel">@ETKSE Bot</div>
+            <div class="stakingFlowLabel">@randomnygiftsbot</div>
           </div>
         </div>
       </div>
@@ -9505,45 +11162,62 @@
 
   <!-- FRAGILE HEART MODAL -->
   <div class="fhModal" id="fragileHeartModal">
-    <div class="fhIceBg"></div>
-
-    <!-- Center Lottie Container (Paused on Frame 1) -->
-    <div class="fhHeartWrap" id="fhHeartWrap">
-      <div class="fhHeartLottie" id="fhHeartLottie" data-lottie="https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/%D1%81%D0%B5%D1%80%D1%86%D0%B5%20%D0%BB%D0%B5%D0%B4.json" data-lottie-paused></div>
+    <!-- Header -->
+    <div class="fhModalHeader">
+      <div class="fhModalTitle">
+        <span>❄️</span> Fragile Heart
+      </div>
+      <button class="fhCloseBtn" id="closeFragileHeartBtn" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     </div>
 
-    <!-- Health / HP Bar -->
-    <div class="fhHpWrap">
-      <div class="fhHpLabel"><span>Heart Health</span> <span id="fhHpText">50%</span></div>
-      <div class="fhHpTrack">
-        <div class="fhHpFill" id="fhHpFill" style="width: 50%;"></div>
+    <!-- Center Stage -->
+    <div class="fhCenterStage">
+      <div class="fhHeartWrap" id="fhHeartWrap">
+        <div class="fhHeartGlowRing"></div>
+        <div class="fhHeartLottie" id="fhHeartLottie" data-lottie="https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/%D1%81%D0%B5%D1%80%D1%86%D0%B5%20%D0%BB%D0%B5%D0%B4.json" data-lottie-paused></div>
       </div>
-      <div class="fhTapHint" id="fhTapHint">Tap the heart fast to shatter it!</div>
+
+      <!-- Health / HP Bar Card -->
+      <div class="fhHpWrap">
+        <div class="fhHpLabel">
+          <span>Прочность сердца</span>
+          <span id="fhHpText">50%</span>
+        </div>
+        <div class="fhHpTrack">
+          <div class="fhHpFill" id="fhHpFill" style="width: 50%;"></div>
+        </div>
+        <div class="fhTapHint" id="fhTapHint">Тапай быстро по сердцу, чтобы расколоть его!</div>
+      </div>
     </div>
 
     <!-- Bottom Action Bar -->
     <div class="fhPlayBar">
-      <button class="fhBuyBtn" id="fhBuyAttemptBtn">
-        Buy 1 try for <span>49</span><img src="stars-DBKMczxe.png" class="starI" alt="★">
+      <button class="fhBuyBtn" id="fhBuyAttemptBtn" type="button">
+        <span>Купить 1 попытку за 49</span>
+        <img src="Звезда емодзи.webp" class="starEmojiIcon" alt="★">
       </button>
-      <button class="fhStartBtn" id="fhStartGameBtn" style="display:none;">НАЧАТЬ ИГРУ ❄️</button>
+      <button class="fhStartBtn" id="fhStartGameBtn" type="button" style="display:none;">
+        <span>Начать игру ❄️</span>
+      </button>
     </div>
 
-    <!-- INTRO OVERLAY (FULLSCREEN LIKE FOOTBALL) -->
+    <!-- INTRO OVERLAY -->
     <div class="fhIntro" id="fhIntro">
       <div class="fhIntroLottie" data-lottie="https://raw.githubusercontent.com/vovashmyhol/RuletkaDepPro/refs/heads/main/%D1%81%D0%B5%D1%80%D1%86%D0%B5%20%D0%BB%D0%B5%D0%B4.json"></div>
-      <div class="fhIntroTitle">Shatter the heart to win a Cookie Heart</div>
-      <div class="fhIntroSub">Model: random</div>
-      <button class="fhIntroBtn" id="fhIntroOkBtn">OK</button>
+      <div class="fhIntroTitle">Расколи ледяное сердце и выиграй Cookie Heart!</div>
+      <div class="fhIntroSub">Шанс победы: высокий</div>
+      <button class="fhIntroBtn" id="fhIntroOkBtn" type="button">Понятно</button>
     </div>
 
     <!-- WIN / LOSE MODAL OVERLAY -->
     <div class="fhResultOverlay" id="fhResultOverlay" style="display:none;">
-      <div class="fhResultCard">
+      <div class="fhResultCard" role="dialog" aria-modal="true">
         <div class="fhResultIcon" id="fhResultIcon" style="font-size:48px; margin-bottom:12px;">🏆</div>
         <div class="fhResultTitle" id="fhResultTitle">ПОБЕДА!</div>
         <div class="fhResultDesc" id="fhResultDesc">Вы успели разбить сердце и получили Cookie Heart!</div>
-        <button class="fhIntroBtn" id="fhResultCloseBtn">ОК</button>
+        <button class="fhIntroBtn" id="fhResultCloseBtn" type="button">ОК</button>
       </div>
     </div>
   </div>
@@ -10345,17 +12019,6 @@
     })();
   </script>
 
-  <style>
-@keyframes cePulseFloat {
-  0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 25px rgba(0, 180, 255, 0.8)); }
-  50% { transform: translateY(-10px) scale(1.04); filter: drop-shadow(0 0 35px rgba(0, 210, 255, 0.95)); }
-}
-@keyframes cePopupIn {
-  0% { transform: scale(0.85); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-</style>
-
   <!-- CRYPTO EGG MINI-GAME JS -->
   <script>
     (function initCryptoEggGame() {
@@ -10385,29 +12048,29 @@
 
           function createParticle() {
             const angle = Math.random() * Math.PI * 2;
-            const speed = 0.8 + Math.random() * 2.8;
+            const speed = 0.6 + Math.random() * 2.2;
             const isStar = Math.random() > 0.35;
-            const colors = ["#00e5ff", "#70c5ff", "#0072ff", "#2563eb", "#60a5fa", "#38bdf8"];
+            const colors = ["#2b82fe", "#38bdf8", "#60a5fa", "#93c5fd", "#c084fc", "#ffffff"];
             const color = colors[Math.floor(Math.random() * colors.length)];
             return {
               x: centerX + Math.cos(angle) * 15,
               y: centerY + Math.sin(angle) * 15,
               vx: Math.cos(angle) * speed,
               vy: Math.sin(angle) * speed,
-              size: isStar ? 3 + Math.random() * 6 : 2 + Math.random() * 4,
+              size: isStar ? 3 + Math.random() * 5 : 2 + Math.random() * 3.5,
               color: color,
               isStar: isStar,
               alpha: 0,
               maxAlpha: 0.7 + Math.random() * 0.3,
               life: 0,
-              maxLife: 40 + Math.random() * 50
+              maxLife: 45 + Math.random() * 55
             };
           }
 
           function render() {
             ctx.clearRect(0, 0, width, height);
 
-            if (particles.length < 80 && Math.random() < 0.85) {
+            if (particles.length < 75 && Math.random() < 0.85) {
               particles.push(createParticle());
             }
 
@@ -10428,7 +12091,7 @@
               ctx.globalAlpha = Math.max(0, p.alpha);
               ctx.fillStyle = p.color;
               ctx.shadowColor = p.color;
-              ctx.shadowBlur = 10;
+              ctx.shadowBlur = 8;
 
               if (p.isStar) {
                 // Draw 4-point glowing star
@@ -10466,6 +12129,8 @@
           console.log("Opening Crypto Egg Modal!");
           modal.style.display = "flex";
           modal.classList.add("show");
+          document.body.style.overflow = "hidden";
+          try { tg?.HapticFeedback?.impactOccurred("light"); } catch(e) {}
           initParticles();
 
           try {
@@ -10481,6 +12146,7 @@
           console.log("Closing Crypto Egg Modal!");
           modal.classList.remove("show");
           modal.style.display = "none";
+          document.body.style.overflow = "";
           if (animFrameId) cancelAnimationFrame(animFrameId);
 
           try {
@@ -10501,6 +12167,15 @@
             e.preventDefault();
             e.stopPropagation();
             openModal();
+            return;
+          }
+
+          // Close Crypto Egg modal via top X button
+          const closeCeBtn = e.target.closest("#closeCryptoEggBtn");
+          if (closeCeBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal();
             return;
           }
 
@@ -10805,6 +12480,19 @@
             e.preventDefault();
             e.stopPropagation();
             openModal();
+            return;
+          }
+
+          const closeFhBtn = e.target.closest("#closeFragileHeartBtn");
+          if (closeFhBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal();
+            return;
+          }
+
+          if (e.target === modal) {
+            closeModal();
             return;
           }
 
@@ -11732,13 +13420,18 @@
       document.body.style.overflow = "";
     }
 
+    const btnEarnOpenStakingPill = document.getElementById("btnEarnOpenStakingPill");
+    if (btnEarnOpenStakingPill) btnEarnOpenStakingPill.addEventListener("click", openModal);
     if (btnOpenStaking) btnOpenStaking.addEventListener("click", openModal);
     if (bannerSlideStaking) bannerSlideStaking.addEventListener("click", openModal);
     if (btnCloseStakingModal) btnCloseStakingModal.addEventListener("click", closeModal);
 
+    // Export so renderTasks can call it even without #btnOpenStaking in DOM
+    window.openStakingModal = openModal;
+
     // Document-level delegation for 100% reliable opening
     document.addEventListener("click", function(e) {
-      if (e.target.closest("#bannerSlideStaking") || e.target.closest("[data-action='staking']")) {
+      if (e.target.closest("#bannerSlideStaking") || e.target.closest("#btnEarnOpenStakingPill") || e.target.closest("#btnOpenStaking") || e.target.closest("[data-action='staking']")) {
         e.preventDefault();
         e.stopPropagation();
         openModal();
@@ -11770,7 +13463,7 @@
     if (btnTransferGiftsToBot) {
       btnTransferGiftsToBot.addEventListener("click", () => {
         try { tg?.HapticFeedback?.impactOccurred("medium"); } catch(e) {}
-        const botLink = "https://t.me/ETKSE";
+        const botLink = "https://t.me/randomnygiftsbot";
         try {
           if (tg?.openTelegramLink) tg.openTelegramLink(botLink);
           else if (tg?.openLink) tg.openLink(botLink);
