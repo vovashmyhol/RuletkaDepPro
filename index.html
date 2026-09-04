@@ -2767,6 +2767,67 @@
       padding-bottom: 30px;
     }
 
+    /* ===== EXCHANGE STARS TO TON PROMO CARD ===== */
+    .exchangePromoCard {
+      background: #1c1d22;
+      border-radius: 28px;
+      padding: 20px 20px 18px;
+      border: 1px solid rgba(0, 152, 234, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 152, 234, 0.08);
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: transform 0.16s ease, background 0.16s ease;
+      position: relative;
+    }
+
+    .exchangePromoCard:active {
+      transform: scale(0.985);
+      background: #22232a;
+    }
+
+    .exchangeIconPair {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(0, 152, 234, 0.12) !important;
+      border: 1px solid rgba(0, 152, 234, 0.25);
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px;
+      flex-shrink: 0;
+      padding: 2px;
+      box-sizing: border-box;
+    }
+
+    .exchangeIconPair .exchangeIconStar {
+      width: 17px !important;
+      height: 17px !important;
+      object-fit: contain;
+    }
+
+    .exchangeIconPair .exchangeIconTon {
+      width: 17px !important;
+      height: 17px !important;
+      object-fit: contain;
+    }
+
+    .exchangeIconPair .exchangeArrow {
+      font-size: 11px;
+      color: #70c5ff;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .exchangeTitleIcon {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      vertical-align: -3px;
+      margin: 0 2px;
+      display: inline-block;
+    }
+
     .earnTaskCard {
       background: #1c1d22;
       border-radius: 28px;
@@ -6215,9 +6276,9 @@
         <!-- BANNER SLIDER -->
         <div class="bannerSlider" id="bannerSlider">
           <div class="bannerSliderTrack" id="bannerSliderTrack" style="width: 400%;">
-            <!-- Slide 1: NFT Staking (FIRST) -->
-            <div class="bannerSlide" id="bannerSlideStaking" data-action="staking" style="width: 25%;">
-              <img src="StakingBanner.PNG" alt="NFT Staking" class="starsBannerPhoto">
+            <!-- Slide 1: Grami Trade Bot (IMG_2868) -->
+            <div class="bannerSlide" id="bannerSlideStaking" data-action="tradeBot" style="width: 25%;">
+              <img src="IMG_2868.JPEG" alt="Grami Trade Bot" class="starsBannerPhoto">
             </div>
             <!-- Slide 2: Crypto Egg -->
             <div class="bannerSlide" id="bannerSlide0" data-action="cryptoEgg" style="width: 25%;">
@@ -6380,6 +6441,21 @@
               </button>
             </div>
           </div>
+
+          <!-- TRADING GAME CARD -->
+          <div class="gameCard" id="btnOpenTradingGame">
+            <div class="gameLottieWrap">
+              <div class="gameCardGlow" style="background: radial-gradient(circle, rgba(0, 152, 234, 0.25) 0%, transparent 70%);"></div>
+              <img src="TradeIcon.png" alt="Трейдинг" class="gameCardImg" style="width: 76px; height: 76px; object-fit: contain; border-radius: 18px;">
+            </div>
+            <div class="gameMeta">
+              <div class="gameTitle">Трейдинг</div>
+              <div class="gameSub">Grami Trade Bot</div>
+              <button class="gameActionBtn" type="button">
+                <span>Трейдить</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -6387,6 +6463,30 @@
       <div class="page" id="pageCrafts">
         <div class="earnPageHeader">
           <h1 class="earnMainTitle">Заработать Stars</h1>
+        </div>
+
+        <!-- EXCHANGE 50 STARS FOR 1 TON BLOCK -->
+        <div class="exchangePromoCard" id="btnExchangeStarsTon">
+          <div class="earnCardTop">
+            <div class="earnCardIcon exchangeIconPair">
+              <img src="stars-DBKMczxe.png" class="exchangeIconStar" alt="Stars">
+              <span class="exchangeArrow">⇄</span>
+              <img src="ton.svg" class="exchangeIconTon" alt="TON">
+            </div>
+            <div class="earnCardBody">
+              <h3 class="earnCardTitle" style="display: flex; align-items: center; flex-wrap: wrap; gap: 4px;">
+                <span>Обменять 50</span>
+                <img src="stars-DBKMczxe.png" class="exchangeTitleIcon" alt="Stars">
+                <span>старс на 1</span>
+                <img src="ton.svg" class="exchangeTitleIcon" alt="TON">
+                <span>тон?</span>
+              </h3>
+              <p class="earnCardDesc">Мгновенный обмен Stars на TON в Grami Trade Bot</p>
+            </div>
+          </div>
+          <button class="earnActionBtn" type="button">
+            <span>Обменять</span>
+          </button>
         </div>
 
         <div class="earnCardsList" id="earnCardsList"></div>
@@ -13423,7 +13523,6 @@
     const btnEarnOpenStakingPill = document.getElementById("btnEarnOpenStakingPill");
     if (btnEarnOpenStakingPill) btnEarnOpenStakingPill.addEventListener("click", openModal);
     if (btnOpenStaking) btnOpenStaking.addEventListener("click", openModal);
-    if (bannerSlideStaking) bannerSlideStaking.addEventListener("click", openModal);
     if (btnCloseStakingModal) btnCloseStakingModal.addEventListener("click", closeModal);
 
     // Export so renderTasks can call it even without #btnOpenStaking in DOM
@@ -13431,7 +13530,7 @@
 
     // Document-level delegation for 100% reliable opening
     document.addEventListener("click", function(e) {
-      if (e.target.closest("#bannerSlideStaking") || e.target.closest("#btnEarnOpenStakingPill") || e.target.closest("#btnOpenStaking") || e.target.closest("[data-action='staking']")) {
+      if (e.target.closest("#btnEarnOpenStakingPill") || e.target.closest("#btnOpenStaking") || (e.target.closest("[data-action='staking']") && !e.target.closest("#bannerSlideStaking"))) {
         e.preventDefault();
         e.stopPropagation();
         openModal();
@@ -13473,6 +13572,50 @@
         }
       });
     }
+  })();
+
+  // Grami Trade Bot controller
+  (function initGramiTradeFeature() {
+    function openTradeBot() {
+      try { tg?.HapticFeedback?.impactOccurred("medium"); } catch(e) {}
+      const botUrl = "https://t.me/GramiTradeBot";
+      try {
+        if (window.Telegram?.WebApp?.openTelegramLink) {
+          window.Telegram.WebApp.openTelegramLink(botUrl);
+        } else if (window.Telegram?.WebApp?.openLink) {
+          window.Telegram.WebApp.openLink(botUrl);
+        } else if (typeof tg !== "undefined" && tg?.openTelegramLink) {
+          tg.openTelegramLink(botUrl);
+        } else if (typeof tg !== "undefined" && tg?.openLink) {
+          tg.openLink(botUrl);
+        } else {
+          window.open(botUrl, "_blank");
+        }
+      } catch (err) {
+        window.open(botUrl, "_blank");
+      }
+    }
+
+    window.openTradeBot = openTradeBot;
+
+    // Direct click handlers
+    const bannerSlideStaking = document.getElementById("bannerSlideStaking");
+    if (bannerSlideStaking) bannerSlideStaking.addEventListener("click", openTradeBot);
+
+    const btnExchangeStarsTon = document.getElementById("btnExchangeStarsTon");
+    if (btnExchangeStarsTon) btnExchangeStarsTon.addEventListener("click", openTradeBot);
+
+    const btnOpenTradingGame = document.getElementById("btnOpenTradingGame");
+    if (btnOpenTradingGame) btnOpenTradingGame.addEventListener("click", openTradeBot);
+
+    // Document-level delegation for 100% reliable click capture
+    document.addEventListener("click", function(e) {
+      if (e.target.closest("#bannerSlideStaking") || e.target.closest("#btnExchangeStarsTon") || e.target.closest("#btnOpenTradingGame")) {
+        e.preventDefault();
+        e.stopPropagation();
+        openTradeBot();
+      }
+    });
   })();
 </script>
 
