@@ -1530,16 +1530,16 @@
       background: #2374e6;
     }
 
-    /* Level Info Overlay */
+    /* ===== LEVEL INFO — iOS bottom sheet ===== */
     .levelInfoOverlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.6);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
       display: none;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
-      padding: 16px;
       z-index: 2200;
     }
 
@@ -1547,22 +1547,27 @@
       display: flex;
     }
 
-    /* ===== LEVEL INFO (RATING) MODAL (iOS 26 Theme) ===== */
     .levelInfoCard {
-      width: min(440px, 94%);
-      max-height: min(88vh, 620px);
-      border-radius: 32px;
-      padding: 20px 22px 24px;
-      color: #fff;
-      background: #191b20;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.7);
-      transform: translateY(16px) scale(0.97);
-      opacity: 0;
+      width: min(500px, 100%);
+      max-height: 90vh;
       box-sizing: border-box;
-      overflow-y: auto;
       display: flex;
       flex-direction: column;
+      color: #fff;
+      background: #1c1d22;
+      border-radius: 32px 32px 0 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+      padding: 8px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .levelInfoHandle {
+      width: 38px;
+      height: 5px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 0 auto 6px;
+      flex-shrink: 0;
     }
 
     .levelInfoTopBar {
@@ -1570,19 +1575,30 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      padding-bottom: 20px;
+      min-height: 44px;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+
+    .levelInfoHeading {
+      font-size: 17px;
+      font-weight: 650;
+      color: #fff;
+      margin: 0;
+      letter-spacing: -0.3px;
     }
 
     .levelInfoCloseIconBtn {
       position: absolute;
-      left: 0;
-      top: 0;
-      width: 36px;
-      height: 36px;
+      right: 0;
+      top: 50%;
+      width: 30px;
+      height: 30px;
+      margin-top: -15px;
       border-radius: 50%;
-      background: #24272f;
       border: none;
-      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1590,46 +1606,49 @@
       transition: transform 0.15s ease, background 0.15s ease;
     }
 
+    .levelInfoCloseIconBtn svg {
+      width: 14px;
+      height: 14px;
+    }
+
     .levelInfoCloseIconBtn:active {
       transform: scale(0.92);
-      background: #2d313b;
+      background: rgba(255, 255, 255, 0.16);
     }
 
-    .levelInfoHeading {
-      font-size: 18px;
-      font-weight: 700;
-      color: #ffffff;
-      margin: 0;
-      letter-spacing: -0.3px;
+    .levelInfoScroll {
+      flex: 0 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
     }
 
-    /* Floating Crown Badge with Pointer */
+    /* Floating badge with pointer */
     .levelInfoBadgeWrap {
       display: flex;
       justify-content: center;
-      margin-bottom: 8px;
-      position: relative;
+      margin: 6px 0 10px;
     }
 
     .levelInfoScoreBadge {
       background: #2b82fe;
-      color: #ffffff;
-      padding: 8px 18px;
+      color: #fff;
+      padding: 7px 16px;
       border-radius: 99px;
-      font-size: 19px;
-      font-weight: 750;
+      font-size: 18px;
+      font-weight: 700;
       display: inline-flex;
       align-items: center;
       gap: 7px;
       position: relative;
-      box-shadow: 0 4px 16px rgba(43, 131, 254, 0);
       letter-spacing: -0.3px;
     }
 
     .levelInfoScoreBadge svg {
-      width: 20px;
-      height: 20px;
-      fill: #ffffff;
+      width: 19px;
+      height: 19px;
+      fill: #fff;
     }
 
     .levelInfoScoreBadge::after {
@@ -1638,24 +1657,21 @@
       bottom: -6px;
       left: 50%;
       transform: translateX(-50%);
-      width: 0;
-      height: 0;
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
       border-top: 7px solid #2b82fe;
     }
 
-    /* Segmented Track */
+    /* Segmented track */
     .levelInfoTrackContainer {
-      margin-top: 4px;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
 
     .levelInfoTrack {
       display: flex;
-      height: 38px;
+      height: 36px;
       border-radius: 99px;
-      background: #282a32;
+      background: #2a2c34;
       overflow: hidden;
       position: relative;
     }
@@ -1668,7 +1684,6 @@
       width: 50%;
       background: #2b82fe;
       border-radius: 99px;
-      transition: width 0.4s ease;
       z-index: 1;
     }
 
@@ -1680,54 +1695,67 @@
       position: relative;
       z-index: 2;
       font-size: 14px;
-      font-weight: 650;
-      color: #ffffff;
+      font-weight: 600;
+      color: #fff;
       user-select: none;
     }
 
     .levelInfoTrackSegment.next {
-      color: #d1d5db;
+      color: rgba(255, 255, 255, 0.55);
     }
 
-    /* Subtitle Explanation */
     .levelInfoDescription {
       text-align: center;
       font-size: 14px;
       line-height: 1.4;
-      color: #e4e7ec;
-      margin-bottom: 22px;
-      padding: 0 10px;
-      font-weight: 400;
+      color: #8c92a2;
+      margin: 0 8px 16px;
     }
 
-    /* Feature Rule Items List */
+    /* iOS grouped (inset) list */
     .levelInfoRulesList {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 26px;
+      background: #24262d;
+      border-radius: 22px;
+      overflow: hidden;
+      margin-bottom: 18px;
     }
 
     .levelInfoRuleRow {
+      position: relative;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 14px;
+      padding: 13px 16px;
+    }
+
+    .levelInfoRuleRow + .levelInfoRuleRow::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 64px;
+      right: 0;
+      height: 0.5px;
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .levelInfoRuleIcon {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #2b82fe;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      color: #2b82fe;
     }
 
+    .levelInfoRuleRow:nth-child(2) .levelInfoRuleIcon { background: #30b950; }
+    .levelInfoRuleRow:nth-child(3) .levelInfoRuleIcon { background: #ff9f0a; }
+
     .levelInfoRuleIcon svg {
-      width: 24px;
-      height: 24px;
-      stroke: #2b82fe;
+      width: 19px;
+      height: 19px;
+      stroke: #fff;
     }
 
     .levelInfoRuleContent {
@@ -1737,9 +1765,10 @@
 
     .levelInfoRuleTitle {
       font-size: 15.5px;
-      font-weight: 650;
-      color: #ffffff;
-      margin-bottom: 4px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 3px;
+      letter-spacing: -0.2px;
     }
 
     .levelInfoRuleDesc {
@@ -1750,8 +1779,8 @@
 
     .levelTagPlus {
       display: inline-block;
-      background: #2b82fe;
-      color: #ffffff;
+      background: rgba(43, 130, 254, 0.18);
+      color: #4d9bff;
       font-size: 10.5px;
       font-weight: 750;
       padding: 2px 6px;
@@ -1776,24 +1805,22 @@
       vertical-align: 1px;
     }
 
-    /* Bottom OK Button */
     .levelInfoOkBtn {
       width: 100%;
       height: 52px;
+      flex-shrink: 0;
+      margin-top: 14px;
       border-radius: 28px;
       border: none;
       background: #2b82fe;
-      color: #ffffff;
+      color: #fff;
       font-size: 16px;
       font-weight: 650;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
       transition: transform 0.15s ease, background 0.15s ease;
-      box-shadow: none;
-      margin-top: auto;
     }
 
     .levelInfoOkBtn:active {
@@ -3526,7 +3553,7 @@
       position: relative;
       width: 250px;
       height: 250px;
-      margin-bottom: 20px;
+      margin: -6px 0 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -3535,9 +3562,9 @@
 
     .winLight {
       position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(74, 163, 255, 0.45) 0%, transparent 60%);
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(43, 130, 254, 0.35) 0%, transparent 62%);
       z-index: 0;
       animation: pulseLight 3s infinite alternate ease-in-out;
     }
@@ -3686,82 +3713,118 @@
       font-size: 110px;
     }
 
+    .winCaption {
+      font-size: 14px;
+      font-weight: 650;
+      color: #2b82fe;
+      letter-spacing: .1px;
+      margin: 0 0 4px;
+      z-index: 10;
+    }
+
     .winName {
-      font-size: 32px;
-      font-weight: 950;
+      font-size: 22px;
+      font-weight: 750;
       color: #fff;
       text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      letter-spacing: -0.3px;
+      margin: 0 0 22px;
+      line-height: 1.2;
       z-index: 10;
     }
 
     .winOverlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       display: none;
-      flex-direction: column;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
       z-index: 3000;
-      padding: calc(var(--safeTop, 110px) + 20px) 20px 20px;
     }
 
     .winOverlay.show {
       display: flex;
     }
 
-    .winActions {
-      width: 100%;
-      padding: 0;
-      margin-top: 50px;
+    .winSheetCard,
+    .mwSheetCard {
+      position: relative;
+      width: min(500px, 100%);
+      background: #1c1d22;
+      border-radius: 32px 32px 0 0;
+      padding: 16px 20px calc(var(--safeBottom, 0px) + 28px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      max-width: 320px;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .winSheetCard .giftSheetHandle,
+    .mwSheetCard .giftSheetHandle {
+      position: relative;
       z-index: 10;
+      flex: 0 0 auto;
+    }
+
+    .winSheetCard .giftSheetActions,
+    .mwSheetCard .giftSheetActions {
+      position: relative;
+      z-index: 10;
+    }
+
+    .winSheetCard .giftSheetBtnWithdraw .starI,
+    .mwSheetCard .giftSheetBtnWithdraw .starI {
+      width: 16px;
+      height: 16px;
+      vertical-align: 0;
+      filter: none;
+      margin-right: -2px;
     }
 
     /* ===== MULTI-WIN MODAL ===== */
     .mw-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      align-items: flex-end;
+      justify-content: center;
       z-index: 3100;
-      padding: calc(var(--safeTop, 80px) + 10px) 16px 24px;
-      overflow-y: auto;
-      gap: 0;
     }
 
     .mw-overlay.show {
       display: flex;
     }
 
+    .mwSheetCard {
+      max-height: 92vh;
+      max-height: 92dvh;
+    }
+
     .mw-light {
-      position: fixed;
-      width: 500px;
-      height: 500px;
-      top: 50%;
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      top: 40%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(74, 163, 255, 0.3) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(43, 130, 254, 0.2) 0%, transparent 65%);
       pointer-events: none;
       animation: pulseLight 3s infinite alternate ease-in-out;
       z-index: 0;
     }
 
     .mw-showcase {
-      position: fixed;
+      position: absolute;
       inset: 0;
       pointer-events: none;
       z-index: 1;
@@ -3769,15 +3832,29 @@
     }
 
     .mw-title {
-      font-size: 26px;
-      font-weight: 900;
+      font-size: 22px;
+      font-weight: 750;
       color: #fff;
       text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+      margin: 0 0 16px;
       z-index: 10;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .mw-scroll {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding: 2px 0 4px;
+      display: flex;
+      justify-content: center;
     }
 
     /* Сетка подарков */
@@ -3790,6 +3867,7 @@
       width: 100%;
       max-width: 360px;
       z-index: 10;
+      align-content: flex-start;
     }
 
     /* 1 подарок — большой по центру */
@@ -3816,9 +3894,8 @@
     .mw-grid--5 .mw-card:not(.mw-card--center) { width: 100%; }
     /* Центральная карточка — чуть крупнее */
     .mw-card-inner--center {
-      background: rgba(255, 255, 255, 0.09) !important;
-      border-color: rgba(255, 215, 0, 0.35) !important;
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.18);
+      background: #2a2c34 !important;
+      border-color: rgba(255, 190, 50, 0.4) !important;
     }
 
     .mw-card {
@@ -3830,9 +3907,9 @@
     .mw-card-inner {
       position: relative;
       width: 100%;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1.5px solid rgba(255, 255, 255, 0.13);
-      border-radius: 18px;
+      background: #24262d;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 24px;
       padding: 12px 8px 10px;
       display: flex;
       flex-direction: column;
@@ -3842,20 +3919,19 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .mw-card-inner:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    .mw-card-inner:active {
+      transform: scale(0.985);
     }
 
     /* Цветовое свечение по редкости */
-    .mw-card-inner[data-rarity="rare"]   { border-color: rgba(74, 163, 255, 0.4); }
-    .mw-card-inner[data-rarity="epic"]   { border-color: rgba(185, 100, 255, 0.5); }
-    .mw-card-inner[data-rarity="legendary"] { border-color: rgba(255, 190, 50, 0.6); }
+    .mw-card-inner[data-rarity="rare"]   { border-color: rgba(43, 130, 254, 0.35); }
+    .mw-card-inner[data-rarity="epic"]   { border-color: rgba(185, 100, 255, 0.4); }
+    .mw-card-inner[data-rarity="legendary"] { border-color: rgba(255, 190, 50, 0.45); }
 
     .mw-card-glow {
       position: absolute;
       inset: 0;
-      border-radius: 18px;
+      border-radius: 24px;
       background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
@@ -3870,12 +3946,11 @@
     }
 
     .mw-card-name {
-      font-size: 11px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      font-weight: 650;
+      color: #fff;
       text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: -0.1px;
       z-index: 2;
       line-height: 1.2;
     }
@@ -3883,10 +3958,10 @@
     .mw-card-price {
       display: flex;
       align-items: center;
-      gap: 3px;
-      font-size: 11px;
+      gap: 4px;
+      font-size: 12px;
       font-weight: 700;
-      color: #ffd700;
+      color: #2b82fe;
       z-index: 2;
     }
 
@@ -3896,18 +3971,13 @@
     }
 
     .mw-card--single .mw-card-inner { padding: 20px 16px 16px; }
-    .mw-card--single .mw-card-name { font-size: 15px; margin-top: 4px; }
-    .mw-card--single .mw-card-price { font-size: 14px; }
+    .mw-card--single .mw-card-name { font-size: 16px; margin-top: 4px; }
+    .mw-card--single .mw-card-price { font-size: 15px; }
     .mw-card--single .mw-card-price .starI { width: 16px; height: 16px; }
 
     .mw-actions {
-      width: 100%;
-      max-width: 320px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 20px;
-      z-index: 10;
+      margin-top: 18px;
+      flex: 0 0 auto;
     }
 
 
@@ -6602,11 +6672,12 @@
     </div>
 
     <div class="levelInfoOverlay" id="levelInfoOverlay">
-      <div class="levelInfoCard" id="levelInfoCard">
-        <!-- Top Bar with X button and Title -->
+      <div class="levelInfoCard" id="levelInfoCard" role="dialog" aria-modal="true">
+        <div class="levelInfoHandle"></div>
+        <!-- Top Bar with title and X button -->
         <div class="levelInfoTopBar">
           <button class="levelInfoCloseIconBtn" id="btnLevelInfoClose" type="button" aria-label="Close">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -6614,6 +6685,7 @@
           <h3 class="levelInfoHeading">Рейтинг</h3>
         </div>
 
+        <div class="levelInfoScroll">
         <!-- Floating Score Badge with Crown & Pointer -->
         <div class="levelInfoBadgeWrap">
           <div class="levelInfoScoreBadge" id="levelInfoScoreBadge">
@@ -6675,9 +6747,11 @@
           </div>
         </div>
 
+        </div>
+
         <!-- OK Button -->
         <button class="levelInfoOkBtn" id="btnLevelInfoOk" type="button">
-          <span>👌 OK</span>
+          <span>OK</span>
         </button>
       </div>
     </div>
@@ -8424,9 +8498,9 @@
             const sellPrice = round1(won.value * SELL_PAYOUT);
             winSellPrice.textContent = formatStars(sellPrice);
 
-            winModal.classList.add("show");
+            const winCard = document.getElementById("winSheetCard");
             document.body.style.overflow = "hidden";
-            gsap.fromTo(winModal, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.2)" });
+            showWinSheet(winModal, winCard);
 
             try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
 
@@ -8482,16 +8556,13 @@
 
                 winShowcase.querySelectorAll('.winStar').forEach(s => s.remove());
 
-                gsap.to(winModal, {
-                  opacity: 0, scale: 0.95, duration: 0.2, ease: "power2.in", onComplete: () => {
-                    winModal.classList.remove("show");
-                    document.body.style.overflow = "";
-                    gsap.set(winModal, { clearProps: "all" });
-                    resolve();
-                  }
+                hideWinSheet(winModal, winCard, () => {
+                  document.body.style.overflow = "";
+                  resolve();
                 });
               };
 
+              winModal.onclick = (e) => { if (e.target === winModal) handleTake(); };
               btnSell.addEventListener("click", handleSell);
               btnTake.addEventListener("click", handleTake);
             });
@@ -8712,6 +8783,29 @@
     }
 
     /********************
+     * Win sheets (iOS bottom sheet) helpers
+     ********************/
+    function showWinSheet(overlay, card) {
+      overlay.classList.add("show");
+      gsap.killTweensOf([overlay, card]);
+      gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power1.out" });
+      gsap.fromTo(card, { y: 0, yPercent: 100 }, { yPercent: 0, duration: 0.3, ease: "power3.out" });
+    }
+
+    function hideWinSheet(overlay, card, done) {
+      gsap.killTweensOf([overlay, card]);
+      gsap.to(overlay, { opacity: 0, duration: 0.22, ease: "power1.in" });
+      gsap.to(card, {
+        yPercent: 100, duration: 0.22, ease: "power3.in", onComplete: () => {
+          overlay.classList.remove("show");
+          overlay.onclick = null;
+          gsap.set([overlay, card], { clearProps: "all" });
+          if (typeof done === "function") done();
+        }
+      });
+    }
+
+    /********************
      * Multi-Win Modal (быстрое открытие нескольких кейсов)
      ********************/
     function showMultiWinModal(wins, caseData, afterCloseCb) {
@@ -8788,9 +8882,10 @@
       btnSellAll.style.display = canSellAny ? "" : "none";
 
       // Показываем модалку
-      modal.classList.add("show");
+      const mwCard = document.getElementById("mwSheetCard");
       document.body.style.overflow = "hidden";
-      gsap.fromTo(modal, { opacity: 0, scale: 0.93 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.3)" });
+      showWinSheet(modal, mwCard);
+      try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
 
       // Эффект частиц
       const showcase = modal.querySelector(".mw-showcase");
@@ -8814,13 +8909,9 @@
       const closeModal = (cb) => {
         clearInterval(starsInterval);
         modal.querySelectorAll(".winStar").forEach(s => s.remove());
-        gsap.to(modal, {
-          opacity: 0, scale: 0.95, duration: 0.2, ease: "power2.in", onComplete: () => {
-            modal.classList.remove("show");
-            document.body.style.overflow = "";
-            gsap.set(modal, { clearProps: "all" });
-            if (typeof cb === 'function') cb();
-          }
+        hideWinSheet(modal, mwCard, () => {
+          document.body.style.overflow = "";
+          if (typeof cb === 'function') cb();
         });
         btnSellAll.removeEventListener("click", handleSellAll);
         btnTakeAll.removeEventListener("click", handleTakeAll);
@@ -8834,6 +8925,7 @@
       };
       const handleTakeAll = () => closeModal(afterCloseCb);
 
+      modal.onclick = (e) => { if (e.target === modal) handleTakeAll(); };
       btnSellAll.addEventListener("click", handleSellAll);
       btnTakeAll.addEventListener("click", handleTakeAll);
     }
@@ -9599,8 +9691,8 @@
           document.getElementById("winImage").innerHTML = giftThumbHTML(winGift, 180);
           document.getElementById("winName").textContent = winGift.name;
           document.getElementById("winSellPrice").textContent = formatStars(round1(winGift.value * SELL_PAYOUT));
-          winModal.classList.add("show");
-          gsap.fromTo(winModal, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.2)" });
+          const winCard = document.getElementById("winSheetCard");
+          showWinSheet(winModal, winCard);
 
           try { tg?.HapticFeedback?.notificationOccurred("success"); } catch (e) { }
 
@@ -9609,13 +9701,13 @@
             const sellBtn = document.getElementById("btnWinSell");
             const takeBtn = document.getElementById("btnWinTake");
             const cleanup = () => {
-              winModal.classList.remove("show");
               sellBtn.onclick = null;
               takeBtn.onclick = null;
-              resolve();
+              hideWinSheet(winModal, winCard, resolve);
             };
             sellBtn.onclick = () => { sellGift(winGift.id); cleanup(); };
             takeBtn.onclick = () => { cleanup(); };
+            winModal.onclick = (e) => { if (e.target === winModal) cleanup(); };
           });
 
         } else {
@@ -10899,18 +10991,18 @@
 
       levelInfoOverlay.classList.add("show");
       document.body.style.overflow = "hidden";
-      gsap.fromTo(levelInfoCard, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power2.out" });
+      try { tg?.HapticFeedback?.impactOccurred("light"); } catch (e) {}
+      gsap.set(levelInfoCard, { clearProps: "transform,opacity,visibility" });
+      gsap.fromTo(levelInfoCard, { y: 0, yPercent: 100 }, { yPercent: 0, duration: 0.28, ease: "power3.out" });
       gsap.fromTo(levelInfoProgressFill, { width: "0%" }, { width: `${Math.round(progress * 100)}%`, duration: 0.7, ease: "power2.out" });
     }
 
     function closeLevelInfoModal() {
       if (!levelInfoOverlay || !levelInfoCard) return;
       gsap.to(levelInfoCard, {
-        opacity: 0,
-        y: 24,
-        scale: 0.96,
+        yPercent: 100,
         duration: 0.22,
-        ease: "power2.in",
+        ease: "power3.in",
         onComplete: () => {
           levelInfoOverlay.classList.remove("show");
           document.body.style.overflow = "";
@@ -11085,36 +11177,45 @@
 
     Пример кода: "DM-<рандом>-<рандом>" -> Diamond
   -->
-  <!-- Fullscreen Win Modal -->
+  <!-- Win Sheet (iOS bottom sheet) -->
   <div class="winOverlay" id="winFullscreenModal">
-    <div class="winShowcase">
-      <div class="winLight"></div>
-      <div id="winImage" class="winImage"></div>
-    </div>
-    <div id="winName" class="winName">Gift Name</div>
+    <div class="winSheetCard" id="winSheetCard">
+      <div class="giftSheetHandle"></div>
+      <div class="winShowcase">
+        <div class="winLight"></div>
+        <div id="winImage" class="winImage"></div>
+      </div>
+      <div class="winCaption">Твой выигрыш</div>
+      <h3 id="winName" class="winName">Gift Name</h3>
 
-    <div class="winActions">
-      <button class="btn" id="btnWinSell">
-        <span>Продать за</span>
-        <img class="starI" src="stars-DBKMczxe.png" alt="★"><span id="winSellPrice">0</span>
-      </button>
-      <button class="btn ghost" id="btnWinTake">В инвентарь</button>
+      <div class="giftSheetActions">
+        <button class="giftSheetBtnWithdraw" id="btnWinSell" type="button">
+          <span>Продать за</span>
+          <img class="starI" src="stars-DBKMczxe.png" alt="★"><span id="winSellPrice">0</span>
+        </button>
+        <button class="giftSheetBtnSell" id="btnWinTake" type="button">В инвентарь</button>
+      </div>
     </div>
   </div>
-  <!-- Multi-Win Modal (быстрое открытие нескольких кейсов) -->
+  <!-- Multi-Win Sheet (быстрое открытие нескольких кейсов) -->
   <div class="mw-overlay" id="multiWinModal">
-    <div class="mw-showcase">
-      <!-- частицы-звёздочки вставляются сюда динамически -->
-    </div>
-    <div class="mw-light"></div>
-    <div id="multiWinTitle" class="mw-title">Твои подарки!</div>
-    <div id="multiWinGrid" class="mw-grid"></div>
-    <div class="mw-actions">
-      <button class="btn" id="multiWinBtnSellAll">
-        <span>Продать все за</span>
-        <img class="starI" src="stars-DBKMczxe.png" alt="★"><span id="multiWinSellPrice">0</span>
-      </button>
-      <button class="btn ghost" id="multiWinBtnTakeAll">В инвентарь</button>
+    <div class="mwSheetCard" id="mwSheetCard">
+      <div class="mw-showcase">
+        <!-- частицы-звёздочки вставляются сюда динамически -->
+      </div>
+      <div class="mw-light"></div>
+      <div class="giftSheetHandle"></div>
+      <div id="multiWinTitle" class="mw-title">Твои подарки!</div>
+      <div class="mw-scroll">
+        <div id="multiWinGrid" class="mw-grid"></div>
+      </div>
+      <div class="giftSheetActions mw-actions">
+        <button class="giftSheetBtnWithdraw" id="multiWinBtnSellAll" type="button">
+          <span>Продать все за</span>
+          <img class="starI" src="stars-DBKMczxe.png" alt="★"><span id="multiWinSellPrice">0</span>
+        </button>
+        <button class="giftSheetBtnSell" id="multiWinBtnTakeAll" type="button">В инвентарь</button>
+      </div>
     </div>
   </div>
 
@@ -14151,9 +14252,12 @@ body:has(#pageGames.active) .back,body:has(#pageGames.active) .wallet,body:has(#
   attach({ overlay: 'caseModal', sheetSel: '.modal', scroller: '.modalScroll', mode: 'overlay' });
   attach({ overlay: 'contentsModal', sheetSel: '.modal', scroller: '.modalScroll', mode: 'overlay' });
   attach({ overlay: 'addStarsModal', sheetSel: '.modal', scroller: '.modalScroll', mode: 'overlay' });
+  attach({ overlay: 'levelInfoOverlay', sheet: 'levelInfoCard', scroller: '.levelInfoScroll', mode: 'fn', close: function () { closeLevelInfoModal(); } });
   attach({ overlay: 'giftSheetOverlay', sheet: 'giftSheetCard', mode: 'fn', close: function () { closeGiftActionSheet(); } });
   attach({ overlay: 'withdrawModal', sheet: 'withdrawSheetCard', mode: 'fn', close: function () { closeWithdrawSheet(); } });
   attach({ overlay: 'pickerOverlay', sheet: 'upPickerCard', scroller: '.upPickerScroll', mode: 'fn', close: function () { closePicker(); } });
+  attach({ overlay: 'winFullscreenModal', sheet: 'winSheetCard', mode: 'fn', close: function () { var b = document.getElementById('btnWinTake'); if (b) b.click(); } });
+  attach({ overlay: 'multiWinModal', sheet: 'mwSheetCard', scroller: '.mw-scroll', mode: 'fn', close: function () { var b = document.getElementById('multiWinBtnTakeAll'); if (b) b.click(); } });
   attach({ overlay: 'quickWithdrawModal', sheet: 'qwSheetCard', mode: 'fn', close: function () { closeQuickWithdrawModal(); } });
 })();
 </script>
