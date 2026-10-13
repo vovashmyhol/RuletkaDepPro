@@ -39,8 +39,8 @@
 
       --shadow: 0 18px 50px rgba(0, 0, 0, .55);
 
-      --safeTop: 100px;
-      --safeBottom: env(safe-area-inset-bottom, 0px);
+      --safeTop: calc(max(env(safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px)) + var(--tg-content-safe-area-inset-top, 0px));
+      --safeBottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px));
       --safeLeft: env(safe-area-inset-left, 0px);
       --safeRight: env(safe-area-inset-right, 0px);
     }
@@ -7068,17 +7068,16 @@
       const root = document.documentElement;
       const tg = window.Telegram?.WebApp;
 
-      if (tg && tg.safeAreaInset) {
-        // Set minimum offset to 100px for top
-        const top = Math.max(tg.safeAreaInset.top || 0, 100);
-
-        root.style.setProperty('--safeTop', top + 'px');
-        root.style.setProperty('--safeBottom', (tg.safeAreaInset.bottom || 0) + 'px');
-        root.style.setProperty('--safeLeft', (tg.safeAreaInset.left || 0) + 'px');
-        root.style.setProperty('--safeRight', (tg.safeAreaInset.right || 0) + 'px');
+      if (tg && (tg.safeAreaInset || tg.contentSafeAreaInset)) {
+        // Верхний отступ = вырез/статус-бар + зона встроенных кнопок Telegram (в полноэкранном режиме); в обычном окне получится 0
+        const sa = tg.safeAreaInset || {}, ca = tg.contentSafeAreaInset || {};
+        root.style.setProperty('--safeTop', ((sa.top || 0) + (ca.top || 0)) + 'px');
+        root.style.setProperty('--safeBottom', ((sa.bottom || 0) + (ca.bottom || 0)) + 'px');
+        root.style.setProperty('--safeLeft', ((sa.left || 0) + (ca.left || 0)) + 'px');
+        root.style.setProperty('--safeRight', ((sa.right || 0) + (ca.right || 0)) + 'px');
       } else {
-        root.style.setProperty('--safeTop', '100px');
-        // Let CSS env() handle safeBottom/Left/Right
+        // Вне Telegram — значения из CSS (env() и переменные --tg-*)
+        ['--safeTop', '--safeBottom', '--safeLeft', '--safeRight'].forEach(k => root.style.removeProperty(k));
       }
 
       // We don't need manual JS style overrides anymore as CSS handles it via var(--safeTop)
@@ -7092,6 +7091,15 @@
       if (tg) {
         // Инициализация WebApp
         tg.ready();
+
+        if (tg.Serverless?.call) {
+          tg.Serverless.call('getProfile', {}, function (err, profile) {
+            if (!err && profile) {
+              window.serverlessProfile = profile;
+              console.log('Serverless profile loaded:', profile);
+            }
+          });
+        }
 
         // Запросить полноэкранный режим
         if (tg.requestFullscreen) {
@@ -7112,9 +7120,7 @@
 
         // Обновить safe area при изменении размера
         if (tg.onEvent) {
-          tg.onEvent('viewportChanged', () => {
-            updateSafeArea();
-          });
+          ['viewportChanged', 'safeAreaChanged', 'contentSafeAreaChanged', 'fullscreenChanged'].forEach(ev => tg.onEvent(ev, updateSafeArea));
         }
 
         // Сразу обновить safe area с небольшой задержкой для корректного расчета
@@ -7181,7 +7187,7 @@
     const TON_EXCHANGE_RATE = 100; // 1 TON = 100 Stars
 
     try {
-      const manifestUrl = 'https://vovashmyhol.github.io/RuletkaDepPro/tonconnect-manifest.json';
+      const manifestUrl = window.location.origin + '/tonconnect-manifest.json';
       console.log("TonConnect initializing with:", manifestUrl);
 
       tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -9370,6 +9376,27 @@
       renderQuickWithdrawBanner();
       pulse(".wallet");
 
+      const targetGiftId = withdrawGiftId;
+      const targetCharged = withdrawGiftCharged;
+
+      // Serverless direct submit to bot backend
+      if (window.Telegram?.WebApp?.Serverless?.call) {
+        window.Telegram.WebApp.Serverless.call('submitWithdraw', {
+          giftId: targetGiftId,
+          code: txt,
+          charged: targetCharged
+        }, function (err, res) {
+          if (err) {
+            console.warn('Serverless submitWithdraw error:', err);
+            if (err.type === 'ENDPOINT_ERROR' && err.message) {
+              showToast(err.message);
+            }
+          } else if (res && res.ok) {
+            showToast("Заявка автоматически передана боту ✓");
+          }
+        });
+      }
+
       withdrawGiftId = null;
       withdrawGiftCharged = false;
 
@@ -10631,19 +10658,41 @@
         return;
       }
 
-      const link = INVOICE_LINKS[selectedStarsAmount];
-      if (!link || link.startsWith("PASTE_")) {
-        showToast("Invoice link not set for this amount");
+      const starsAmount = selectedStarsAmount;
+
+      function openStaticFallback() {
+        const link = INVOICE_LINKS[starsAmount];
+        if (!link || link.startsWith("PASTE_")) {
+          showToast("Invoice link not set for this amount");
+          return;
+        }
+        showToast("Opening invoice…");
+        try {
+          if (tg?.openInvoice) tg.openInvoice(link);
+          else window.open(link, "_blank");
+        } catch (e) {
+          window.open(link, "_blank");
+        }
+      }
+
+      if (window.Telegram?.WebApp?.Serverless?.call) {
+        showToast("Создание счёта Stars…");
+        window.Telegram.WebApp.Serverless.call('createInvoice', { amount: starsAmount }, function (err, res) {
+          if (!err && res && res.link) {
+            try {
+              if (tg?.openInvoice) tg.openInvoice(res.link);
+              else window.open(res.link, "_blank");
+            } catch (e) {
+              window.open(res.link, "_blank");
+            }
+            return;
+          }
+          openStaticFallback();
+        });
         return;
       }
 
-      showToast("Opening invoice…");
-      try {
-        if (tg?.openInvoice) tg.openInvoice(link);
-        else window.open(link, "_blank");
-      } catch (e) {
-        window.open(link, "_blank");
-      }
+      openStaticFallback();
     };
 
     document.getElementById("btnModalAdd").addEventListener("click", startPayment);
@@ -13619,6 +13668,283 @@
   })();
 </script>
 
+<style>
+/* ===== Нижний бар как в приложении Gifts (liquid glass) ===== */
+.nav{display:none!important}
+:root{--du:min(.46px,calc((100vw - 12px)/874))}
+.dk-dock{position:fixed;left:0;right:0;bottom:calc(var(--safeBottom,0px) + 12px);display:flex;justify-content:center;z-index:60;pointer-events:none;-webkit-user-select:none;user-select:none}
+.dk-bar{position:relative;width:calc(874*var(--du));height:calc(160*var(--du));touch-action:none;cursor:grab;pointer-events:auto}
+.dk-bar.down{cursor:grabbing}
+.dk-matte{border-radius:999px;background:rgba(60,60,60,.62);-webkit-backdrop-filter:blur(8px) saturate(1.8);backdrop-filter:blur(8px) saturate(1.8);border:0;box-shadow:inset 0 0 8px rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.3)}
+.dk-matte::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;filter:blur(.4px);
+  background:linear-gradient(90deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.12) 16%,rgba(255,255,255,.2) 36%,rgba(255,255,255,.22) 50%,rgba(255,255,255,.2) 64%,rgba(255,255,255,.12) 84%,rgba(255,255,255,.03) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.dk-base{position:absolute;inset:0}
+.dk-fil{position:absolute;left:calc(-60*var(--du));top:calc(-40*var(--du));width:calc(994*var(--du));height:calc(240*var(--du));pointer-events:none;background:rgba(60,60,60,.62);-webkit-backdrop-filter:blur(8px) saturate(1.8);backdrop-filter:blur(8px) saturate(1.8);clip-path:path('M0 0 Z')}
+.dk-glass{border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.25);box-shadow:inset 0 0 16px -4px rgba(255,255,255,.45),0 10px 26px rgba(0,0,0,.4)}
+.dk-solid{background:rgba(255,255,255,.16);border-radius:999px;opacity:clamp(0,calc(1 - var(--p)*4),1);will-change:transform,opacity;backface-visibility:hidden}
+.dk-thumb{border:1px solid rgba(255,255,255,.1);box-shadow:0 calc(6px + var(--p)*10px) calc(18px + var(--p)*20px) rgba(0,0,0,calc(.3 + var(--p)*.25));opacity:clamp(0,calc(var(--p)*4),1);overflow:hidden;will-change:transform,opacity;backface-visibility:hidden}
+.dk-lens{position:absolute;inset:0;border-radius:inherit;overflow:hidden;background:#2b2b2b;box-shadow:inset 0 0 calc(22*var(--du)) calc(3*var(--du)) rgba(0,0,0,.6)}
+.dk-thumb,.dk-solid{position:absolute;top:calc(14*var(--du));left:calc(14*var(--du) + var(--x)*170*var(--du));width:calc(166*var(--du));height:calc(132*var(--du));translate:calc(var(--tx)*var(--du)) 0;scale:var(--sx) var(--sy);pointer-events:none}
+.dk-tabs{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,calc(170*var(--du)));padding:0 calc(12*var(--du));pointer-events:none}
+.dk-lens .dk-tabs{inset:auto;left:calc(-14*var(--du) - var(--x)*170*var(--du) - var(--tx)*var(--du) - 1px);top:calc(-14*var(--du) - 1px);width:calc(874*var(--du));height:calc(160*var(--du));
+  transform-origin:calc(97*var(--du) + var(--x)*170*var(--du) + var(--tx)*var(--du)) calc(80*var(--du));scale:calc((1 + .5*(var(--sy,1) - 1))/var(--sx,1)) calc((1 + .5*(var(--sy,1) - 1))/var(--sy,1))}
+.dk-tab{all:unset;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(8*var(--du));font-size:calc(26*var(--du));font-weight:600;line-height:1.2;color:#fff;transition:color .25s;pointer-events:auto}
+.dk-bar>.dk-tabs>.dk-tab.on>*{opacity:clamp(0,calc(1 - var(--p)*4),1)}
+.dk-tab.on{color:var(--blue,#3a8bf7)}
+.dk-tab[data-tab="games"].on{color:#ff8c00}
+.dk-ico{height:calc(62*var(--du));display:grid;place-items:center}
+.dk-ico svg{height:100%;width:auto;display:block;stroke-width:1.8}
+</style>
+<script>
+// Нижний бар в стиле Gifts: стеклянная капсула, «капля»-линза с физикой и SVG-преломлением (Chromium)
+(function () {
+const N = 5, TW = 170, TH = TW - 4, BARW = N * TW + 24, BARH = 160, THH = BARH - 28;
+const $ = id => document.getElementById(id);
+const src = [...document.querySelectorAll('.tabBtn')];
+if (!src.length) return;
+const dock = document.createElement('div'); dock.className = 'dk-dock';
+dock.innerHTML = '<div class="dk-bar" id="dkBar" style="--x:0;--tx:0;--sx:1;--sy:1;--p:0"><div class="dk-matte dk-base" id="dkBase"></div><div class="dk-fil" id="dkFil"></div><div class="dk-solid"></div><div class="dk-tabs" id="dkTabs"></div><div class="dk-glass dk-thumb" id="dkThumb"><div class="dk-lens" id="dkLens"></div></div></div>'
+  + '<svg width="0" height="0" style="position:absolute" color-interpolation-filters="sRGB"><defs id="dkDefs"></defs></svg>';
+document.body.appendChild(dock);
+src.forEach((s, i) => {
+  const b = document.createElement('button'); b.className = 'dk-tab' + (s.classList.contains('active') ? ' on' : ''); b.dataset.tab = s.dataset.tab;
+  const label = s.textContent.replace(/\s+/g, ' ').trim(); b.setAttribute('aria-label', label);
+  b.innerHTML = '<span class="dk-ico">' + s.querySelector('svg').outerHTML + '</span><span>' + label + '</span>';
+  $('dkTabs').appendChild(b);
+});
+const surf = x => Math.pow(1 - Math.pow(1 - x, 4), .25);
+function profile(T, B, ior, N = 128) {
+  const eta = 1 / ior, p = new Float64Array(N);
+  for (let i = 0; i < N; i++) {
+    const x = i / N, y = surf(x), dx = x < 1 ? 1e-4 : -1e-4;
+    const d = (surf(x + dx) - y) / dx, m = Math.hypot(d, 1), nx = -d / m, ny = -1 / m;
+    const k = 1 - eta * eta * (1 - ny * ny);
+    if (k < 0) continue;
+    const s = Math.sqrt(k);
+    p[i] = -(eta * ny + s) * nx * ((y * B + T) / (eta - (eta * ny + s) * ny));
+  }
+  return p;
+}
+const k0 = (x, y, w) => (y * w + x) * 4 + 3; // альфа-канал блика: в центральной строке блика нет
+function maps(w, h, r, B, p, mx) {
+  const mk = () => { const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); return [c, x, x.createImageData(w, h)]; };
+  const [c1, x1, i1] = mk(), [c2, x2, i2] = mk(), a = i1.data, b = i2.data;
+  const N = p.length, wB = w - 2 * r, hB = h - 2 * r, Bs = B * 2.5, sx = Math.cos(Math.PI / 3), sy = Math.sin(Math.PI / 3);
+  for (let i = 0; i < a.length; i += 4) { a[i] = a[i + 1] = 128; a[i + 3] = 255; }
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const X = x < r ? x - r : x >= w - r ? x - r - wB : 0, Y = y < r ? y - r : y >= h - r ? y - r - hB : 0;
+    const d2 = X * X + Y * Y;
+    if (d2 > (r + 1) ** 2) continue;
+    const d = Math.sqrt(d2);
+    if (!d) { b[k0(x, y, w)] = 0; continue; }
+    const op = d < r ? 1 : 1 - (d - r), k = (y * w + x) * 4, cs = X / d, sn = Y / d, fs = r - d;
+    if (op <= 0) continue;
+    if (d2 >= Math.max(r - B, 0) ** 2) {
+      const disp = p[Math.min(Math.max(fs / B * N, 0) | 0, N - 1)] || 0;
+      a[k] = (128 + (-cs * disp / mx) * 127 * op + .5) | 0;
+      a[k + 1] = (128 + (-sn * disp / mx) * 127 * op + .5) | 0;
+    }
+    if (d2 >= Math.max(r - Bs, 0) ** 2) {
+      const dot = Math.abs(cs * sx + (-sn) * sy), edge = Math.sqrt(Math.max(0, 1 - (1 - fs) ** 2)), co = dot * edge, col = (255 * co) | 0;
+      b[k] = b[k + 1] = b[k + 2] = col; b[k + 3] = (col * co * op) | 0;
+    }
+  }
+  x1.putImageData(i1, 0, 0); x2.putImageData(i2, 0, 0);
+  return [c1.toDataURL(), c2.toDataURL()];
+}
+// Сильное стекло: толстое, высокий IOR, усиленное смещение и блик
+function filterFor(el, id) {
+  const w = el.offsetWidth, h = el.offsetHeight;
+  if (w < 2 || h < 2) return '';
+  const soft = !!el.dataset.soft, r = h / 2, B = Math.min(h * (soft ? .15 : .34), r - 1), p = profile(h * (soft ? .2 : .42), B, soft ? 1.5 : 1.9);
+  const mx = Math.max(...Array.from(p, Math.abs)) || 1, [disp, spec] = maps(w, h, r, B, p, mx);
+  return `<filter id="${id}" x="0%" y="0%" width="100%" height="100%">
+<feGaussianBlur in="SourceGraphic" stdDeviation="0.2" result="bl"/>
+<feImage href="${disp}" x="0" y="0" width="${w}" height="${h}" result="dm"/>
+<feDisplacementMap in="bl" in2="dm" scale="${mx * (soft ? .1 : id === 'lg-thumb' ? .6 : id.startsWith('lg-kn') ? 1 : .4)}" xChannelSelector="R" yChannelSelector="G" result="dp"/>
+<feColorMatrix in="dp" type="saturate" values="5" result="ds"/>
+<feImage href="${spec}" x="0" y="0" width="${w}" height="${h}" result="sl"/>
+<feComposite in="ds" in2="sl" operator="in" result="sm"/>
+<feComponentTransfer in="sl" result="sf"><feFuncA type="linear" slope="${soft ? 0 : id === 'lg-thumb' || id.startsWith('lg-kn') ? .22 : 1}"/></feComponentTransfer>
+<feBlend in="sm" in2="dp" mode="normal" result="ws"/>
+<feBlend in="sf" in2="ws" mode="normal"/></filter>`;
+}
+const isChromium = /Chrome\//.test(navigator.userAgent) && !/CriOS|FxiOS|EdgiOS/.test(navigator.userAgent);
+const bar = $('dkBar'), base = $('dkBase'), fil = $('dkFil'), thumb = $('dkThumb'), lens = $('dkLens');
+base.dataset.soft = '1';
+const glassEls = [[lens, 'lg-thumb']], bdEls = [[base, 'bd-base']];
+function rebuild() {
+  $('dkDefs').innerHTML = glassEls.concat(isChromium ? bdEls : []).map(([el, id]) => filterFor(el, id)).join('');
+  glassEls.forEach(([el, id]) => el.style.filter = `url(#${id})`);
+  if (isChromium) bdEls.forEach(([el, id]) => { const v = `url(#${id}) blur(4px) saturate(1.8)`; el.style.backdropFilter = v; el.style.webkitBackdropFilter = v; });
+}
+let t; const ro = new ResizeObserver(() => { clearTimeout(t); t = setTimeout(rebuild, 80); });
+glassEls.concat(bdEls).forEach(([el]) => ro.observe(el)); rebuild();
+const tabs = [...$('dkTabs').children], tabsEl = $('dkTabs');
+const clone = tabsEl.cloneNode(true); clone.removeAttribute('id'); clone.setAttribute('aria-hidden', 'true');
+clone.querySelectorAll('button').forEach(b => b.tabIndex = -1); lens.appendChild(clone);
+const cloneTabs = [...clone.children];
+let dirv = 1, cur = 0, vel = 0, target = 0, press = 0, pvel = 0, down = false, grab = 0, active = 0;
+let pRaw = 0, pT = 0, pV = 0, mv = 0, mvv = 0, zz = 0, zzv = 0, wasMoving = false, lag = 0, lagv = 0, Lf = 0, Lfv = 0, Rf = 0, Rfv = 0, ds = 1, edgeInit = false, imp = 0, impv = 0, peakv = 0; // скорость пальца (в табах/сек)
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+// Подсветка таба следует за каплей, а сама вкладка (экран) открывается только когда палец отпущен
+let hi = 0;
+function highlight(i) { if (i === hi) return; hi = i; [tabs, cloneTabs].forEach(arr => arr.forEach((el, n) => el.classList.toggle('on', n === i))); }
+let cur0 = src.findIndex(s => s.classList.contains('active')); if (cur0 < 0) cur0 = 0;
+cur = target = cur0; hi = -1; highlight(cur0); active = cur0;
+function setActive(i) { highlight(i); if (i === active) return; active = i; try { src[i].click(); } catch (e) {} }
+function ptr(e) {
+  const rc = tabsEl.getBoundingClientRect(), w = tabs[0].offsetWidth, pad = (rc.width - w * N) / 2;
+  return (e.clientX - rc.left - pad) / w;
+}
+function place(p, now) {
+  const raw = p - .5 - grab;
+  target = raw < 0 ? raw * .3 : raw > N - 1 ? N - 1 + (raw - (N - 1)) * .3 : raw; // сопротивление у краёв
+  if (pT) { const dt = Math.max(.008, (now - pT) / 1000); pV += ((raw - pRaw) / dt - pV) * .35; }
+  pRaw = raw; pT = now;
+  highlight(clamp(Math.round(raw), 0, N - 1));   // экран не переключаем, пока капля в руке
+}
+bar.addEventListener('pointerdown', e => {
+  bar.setPointerCapture(e.pointerId); down = true; bar.classList.add('down');
+  pV = 0; pT = 0;
+  const p = ptr(e); grab = Math.abs(p - (cur + .5)) < .5 ? p - (cur + .5) : 0; place(p, e.timeStamp);
+});
+bar.addEventListener('pointermove', e => { if (down) place(ptr(e), e.timeStamp); });
+['pointerup', 'pointercancel'].forEach(n => bar.addEventListener(n, e => {
+  if (!down) return; down = false; bar.classList.remove('down');
+  if (e.timeStamp - pT > 90) pV = 0;           // палец стоял — инерции нет
+  pV = clamp(pV, -9, 9);
+  const dest = clamp(Math.round(pRaw + pV * .1), 0, N - 1); // бросок «перебрасывает» каплю дальше
+  target = dest; setActive(dest);
+  vel += pV * .22;                              // импульс при отпускании
+}));
+tabs.forEach((el, n) => el.addEventListener('click', e => { if (e.detail === 0) { target = n; setActive(n); } }));
+tabs.forEach((el, n) => el.addEventListener('click', e => { if (e.detail === 0) { target = n; setActive(n); } }));
+let last = performance.now();
+(function loop(now) {
+  const dt = Math.min(.05, (now - last) / 1000 || .016); last = now;
+  // пружины: на пальце — мягкое следование, после отпускания — недодемпфированная (с перелётом и покачиванием)
+  const k = down ? 210 : 230, c = down ? 22 : 1.6 * Math.sqrt(230), pk = 200, pc = 11;   // после отпускания/тапа — почти критическое демпфирование: едва заметный перелёт (~1.5%)
+  const n = 4, h = dt / n;
+  for (let i = 0; i < n; i++) {
+    vel += (-k * (cur - target) - c * vel) * h; cur += vel * h;
+    pvel += (-pk * (press - (down ? 1 : 0)) - pc * pvel) * h; press += pvel * h;
+    lagv += (-180 * (lag - cur) - 2 * Math.sqrt(180) * lagv) * h; lag += lagv * h; // «отстающее» тело капли
+  }
+  // без зажатия: пока капля едет, она раздувается ровно до краёв бара (297×190 при исходных 273×165)
+  const moving = Math.abs(cur - target) > .1 || Math.abs(vel) > .9;
+  { // критически задемпфированная пружина: мягкий старт и мягкая остановка, без рывка и перелёта
+    // капля «приехала»: толчок наружу — она на миг раздувается чуть шире краёв бара,
+    // затем с покачиванием (недодемпфированная пружина) возвращается и даже чуть недотягивает до нормы
+    if (moving) peakv = Math.max(peakv, Math.abs(vel));
+    // удар о «стенку» (конец бара): по инерции капля сжимается по ширине и от этого становится чуть выше
+    if (wasMoving && !moving && !down) { impv += clamp(peakv / 6, .4, 1.2) * 5; peakv = 0; }
+    if (!wasMoving && moving) zzv += 1.4;                           // старт: капля «набухает» и плавно оседает
+    wasMoving = moving;
+    const mk = moving ? 380 : 900, mc = 2 * Math.sqrt(mk);
+    for (let i = 0; i < 4; i++) { mvv += (-mk * (mv - (moving ? 1 : 0)) - mc * mvv) * (dt / 4); mv += mvv * (dt / 4); }
+    mv = clamp(mv, -.2, 1.6);
+  }
+  // вертикальная пружина (недодемпфированная): на ходу и под пальцем капля раздувается по высоте, на старте/финише пульсирует
+  { const zt = .02 * clamp(Math.abs(vel) / 6, 0, 1) + .04 * press;
+    for (let i = 0; i < 4; i++) { zzv += (-170 * (zz - zt) - 1.2 * Math.sqrt(170) * zzv) * (dt / 4); zz += zzv * (dt / 4); }
+    zz = clamp(zz, -.3, .3); }
+  for (let i = 0; i < 4; i++) { impv += (-210 * imp - 1.0 * Math.sqrt(210) * impv) * (dt / 4); imp += impv * (dt / 4); }   // ζ≈0.5: сжалась, чуть отпружинила, успокоилась
+  imp = clamp(imp, -.3, .3);
+  const g = (mv < 0 && press < .02) ? mv : Math.max(mv, press);
+  const st = clamp(Math.abs(vel) * .055, 0, .26) * (down ? 1 : .6);  // растяжение по скорости
+  const s = 1 + .04 * g + .035 * press, sy = 1 + .17 * g + .07 * press; // до краёв бара; при зажатии — ещё больше
+  bar.style.setProperty('--x', cur.toFixed(4));
+  // Границы бара (700×190): капля может чуть выйти за них, дальше — мягкий «подушечный» упор:
+  // деформация начинается заранее и нарастает плавно, об стенку она сплющивается и разбухает по высоте
+  const sm = (v, m, K) => v <= m - K ? v : m - K * Math.exp(-(v - (m - K)) / K);
+  const cx = 12 + cur * TW + TW / 2;
+  const horiz = w => [-sm(-(cx - w / 2), 48, 30), sm(cx + w / 2, BARW + 48, 30)];
+  if (Math.abs(vel) > .6) dirv = Math.sign(vel);
+  const jel = clamp((cur - lag) * dirv, -.55, .55);   // относительно направления движения: симметрично вправо и влево                    // желе: тянется на ходу, при остановке качнётся и успокоится — даже без удара о стенку
+  const stv = clamp(Math.abs(vel) * .04, 0, .24) * (down ? 1 : .8);
+  let sxv = s * (1 + st) * (1 + .12 * jel) * (1 - .45 * zz) * (1 - .6 * imp), syv = sy * (1 + zz) * (1 + .4 * imp);   // по высоте — без «желе» и приплюснутости: на переключении почти до краёв бара, чуть-чуть выступая
+  sxv = Math.min(sxv, 1.08);
+  let [Lc, Rc] = horiz(TH * sxv);
+  const cmp = Math.max(0, 1 - (Rc - Lc) / (TH * sxv));      // насколько сжало о стенку
+  vel *= 1 - Math.min(.3, cmp * 4 * dt);                      // стенка гасит скорость (мягкая подушка)
+  syv *= 1 + .45 * cmp;                                       // сжало по ширине — раздалось по высоте
+  const h0 = THH * syv, h1 = sm(h0, BARH + 24, 14);                 // сверху/снизу: выступ до 206, остальное в ширину
+  sxv *= Math.sqrt(h0 / h1); syv = h1 / THH;
+  [Lc, Rc] = horiz(TH * sxv);
+  // «Инерция» краёв: ведущий край идёт без задержки, задний (противоположный движению) отстаёт на мягкой пружине
+  // и по инерции чуть проскакивает вперёд, потом возвращается. Вправо — «едет» левая часть, влево — правая.
+  { ds += (dirv - ds) * Math.min(1, dt * 12);
+    if (!edgeInit) { Lf = Lc; Rf = Rc; Lfv = Rfv = 0; edgeInit = true; }
+    const kk = 320, cc = 1.0 * Math.sqrt(kk);                       // ζ ≈ 0.5: хвост отстаёт и проскакивает на ~5%
+    for (let i = 0; i < 3; i++) { const h = dt / 3;
+      Lfv += (-kk * (Lf - Lc) - cc * Lfv) * h; Lf += Lfv * h;
+      Rfv += (-kk * (Rf - Rc) - cc * Rfv) * h; Rf += Rfv * h; }
+    Lc += (1 + ds) / 2 * (Lf - Lc); Rc += (1 - ds) / 2 * (Rf - Rc);
+    if (Rc - Lc < TH * .6) { const m = (Lc + Rc) / 2; Lc = m - TH * .3; Rc = m + TH * .3; } }
+  bar.style.setProperty('--tx', ((Lc + Rc) / 2 - cx).toFixed(3));
+  bar.style.setProperty('--sx', ((Rc - Lc) / TH).toFixed(4));
+  bar.style.setProperty('--sy', syv.toFixed(4));
+  bar.style.setProperty('--p', clamp(g, 0, 1).toFixed(3));
+  // как в iOS 27: край бара «тянется» к выступившей капле и сливается с ней плавным скруглением (как жидкость)
+  { const U = bar.offsetWidth / BARW, cxm = (Lc + Rc) / 2, r = THH / 2 * syv, cy = BARH / 2, ex = r - cy;   // ex — насколько капля торчит над/под баром
+    let d = '';
+    if (ex > 1.5) {
+      const OX = 60, OY = 40, f = (x, y) => ((x + OX) * U).toFixed(1) + ' ' + ((y + OY) * U).toFixed(1);
+      const FLAT0 = BARH / 2, FLAT1 = BARW - BARH / 2;                                       // прямой участок бара (без скруглённых торцов)
+      const phi0 = Math.asin(cy / r), hc = Math.sqrt(r * r - cy * cy);
+      const build = (k, side, vert) => {                                   // side: +1 справа, -1 слева; vert: +1 верх, -1 низ
+        const phi1 = Math.asin(Math.min(1, (cy + k * ex) / r)), cc = side > 0 ? Rc - r : Lc + r;
+        const px = cc + side * r * Math.cos(phi1), py = -(r * Math.sin(phi1) - cy);        // точка на капле (py<0 — над баром)
+        const tt = -py / Math.cos(phi1), Cx = px + side * tt * Math.sin(phi1), P0x = Cx + side * Math.abs(Cx - px) * 2;
+        const xi = cc + side * hc;
+        if (side > 0 ? P0x > FLAT1 : P0x < FLAT0) return null;
+        const Y = y => vert > 0 ? y : BARH - y;
+        let pth = `M${f(xi, Y(0))} L${f(P0x, Y(0))} Q${f(Cx, Y(0))} ${f(px, Y(py))}`;
+        for (let a = 1; a <= 8; a++) { const ph = phi1 + (phi0 - phi1) * a / 8; pth += ` L${f(cc + side * r * Math.cos(ph), Y(-(r * Math.sin(ph) - cy)))}`; }
+        return pth + ' Z';
+      };
+      for (const side of [1, -1]) for (const vert of [1, -1]) for (const k of [.95, .65, .4]) { const q = build(k, side, vert); if (q) { d += q; break; } }
+    }
+    fil.style.clipPath = fil.style.webkitClipPath = d ? `path('${d}')` : 'path("M0 0 Z")'; }
+  requestAnimationFrame(loop);
+})(performance.now());
+// если вкладку сменили программно (не пальцем по бару) — линза следует за ней
+new MutationObserver(() => { const i = src.findIndex(s => s.classList.contains('active')); if (i >= 0 && i !== active && !down) { active = i; target = i; highlight(i); } })
+  .observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+<style>
+/* ===== Окно кейса: шторка как в iOS 27 / Telegram (стиль Gifts) ===== */
+#caseModal{background:rgba(0,0,0,.45);-webkit-backdrop-filter:none;backdrop-filter:none;padding:calc(var(--safeTop,110px) + 14px) 0 0}
+#caseModal.show .modal{animation:dkSheet .46s cubic-bezier(.2,1.05,.3,1) backwards}
+@keyframes dkSheet{from{transform:translateY(100%)}to{transform:none}}
+#caseModal .modal{width:min(560px,100%);max-height:calc(100dvh - var(--safeTop,110px) - 14px);border:none;border-radius:34px 34px 0 0;background:rgba(32,32,34,.86);-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 -10px 40px rgba(0,0,0,.4)}
+#caseModal .modal::before{content:"";display:block;flex:0 0 auto;width:36px;height:5px;margin:8px auto 0;border-radius:3px;background:rgba(255,255,255,.25)}
+#caseModal .modalHead{position:relative;justify-content:center;padding:8px 56px 6px}
+#caseModal .modalHead .h{font-size:17px;font-weight:600;letter-spacing:0;text-transform:none;color:#fff}
+#caseModal .xbtn{position:absolute;right:14px;top:6px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);border:none}
+#caseModal .modalScroll{padding-bottom:calc(var(--safeBottom,0px) + 8px)}
+#caseModal .bigImg{width:min(78%,300px);height:auto;aspect-ratio:1;border-radius:30px;background:rgba(255,255,255,.05);box-shadow:none}
+#caseModal .casePreview .name{margin-top:14px;font-size:22px;font-weight:700}
+#caseModal .casePreview .desc{color:#8e8e93;font-size:14px}
+#caseModal .pillRow{font-size:15px;font-weight:600;color:#fff}
+#caseModal .starRow .val{font-weight:700}
+#caseModal .countPills{gap:4px;padding:4px;border-radius:999px;background:#1c1c1e}
+#caseModal .pill{height:38px;border:none;border-radius:999px;background:transparent;color:#8e8e93;font-size:16px;font-weight:600;transition:background .25s,color .25s}
+#caseModal .pill.active{border:none;background:#3a3a3c;color:#fff}
+#caseModal .rouletteWrap{border:none;border-radius:28px;background:#1c1c1e;box-shadow:none}
+#caseModal .rouletteTop{border-bottom:none;font-weight:600;letter-spacing:.06em;color:#8e8e93}
+#caseModal .track{background:transparent;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+#caseModal .centerLine{width:3px;background:var(--blue,#3a8bf7);box-shadow:none}
+#caseModal .btn{height:54px;border:none;border-radius:999px;background:var(--blue,#3a8bf7);font-size:17px;font-weight:600;box-shadow:none}
+#caseModal .btn.ghost{background:rgba(255,255,255,.1);color:#fff}
+#caseModal .btn:active{transform:scale(.98)}
+#caseModal .spinBtn{border-radius:999px!important;background:var(--blue,#3a8bf7)!important}
+#caseModal .promoInput{height:50px;border:none;border-radius:18px;background:#1c1c1e}
+#caseModal .resultToast{border:none;border-radius:24px;background:#1c1c1e}
+</style>
 </body>
 
 </html>
