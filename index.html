@@ -13944,7 +13944,310 @@ new MutationObserver(() => { const i = src.findIndex(s => s.classList.contains('
 #caseModal .spinBtn{border-radius:999px!important;background:var(--blue,#3a8bf7)!important}
 #caseModal .promoInput{height:50px;border:none;border-radius:18px;background:#1c1c1e}
 #caseModal .resultToast{border:none;border-radius:24px;background:#1c1c1e}
+
+/* ===== Окно «Содержимое кейса»: та же шторка iOS 27 / Telegram ===== */
+#contentsModal{background:rgba(0,0,0,.45);-webkit-backdrop-filter:none;backdrop-filter:none;padding:calc(var(--safeTop,110px) + 14px) 0 0}
+#contentsModal.show .modal{animation:dkSheet .46s cubic-bezier(.2,1.05,.3,1) backwards}
+#contentsModal .modal{width:min(560px,100%);max-height:calc(100dvh - var(--safeTop,110px) - 14px);border:none;border-radius:34px 34px 0 0;background:rgba(32,32,34,.86);-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 -10px 40px rgba(0,0,0,.4)}
+#contentsModal .modal::before{content:"";display:block;flex:0 0 auto;width:36px;height:5px;margin:8px auto 0;border-radius:3px;background:rgba(255,255,255,.25)}
+#contentsModal .modalHead{position:relative;justify-content:center;padding:8px 56px 6px}
+#contentsModal .modalHead .h{font-size:17px;font-weight:600;letter-spacing:0;text-transform:none;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#contentsModal .xbtn{position:absolute;right:14px;top:6px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);border:none}
+#contentsModal .modalScroll{padding-bottom:calc(var(--safeBottom,0px) + 8px)}
+#contentsModal .list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:10px 16px 14px}
+#contentsModal .rowItem{padding:12px 6px 10px;border:none;border-radius:24px;background:#1c1c1e;justify-content:center;transition:transform .15s ease,background .15s ease}
+#contentsModal .rowItem:active{transform:scale(.96);background:#2a2a2d}
+#contentsModal .rowLeft{flex-direction:column;gap:6px;width:100%;text-align:center}
+#contentsModal .thumb{width:68px;height:68px;border-radius:0;background:transparent;overflow:visible}
+#contentsModal .thumb img{width:68px!important;height:68px!important;object-fit:contain!important;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
+#contentsModal .rowLeft>div{width:100%;min-width:0}
+#contentsModal .rowLeft b{display:block;font-size:12.5px;font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#contentsModal .rowLeft span{display:flex;align-items:center;justify-content:center;gap:3px;margin-top:3px;font-size:12.5px;font-weight:700;color:var(--blue,#3a8bf7)}
+#contentsModal .rowLeft span .starI{width:13px;height:13px}
+#contentsModal .btn{height:54px;border:none;border-radius:999px;font-size:17px;font-weight:600;box-shadow:none;background:rgba(255,255,255,.1);color:#fff}
+#contentsModal .btn:active{transform:scale(.98)}
+/* ===== Окно пополнения (Top Up): шторка iOS 27 / Telegram ===== */
+#addStarsModal{background:rgba(0,0,0,.45);-webkit-backdrop-filter:none;backdrop-filter:none;padding:calc(var(--safeTop,110px) + 14px) 0 0}
+#addStarsModal.show .modal{animation:dkSheet .46s cubic-bezier(.2,1.05,.3,1) backwards}
+#addStarsModal .modal{width:min(560px,100%);max-height:calc(100dvh - var(--safeTop,110px) - 14px);border:none;border-radius:34px 34px 0 0;background:rgba(32,32,34,.86);-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 -10px 40px rgba(0,0,0,.4)}
+#addStarsModal .modal::before{content:"";display:block;flex:0 0 auto;width:36px;height:5px;margin:8px auto 0;border-radius:3px;background:rgba(255,255,255,.25)}
+#addStarsModal .modalHead{position:relative;justify-content:center;padding:8px 56px 6px!important}
+#addStarsModal .modalHead .h{font-size:17px;font-weight:600;letter-spacing:0;text-transform:none;color:#fff}
+#addStarsModal .xbtn{position:absolute;right:14px;top:6px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);border:none}
+#addStarsModal .modalScroll{padding-bottom:6px}
+
+#addStarsModal .walletConnectArea{margin:6px 16px 12px}
+#addStarsModal .tonConnectBtn{height:50px;border:none;border-radius:999px;background:rgba(255,255,255,.1);font-size:16px;font-weight:600}
+#addStarsModal .walletAddress{border-radius:999px;background:rgba(255,255,255,.1);padding:10px 18px}
+
+#addStarsModal .balanceCard{margin:6px 16px 16px;padding:22px 18px 18px;border-radius:30px;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 30px rgba(255,159,28,.22)}
+#addStarsModal .balanceCard.ton-mode{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 30px rgba(0,136,204,.28)}
+#addStarsModal .tonToggle{top:12px;right:12px;padding:3px;border:none;border-radius:999px;background:rgba(0,0,0,.25)}
+#addStarsModal .toggleIcon{width:32px;height:30px;border-radius:999px}
+#addStarsModal .toggleIcon.active{background:rgba(255,255,255,.28);box-shadow:none}
+#addStarsModal .balanceLabel{font-size:14px;font-weight:600}
+#addStarsModal .balanceValue{font-size:40px;font-weight:800;margin-bottom:20px}
+#addStarsModal .balBtn{height:46px;border-radius:999px;font-size:16px;font-weight:650}
+#addStarsModal .balBtn.orange{background:rgba(0,0,0,.2)}
+
+#addStarsModal .starsOptionsList{gap:0;padding:0;margin:0 16px 16px;background:#1c1c1e;border-radius:26px;overflow:hidden}
+#addStarsModal .starOption{padding:15px 18px;border:none;border-radius:0;background:transparent;transition:background .18s ease}
+#addStarsModal .starOption+.starOption{border-top:.5px solid rgba(255,255,255,.08)}
+#addStarsModal .starOption:active{background:rgba(255,255,255,.05)}
+#addStarsModal .starOption.active{background:rgba(58,139,247,.14)}
+#addStarsModal .starOption.active .radioCircle{border-color:var(--blue,#3a8bf7);background:var(--blue,#3a8bf7)}
+#addStarsModal .optionVal{font-size:17px;font-weight:700}
+
+#addStarsModal .starsFooter{position:relative!important;flex:0 0 auto;left:auto;right:auto;bottom:auto;padding:10px 16px calc(var(--safeBottom,0px) + 14px);background:rgba(32,32,34,.92);border-top:.5px solid rgba(255,255,255,.08);pointer-events:auto}
+#addStarsModal .btnStarBuy{height:54px;border-radius:999px;background:var(--blue,#3a8bf7);box-shadow:none;font-size:17px;font-weight:600}
+#addStarsModal .btnStarBuy:active{transform:scale(.98)}
+/* ===== Единый стиль остальных блоков (iOS 27 / Telegram) ===== */
+:root{--blue:#2b82fe;--blue2:#257bf8;--surface:#1c1c1e;--surface2:#2a2a2d;--sep:rgba(255,255,255,.08)}
+
+/* Верхняя панель: нейтральное стекло, как у нижнего бара */
+.topbar{background:rgba(28,28,30,.62);-webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6)}
+.back{border:none;background:rgba(255,255,255,.08);box-shadow:none}
+.wallet{border:none;border-radius:999px;background:rgba(255,255,255,.1);box-shadow:none}
+.plus{border:none;background:var(--blue)}
+
+/* Баннеры и Live-лента */
+.bannerSlider{border-radius:28px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.bannerDot.active{background:#fff}
+.liveFeed{border-radius:24px;background:var(--surface);padding:10px 16px}
+.liveItem{border:none;border-radius:14px;background:rgba(255,255,255,.07)}
+
+/* Апгрейд: убираем лишнюю рамку-обёртку, остаётся одна карточка */
+#pageUpgrade .panel{background:transparent;border:none;box-shadow:none;padding:0;border-radius:0}
+
+/* Кнопки в окнах выигрыша и остальных шторках — как в новых шторках */
+.btn{height:54px;border:none;border-radius:999px;background:var(--blue);box-shadow:none;font-size:17px;font-weight:600}
+.btn.ghost{border:none;background:rgba(255,255,255,.1);color:#fff}
+.btn:active{transform:scale(.98)}
+
+/* Тосты */
+.toast{background:rgba(44,44,46,.9);border:none;border-radius:20px;-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6)}
+.toast-icon{color:var(--blue)}
+
+/* Карточки Games / Earn / Профиль — один радиус и один цвет поверхности */
+.gameCard,.earnTaskCard,.exchangePromoCard,.profileCard,.profileInvCard,.qwBanner,.upWrap{background:var(--surface);border-radius:28px}
+.gameCard:not(.inactive):active{background:var(--surface2)}
+.giftCard{border-radius:24px}
+/* ===== Вкладка Games: тёмно-жёлтый фон ===== */
+body:has(#pageGames.active){background:
+  radial-gradient(ellipse 78% 54% at 50% 20%,#eead06 0%,#e2a206 24%,rgba(205,140,6,.62) 50%,rgba(120,80,6,.28) 74%,rgba(20,20,20,0) 100%),
+  #141414}
+/* Cases: то же самое, но голубое свечение */
+body:has(#pageHome.active){background:
+  radial-gradient(ellipse 78% 54% at 50% 20%,#1f93ff 0%,#1b80ee 24%,rgba(22,112,225,.62) 50%,rgba(10,62,150,.28) 74%,rgba(20,20,20,0) 100%),
+  #141414}
+body:has(#pageGames.active) .topbar,body:has(#pageHome.active) .topbar{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;-webkit-mask-image:none;mask-image:none}
+body:has(#pageGames.active) .back,body:has(#pageGames.active) .wallet,body:has(#pageHome.active) .back,body:has(#pageHome.active) .wallet{background:rgba(0,0,0,.3)}
+.modalScroll,.upPickerScroll{overscroll-behavior:contain}
 </style>
+<script>
+/* ===== Свайп вниз для закрытия шторок (iOS 27 / Telegram) ===== */
+(function () {
+  if (!window.gsap) return;
+  var HEADER_H = 76;      // зона «ручки» и заголовка, за которую можно тянуть
+  var CLOSE_DIST = 120;   // px — дотянул дальше и шторка закрывается
+  var CLOSE_VEL = 0.55;   // px/мс — быстрый флик тоже закрывает
+
+  function hapt() { try { window.Telegram && window.Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch (e) {} }
+
+  function attach(cfg) {
+    var overlay = document.getElementById(cfg.overlay);
+    if (!overlay) return;
+    var sheet = cfg.sheetSel ? overlay.querySelector(cfg.sheetSel) : document.getElementById(cfg.sheet);
+    if (!sheet) return;
+    var scroller = cfg.scroller ? sheet.querySelector(cfg.scroller) : null;
+    var st = null;
+
+    function begin(x, y, target) {
+      if (st || !overlay.classList.contains('show')) return false;
+      if (target && target.closest && target.closest('input,textarea')) return false;
+      var r = sheet.getBoundingClientRect();
+      var inHeader = (y - r.top) < HEADER_H;
+      var viaScroll = false;
+      if (scroller) {
+        if (inHeader) { /* тянем за шапку */ }
+        else if (scroller.contains(target) && scroller.scrollTop <= 0) viaScroll = true;
+        else return false;
+      }
+      st = { x0: x, y0: y, lastY: y, lastT: performance.now(), vy: 0, dy: 0, drag: false, viaScroll: viaScroll };
+      return true;
+    }
+
+    function move(x, y, e) {
+      if (!st) return;
+      if (!st.drag) {
+        var ddy = y - st.y0, ddx = x - st.x0;
+        if (Math.abs(ddx) > 10 && Math.abs(ddx) > Math.abs(ddy)) { st = null; return; }  // горизонтальный жест
+        if (ddy <= 6) return;
+        if (st.viaScroll && scroller.scrollTop > 0) { st = null; return; }               // контент прокручен — это скролл
+        st.drag = true;
+        st.y0 = y;                                                                        // без рывка в начале
+        st.lastY = y; st.lastT = performance.now();
+      }
+      if (e.cancelable) e.preventDefault();
+      var d = Math.max(0, y - st.y0);
+      var now = performance.now(), dt = Math.max(1, now - st.lastT);
+      st.vy = st.vy * 0.6 + ((y - st.lastY) / dt) * 0.4;
+      st.lastY = y; st.lastT = now; st.dy = d;
+      gsap.set(sheet, { y: d });
+    }
+
+    function end() {
+      if (!st) return false;
+      var s = st; st = null;
+      if (!s.drag) return false;
+      var h = sheet.offsetHeight || 400, d = s.dy;
+      if (d > CLOSE_DIST || (s.vy > CLOSE_VEL && d > 24)) {
+        hapt();
+        if (cfg.mode === 'overlay') {
+          gsap.to(sheet, { y: window.innerHeight, duration: 0.22, ease: 'power3.in', onComplete: function () {
+            gsap.set(sheet, { opacity: 0 });
+            hideOverlay(overlay);
+          } });
+        } else {
+          gsap.set(sheet, { y: 0, yPercent: (d / h) * 100 });
+          cfg.close();
+        }
+      } else {
+        gsap.to(sheet, { y: 0, duration: 0.35, ease: 'back.out(1.6)' });
+      }
+      return true;
+    }
+
+    // touch
+    sheet.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) { st = null; return; }
+      var t = e.touches[0];
+      begin(t.clientX, t.clientY, e.target);
+    }, { passive: true });
+    sheet.addEventListener('touchmove', function (e) {
+      if (!st) return;
+      var t = e.touches[0];
+      move(t.clientX, t.clientY, e);
+    }, { passive: false });
+    sheet.addEventListener('touchend', end, { passive: true });
+    sheet.addEventListener('touchcancel', end, { passive: true });
+
+    // mouse (для проверки в браузере на компьютере)
+    sheet.addEventListener('mousedown', function (e) {
+      if (e.button !== 0 || !begin(e.clientX, e.clientY, e.target)) return;
+      function mm(ev) { move(ev.clientX, ev.clientY, ev); }
+      function mu() {
+        window.removeEventListener('mousemove', mm);
+        window.removeEventListener('mouseup', mu);
+        if (end()) {
+          window.addEventListener('click', function (ev) { ev.stopPropagation(); ev.preventDefault(); }, { capture: true, once: true });
+        }
+      }
+      window.addEventListener('mousemove', mm);
+      window.addEventListener('mouseup', mu);
+    });
+  }
+
+  attach({ overlay: 'caseModal', sheetSel: '.modal', scroller: '.modalScroll', mode: 'overlay' });
+  attach({ overlay: 'contentsModal', sheetSel: '.modal', scroller: '.modalScroll', mode: 'overlay' });
+  attach({ overlay: 'addStarsModal', sheetSel: '.modal', scroller: '.modalScroll', mode: 'overlay' });
+  attach({ overlay: 'giftSheetOverlay', sheet: 'giftSheetCard', mode: 'fn', close: function () { closeGiftActionSheet(); } });
+  attach({ overlay: 'withdrawModal', sheet: 'withdrawSheetCard', mode: 'fn', close: function () { closeWithdrawSheet(); } });
+  attach({ overlay: 'pickerOverlay', sheet: 'upPickerCard', scroller: '.upPickerScroll', mode: 'fn', close: function () { closePicker(); } });
+  attach({ overlay: 'quickWithdrawModal', sheet: 'qwSheetCard', mode: 'fn', close: function () { closeQuickWithdrawModal(); } });
+})();
+</script>
+<script>
+/* ===== Games: мелкие пузырьки летят вверх на фоне ===== */
+(function () {
+  var pageG = document.getElementById('pageGames');
+  var pageH = document.getElementById('pageHome');
+  var app = document.querySelector('.app');
+  if (!pageG || !pageH || !app) return;
+  var color = '#fff1cf';   // Games — тёплый, Cases — голубоватый
+
+  var cv = document.createElement('canvas');
+  cv.id = 'gamesBubbles';
+  cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:0;transition:opacity .45s ease';
+  document.body.insertBefore(cv, app);
+  var ctx = cv.getContext('2d');
+
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W = 0, H = 0, dpr = 1, items = [], raf = 0, last = 0;
+  var COUNT = 120;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function make(initial) {
+    var q = Math.random();
+    var r = q < 0.5 ? 0.5 + Math.random() * 0.9          // совсем мелкие
+          : q < 0.85 ? 1.2 + Math.random() * 1.2         // мелкие
+          : q < 0.97 ? 2.4 + Math.random() * 1.4         // средние
+          : 3.8 + Math.random() * 1.7;                   // редкие покрупнее
+    var spawn = H * 0.56;                                // линия, от которой пузыри «рождаются» (середина экрана)
+    return {
+      x: Math.random() * W,
+      y: initial ? Math.random() * spawn : spawn + Math.random() * 30,
+      r: r,
+      v: 10 + Math.random() * 28 + r * 2,      // px/сек вверх
+      a: (0.2 + Math.random() * 0.32) * (r > 3.6 ? 0.65 : 1),   // прозрачность
+      sw: 6 + Math.random() * 14,              // амплитуда покачивания
+      sp: 0.4 + Math.random() * 0.9,           // скорость покачивания
+      ph: Math.random() * 6.28
+    };
+  }
+
+  function init() {
+    items = [];
+    for (var i = 0; i < COUNT; i++) items.push(make(true));
+  }
+
+  function frame(t) {
+    var dt = Math.min(0.05, (t - last) / 1000 || 0.016); last = t;
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < items.length; i++) {
+      var p = items[i];
+      p.y -= p.v * dt;
+      p.ph += p.sp * dt;
+      if (p.y < -12) { items[i] = make(false); continue; }
+      var x = p.x + Math.sin(p.ph) * p.sw;
+      var fade = Math.max(0, Math.min(1, (H * 0.56 - p.y) / 80)) * Math.min(1, (p.y + 12) / 50);   // плавно проявляются от середины и тают у самого верха
+      ctx.globalAlpha = p.a * Math.max(0, fade);
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(x, p.y, p.r, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    raf = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    if (reduce || raf) return;
+    resize(); if (!items.length) init();
+    last = performance.now();
+    raf = requestAnimationFrame(frame);
+  }
+  function stop() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+
+  function isOn() { return pageG.classList.contains('active') || pageH.classList.contains('active'); }
+  function sync() {
+    if (pageG.classList.contains('active')) color = '#fff1cf';
+    else if (pageH.classList.contains('active')) color = '#e3f1ff';
+    if (isOn()) { cv.style.opacity = '1'; start(); }
+    else { cv.style.opacity = '0'; setTimeout(function () { if (!isOn()) stop(); }, 500); }
+  }
+
+  var mo = new MutationObserver(sync);
+  mo.observe(pageG, { attributes: true, attributeFilter: ['class'] });
+  mo.observe(pageH, { attributes: true, attributeFilter: ['class'] });
+  window.addEventListener('resize', function () { if (raf) { resize(); init(); } });
+  sync();
+})();
+</script>
 </body>
 
 </html>
